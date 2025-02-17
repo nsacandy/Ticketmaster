@@ -1,0 +1,1311 @@
+[Speaker 1]
+Basic project requirements. I do my absolute best day to day, to not say things that conflict with what else I have said. But I've said the same thing enough times that at some point. I've said it in a way that implies something different somewhere. Yeah,
+
+[Speaker 2]
+I remember your test. Yeah. That's brutal.
+
+[Speaker 3]
+You have to show understanding without literally copying it down because you refuse to give
+
+[Speaker 2]
+A strict definitions because you don't want us to put those on there. So anyways,
+
+[Speaker 1]
+If I, if I give if I give lecture slides that word, here's the here's the thing, here's the definition. When we get to the exam, all I would get is the word for word. What was on the slide, right?
+
+[Speaker 2]
+But it just makes it hard to be like this, is that on the other side?
+
+[Speaker 4]
+Yeah,
+
+[Speaker 1]
+I see I see where you're coming from
+
+[Speaker 2]
+And I'll try to
+
+[Speaker 4]
+Be an assistant in the way, I explain
+
+[Speaker 2]
+That. Okay, so what are we talking about today, Dr? Corley,
+
+[Speaker 1]
+That's a good question. What are we talking about?
+
+[Speaker 2]
+We can tell you what's going on with our project. If
+
+[Speaker 1]
+I'm talking about afternoon coffee,
+
+[Speaker 2]
+I already had tea but I haven't had my afternoon tea. So, uh, We got all of our basic stuff done. Uh, he ran into the same problem I had and that slowed him down for a little bit with his connection string. He had to go. I think into your, yeah, I
+
+[Speaker 4]
+Had to go into visual Studios and admin and then the command line interface as an admin, and I had to like manually, add myself as an admin to the database for it to allow me to even look at the database. And I went through,
+
+[Speaker 1]
+It doesn't bodewell. And like, for me, I went through
+
+[Speaker 4]
+Hours of resources to find out. It was the simplest thing too. That's that's the worst. Is
+
+[Speaker 1]
+That
+
+[Speaker 2]
+Common having to do that command line?
+
+[Speaker 1]
+Like have plenty of things, I default to just doing command line. I don't bother trying. Yeah, but For a lot of that's the same thing I told y'all about. Yeah. I don't like using get integrations because they do they somewhere in there somewhere, they're gonna do something weird. Yeah. Does that make any sense? I really like
+
+[Speaker 3]
+The tall commit. It just doesn't commit.
+
+[Speaker 4]
+We
+
+[Speaker 2]
+Have a tortoise kit on the computers, which we're not really ever told to use, but I found like you can just like click a thing. Be like push it and it'll just do it instead of trying to use like
+
+[Speaker 1]
+Tortoise kit.
+
+[Speaker 2]
+Yeah, it still works really well.
+
+[Speaker 1]
+And I had. I endored his lesbian for a long time before I before I get with the common repository type I think I I think it's it's a good plug-in and it surfaces but it all. It does is surface. The get commands up so that you can access them from file explorer, right? So
+
+[Speaker 2]
+That
+
+[Speaker 4]
+Doesn't
+
+[Speaker 1]
+Try to do anything else. As far as I can tell that kind of
+
+[Speaker 4]
+Ties into one of the main questions I have for you. Sweet. So for spring through zero, we have everything done except for the folder structure in our GitHub because for the life of me, I can't change the folder structure in the GitHub, is tortoise. Get something that can achieve that. I don't think I So try that what you need to? So
+
+[Speaker 1]
+Two things about Um folders and get when you move something and get you have to use the get move. Otherwise you'll end up with like mirror copies in different places as far as get is concerned. So
+
+[Speaker 2]
+The actual convenience, see it
+
+[Speaker 1]
+In one place but get will see two copies the shadow of what was will just still be there because it doesn't register that you removed it and then it'll also see a new copy of that thing somewhere else. So the actual
+
+[Speaker 2]
+Command get move. Yep. Okay so you need to use
+
+[Speaker 1]
+That. Which tortoise kit should have an option for that for moving stuff and it may do it natively. When you move stuff inside, father core, once you get it set up because it it kind of integrates it into file explorer in a more meaningful way. Is there
+
+[Speaker 4]
+An issue with um, Like, I know. Pretty simple to like, Nesting wise, like go deeper into folder structure and just put things deeper. But is it an issue taking our whole all like our whole code and putting it into a higher level folder? Will that be an issue
+
+[Speaker 1]
+As long as you do the move command for doing it? It's fine. Okay, okay, if you don't, then what you can end up with is You can end up with files inside of files and things in, very weird ways,
+
+[Speaker 4]
+Okay?
+
+[Speaker 2]
+Depending on
+
+[Speaker 1]
+What the exact file structure that you moved, was because all the other, all, the previous directories and things are still there, and the new ones are also there. Even though you only see one copy. Yeah, so when you clone down later, you can end up with very broken looking things, okay, that
+
+[Speaker 2]
+Way.
+
+[Speaker 1]
+Oh so just make sure when you're moving things around that you're using, get move. However, you whatever tool you decide to use, that would make sure it's get that's moving
+
+[Speaker 4]
+Though.
+
+[Speaker 1]
+Okay. Not you locally doing
+
+[Speaker 4]
+It? Yeah. Because
+
+[Speaker 2]
+We added a folder in visual Studio but Visual Studio has its own idea like just like in
+
+[Speaker 4]
+Their solution. Yeah it
+
+[Speaker 2]
+Doesn't see that that folder doesn't actually exist it's just abstract and so if you look in the solution folder it's not there. It's just like because we've also imported project. Via references and it shows us in the solution but they're not actually there. So us adding a folder to it is meaningless a repository wise. I think when
+
+[Speaker 1]
+You're doing stuff and this is why
+
+Go. All the guys 1302 when I introduced get. Always introduce doing the command line operations, and not using some other tool integration. Okay, because you know exactly what it's going to do and get used to doing that, right? If you're doing a tool integration, just know Look into how the tool. Operates a little bit more.
+
+[Speaker 4]
+So I'll just assume that's what Trinidad always said to me. Every time I had issues, he's like, just learn the command line. Yeah.
+
+[Speaker 2]
+Just now, when I push that final thing I had to do command line because it wouldn't let me not do it. Okay, so what
+
+[Speaker 3]
+Do we do now?
+
+[Speaker 1]
+All right. So uh we do need to talk about your repository structure. Oh the other thing I didn't mention when you're setting up the folders and you get repository, get dozen version folders it doesn't really care about folders. So if you have an empty folder it just Recognize that it exists at all. You
+
+[Speaker 4]
+Have to put
+
+[Speaker 1]
+A file in it before it recognizes, okay?
+
+[Speaker 4]
+So if
+
+[Speaker 1]
+You had like a documentation folder but there's no actual documentation files in the folder. Get when you run the, add command to add everything and look for changes. It'll say there's Nifty folder. Ignore that and move on and not actually edit. Okay, so
+
+[Speaker 4]
+You do have to have
+
+[Speaker 1]
+Some files in there because it really only versions files
+
+[Speaker 2]
+Okay.
+
+[Speaker 1]
+Okay, that was the other gotcha. That, that can jump out if you're not. And then you'll end up in situations where like I committed, it said it committed everything and then I cloned down somewhere else and it's just not there. Yeah. Right.
+
+[Speaker 2]
+Okay.
+
+[Speaker 1]
+So, what we need to do today is um demo web system desktop system. Check, make sure that those were both connected to the database. Transferring things that they're hopefully sharing information through the database. Uh, I need to see your coverage report and make sure it looks appropriate. And then we need to get your repository structure, make sure everything kind of where it needs to be. Okay. Yeah, Did you? Um, So that's the first thing then after that we'll get to the actual meeting and do everything.
+
+[Speaker 2]
+Oh goodness I hope you don't have anybody after us. This might take a while.
+
+Okay, I only put like one or two test cases in there to prove concept. Um
+
+[Speaker 1]
+That's that's fine for now. Okay?
+
+[Speaker 2]
+Yeah we also have the coverage report generated.
+
+We're gonna scrap this entire project because I don't want to try to do renaming stuff. So this is just, yeah. And uh, if
+
+[Speaker 1]
+You make it, if you make a new repo, just share that one. I at least one group's already shared like five with me.
+
+[Speaker 4]
+That's why it's better. Be this, I
+
+[Speaker 2]
+Think we're on our second one now, we're gonna do a search.
+
+[Speaker 4]
+Um, so coverage report, you'll have the show because Okay, so we are Now, we did the web first.
+
+Okay. This is just kind of like what we ran through with the tutorial with Windows.
+
+[Speaker 1]
+Oh yeah. This is the movie sale. Yeah, I've done this exact tutorial.
+
+I was trying
+
+[Speaker 2]
+To use, um, It's like SQL connector that Dr. Young Talks about. But it seems like a lot of the stuff is integrated now, but I mean that was like two years ago, do I need to use like I don't know, but I think it's called APO. All right, I'm gonna answer
+
+[Speaker 1]
+This very generally. How you interface with your database and manage stuff is completely up to you,
+
+[Speaker 2]
+Okay?
+
+[Speaker 1]
+So you need to determine what works best for you. What I care about is that the database is well structured and that the systems are using it appropriately or architecturally. I'll be reviewing that level. Okay. Um so we could shoot ourselves in the foot. However, we want Yep, exactly.
+
+[Speaker 4]
+So Dr. Corley's movie. And this was on our drama. That's the beauty of this thing that was made for us by one day.
+
+[Speaker 1]
+I think. No, no is good. That's a very competitive pricing.
+
+[Speaker 4]
+And as of right now, we just have the desktop to to show us. Okay. But it's pulling the information. Yeah. Yeah. So that's good. Okay,
+
+[Speaker 2]
+Coverage report. Yeah.
+
+[Speaker 4]
+Let's I don't have that, I'll set it up on the machine. Do I?
+
+[Speaker 2]
+Uh, it's probably not even gonna work because So the way it pulled it in, but
+
+[Speaker 1]
+Let's see. Um, I might have do you have the generated version of the report you don't necessarily have to generate it right now and we
+
+[Speaker 4]
+Have a we have an image of it, right? Don't you?
+
+[Speaker 5]
+I I thought it was all uploaded but because of the way it's packaged. I don't know. Uh What I can do is just go into my
+
+[Speaker 2]
+Visual studio and show or my VM thing.
+
+[Speaker 4]
+Maybe lab.
+
+[Speaker 2]
+Yeah, my vlab. Yeah. If
+
+[Speaker 4]
+You want to do that on yours. Yeah, that's fine. So
+
+[Speaker 2]
+What does this window is 11?
+
+[Speaker 4]
+Yeah. Okay I
+
+[Speaker 2]
+Have not believe this.
+
+[Speaker 4]
+Is it Elden ring. One on the blade. Is
+
+[Speaker 2]
+That someone's face off? Berserk.
+
+[Speaker 4]
+Elden ring has got a, the weapon from berserk. Yeah, that's it's because like Elden ring has all the different classes he can be
+
+Okay. Hi, Dr.
+
+[Speaker 2]
+Yoder
+
+[Speaker 4]
+Well,
+
+[Speaker 2]
+It's probably easier if I just navigate to the web page I use Visual Studio.
+
+[Speaker 4]
+Please report.
+
+[Speaker 1]
+You can say it's somewhere in there. There's an index.
+
+Coverage is so low. All right, so Okay. I have not clicked on anything but I assume it works. Yeah. So, come down in here and you can see, you know, line by line analysis for all the files and everything. So, This structure is good. I'm gonna note when you pull this in your coverage, report needs to be put into your Sprint specific folder. Yes.
+
+[Speaker 4]
+Yeah. I saw that
+
+[Speaker 1]
+When you pull it in, make sure it's like index.html has almost nothing in it. It references the billion other files that are around it in that directory. Okay, so you have to pull, Like grab that whole folder and move the whole thing in together. And
+
+[Speaker 4]
+Then we probably
+
+[Speaker 2]
+Also want to do a copy of that a link to that
+
+[Speaker 5]
+Html page. So it's easy to find, right? If
+
+[Speaker 1]
+It's, if it's just open that folder and find index.html is fine as long as everything's in there,
+
+[Speaker 2]
+Okay? But it
+
+[Speaker 6]
+Needs
+
+[Speaker 1]
+To be
+
+It needs to have all of that stuff moved in with it. Otherwise, you end up with a page that's just like broken link and header.
+
+[Speaker 2]
+Okay. So, is that everything we need to show you for right now?
+
+[Speaker 4]
+Yeah, so that's good. Um
+
+[Speaker 1]
+So now let's pull uh, Just pull your repository up locally and like you just walk through structure there. You can exit out of my VM if that's
+
+[Speaker 4]
+Not here.
+
+Anita open his VM inside your face.
+
+[Speaker 2]
+It's definitely not going to work.
+
+[Speaker 1]
+If you're gonna use, you get 100, please. Eventually your machine will run out of resources to run them,
+
+[Speaker 4]
+But
+
+[Speaker 2]
+Right on. Hey,
+
+[Speaker 4]
+What's up man? Hey, bud.
+
+Okay. All right, so at
+
+[Speaker 6]
+Top level, it's the best right now. Okay, so Yeah. This is
+
+[Speaker 1]
+Not the structure. Yeah.
+
+[Speaker 2]
+No. So
+
+[Speaker 1]
+If you go look at the project description. Yeah. Oh, it'll tell you exactly what folders we want. But that's
+
+[Speaker 4]
+What I was trying to do the like 45 minutes before we got here, but I couldn't.
+
+[Speaker 1]
+Yeah, so we want our code folder inside. That is gonna be your project. Uh, presumably it's all packaged in a single visual Studio solution. So you'll probably just have one folder on here, for whatever your project is, but all the code needs to go in there.
+
+[Speaker 4]
+Then
+
+[Speaker 1]
+You're gonna have a doc.
+
+[Speaker 7]
+Under this, you'll have
+
+[Speaker 1]
+The class diagram your ER, diagram. Your use case diagram. If it has diagram in the name, it goes here. And, Your use case scenario. And what I actually recommend for.
+
+Scenarios is make a subdirectory.
+
+That and then have each one as its own file. Okay, so each scenario as an individual file in a subfolder, on your documentation,
+
+[Speaker 4]
+Um, Any setup instructions or those all in readme or do those go in
+
+[Speaker 1]
+The readme, lays out this exact structure of how things should be and where the file should be. So
+
+[Speaker 4]
+It's just, you know, when
+
+[Speaker 1]
+You create your repository go ahead and set those folders up in there and put some example files in there. Yeah. At
+
+[Speaker 4]
+Least
+
+[Speaker 1]
+Put something temp in there so it recognizes but like, add your code and to there Other than that, you need a Sprint folder. Which will
+
+[Speaker 7]
+Have your product backlog.
+
+[Speaker 4]
+And then it will have Sprint specific folders.
+
+[Speaker 1]
+So
+
+[Speaker 4]
+Inside this front specific folder, you need your
+
+[Speaker 1]
+Wireframes
+
+And you need your Sprint, backlog.
+
+[Speaker 4]
+And you need the
+
+[Speaker 1]
+Covered.
+
+Right? And you'll have like, all of these items for each print,
+
+[Speaker 4]
+There
+
+[Speaker 1]
+Would be different copies, obviously, different backlog will be different for everyone. Your coverage report, this is generated at the end of this print. Um, I don't expect that y'all are using the coverage report like while you're doing testing I expect you're just running stuff individual
+
+[Speaker 4]
+Studio or whatever. Yeah, but
+
+[Speaker 1]
+The coverage report is reporting at the end of the Sprint and documenting that this was coverage level. This is where things were okay. So I
+
+[Speaker 4]
+Just want
+
+[Speaker 1]
+One of those here. The wireframes. Similar to that, but more on the front end, as you're going into the Sprint. I want you to build wireframes for the features that you're implementing in that Sprint, at least. So that at the halfway point when we do a check-in meeting. So, next week for Sprint, one, we can look over the wireframes and make sure what you're building towards which could be in any state of development at that point where maybe nothing can be shown for whatever reason. But you can show me, this is what you're building towards, and I can give you a review and make sure you're headed in the right direction. So nothing from previous
+
+[Speaker 4]
+Sprints smaller frames, just yeah, but
+
+[Speaker 1]
+It doesn't have to be anything unless it's relevant to what you're doing at Sprint, okay? And you know, once you throw that in there and kind of get that feedback, I don't expect you to go back and change the wireframes but if you want more feedback on any edits you're making before implementing the thing. And submitting at the end of the Sprint, you can edit those wireframes and then I'm on the repository. You can just ask you can go look at it and make sure.
+
+[Speaker 4]
+So it's kind
+
+[Speaker 1]
+Of facilitating that sort of feedback as you're going through and implementing things, okay?
+
+[Speaker 4]
+Um similar since we're already talking about next week's
+
+[Speaker 1]
+Meeting, I'd also want to see your ER diagram and the use case scenarios for the same reason to make sure that what you're building in your database is sufficient and will work for what's coming up. And try to give you all some feedback on how you're structuring stuff and the same thing, the use case. Scenarios make sure you're understanding of The application Behavior lines up with what I wanted. The goal for all of that is to make sure that when you get to the end of the Sprint and submit you don't ever get the feedback that, you know, this isn't what I wanted at all. Yeah, like
+
+[Speaker 4]
+I want
+
+[Speaker 1]
+There may be some issues with implementation things, might not have been finished like those things happen but I don't ever want you to be in a situation where you submit something. And I tell you, I didn't want to hit this. No, I
+
+[Speaker 4]
+Want you to go back
+
+[Speaker 1]
+And build this other thing. Yeah, you misunderstood you want to avoid that,
+
+[Speaker 4]
+Okay. Do, um, Those two, the yard diagram. Uh, use case scenario, so those get included in the Sprint.
+
+[Speaker 1]
+So they'll go in the documentation and I do want those to be kept update as you go through. So those will be whatever the latest state of the system is at any point in time. But I will be reviewing those during the check-ins and giving you feedback on where you're at.
+
+[Speaker 3]
+But you said, we don't have to change it responding to the feedback we only have to change it per Sprint.
+
+[Speaker 1]
+The wireframes, you don't have to update the ER diagram class diagram should reflect what's in the system, okay? So you'll
+
+[Speaker 2]
+Have
+
+[Speaker 1]
+Kind of a perspective as we come into the check-in on what you're planning or maybe what's partially implemented at the end of the Sprint, you should make sure that what's actually implemented match, what in the diagrams, okay?
+
+[Speaker 2]
+Just not the wireframe.
+
+[Speaker 4]
+Not the reference, okay?
+
+[Speaker 7]
+Wireframes are the only thing you don't have to come back.
+
+[Speaker 3]
+Okay. Okay, so we need to have the diagrams. For next Wednesday meeting,
+
+[Speaker 2]
+We need to be Folder.
+
+[Speaker 1]
+And this is the creepy idea.
+
+[Speaker 2]
+We are I was gonna get it.
+
+[Speaker 4]
+Did
+
+[Speaker 2]
+You want a, uh, a piece of Lucky Bamboo. Remember
+
+[Speaker 3]
+We talked about it? Yeah, because I
+
+[Speaker 1]
+Can
+
+[Speaker 2]
+Bring you one because mine are really
+
+[Speaker 3]
+Big.
+
+[Speaker 2]
+How can a baby be lucky, what? It's not even actually been. Because in
+
+[Speaker 1]
+Battle of bamboo is a very negative thing.
+
+[Speaker 3]
+And you can make floors out of it.
+
+[Speaker 2]
+Very cheap at this fine.
+
+[Speaker 3]
+Okay,
+
+[Speaker 1]
+So we're very excited, bamboo out in their yard and did. Several years later, they were less excited. They had a bunch of bamboo, yeah, but they have very beneficial of them.
+
+[Speaker 2]
+But we use it and you're like, yeah, if you get a bamboo
+
+[Speaker 1]
+Miss, you get in trouble.
+
+[Speaker 2]
+Okay, so we need to have our diagrams and Folder structure set up. Should we be coded? I think we should always be coding. I mean, I guess. So
+
+[Speaker 1]
+Yeah, um, the other thing up there is you need to readme and your readme should have kind of your setup. So if I, if I pull down your repository and go to your readme, I should be able to launch your application. From there, I should be able to run your tests
+
+[Speaker 4]
+Using the
+
+[Speaker 1]
+Instructions there. I shouldn't have to follow up with you to figure out how to do something. Yeah, and I shouldn't have to look other places unless the readment tells me to go look at something, okay?
+
+[Speaker 2]
+So it needs to have
+
+It can the instructions that I put in there can be as detailed as they need to be right? Because we just had to change.
+
+[Speaker 4]
+We, I already did the setup instructions. Um, today we were in the lab. Well,
+
+[Speaker 2]
+Just now though, when we changed the GitHub and you pulled it, we had to change. Uh, the directory where it's outputting the debug.
+
+[Speaker 4]
+So we need
+
+[Speaker 2]
+To put that in there. Yeah.
+
+[Speaker 1]
+If there are also, if you have any processes where you have to go through and run several steps, and you could create a script file to do that. I would say go ahead and do that. And then your readme can say, just go run the script and then in the future if you need to edit that, add on to that, for whatever reason, the script file updates, you don't have to go back and change your documentation. Makes it easier. It's coming. More, self-documenting process for doing things. If you're setting up scripts to run them as much as possible, I
+
+[Speaker 2]
+Only know how to do scripts in Linux. I do not know how to do Windows scripts, you can you can run bashcripts from
+
+[Speaker 1]
+Git bash.
+
+[Speaker 4]
+Okay.
+
+[Speaker 1]
+Okay, but I mean batch files are Virtually identity. Except for Oddities of, you know, like doing an if statement in Python looks different than an if statement and job it's the same type stuff. Yeah, it's just
+
+[Speaker 3]
+Weird to me because the bash is based off of Linux file systems build. So it's
+
+[Speaker 2]
+Weird to me to run things when Windows, you know what I mean? Like different commands different abilities.
+
+[Speaker 1]
+It is, it is different coming out. But, you know, there's a command for changing directory. There's a command for listing stuff in a directories set at LS. It's dirt. Stir a little thing like that. Okay.
+
+[Speaker 8]
+Dir for directory. Why would
+
+[Speaker 1]
+You make it anything else?
+
+[Speaker 2]
+I'm still confused about why they have things like super Pig powers and stuff or whatever else they have in Linux whenever you're playing around on the terminal? I'm not understanding enough about it. Okay.
+
+[Speaker 3]
+Uh, do we need anything else?
+
+[Speaker 1]
+Uh now we need to plan the first round one.
+
+[Speaker 3]
+No, this is saying 23 24 minutes.
+
+[Speaker 2]
+Okay
+
+[Speaker 1]
+That tells you these the planting beans are longer, okay? All right, they're not all going to be 15 minutes. I'm
+
+[Speaker 2]
+An old man, I can't sit here. This long, that's my bedtime.
+
+[Speaker 1]
+Yeah, I've been doing this all day. And apparently I
+
+[Speaker 2]
+Didn't take my old man medicine yet so I'm gonna have to get that. Oh,
+
+[Speaker 3]
+All right, so
+
+[Speaker 1]
+Um, pull the product backlog. And if you've got any wireframes or anything started, you probably won't kind of talk through. But let's start with the product backlog. You know, the first thing I'm going to do is change the plug.
+
+Do you ever read
+
+[Speaker 3]
+Those little males that you get from the ACM for the technology?
+
+[Speaker 1]
+I read, I read those not every time I get one but I do read those because They're very broad in topic so, you know, It's like getting a general purpose magazine. Like if I got a newspaper I'm going to read this section or I'm going to read that section. I'm not going to read it cover to cover
+
+[Speaker 2]
+Right? You know it's the same thing
+
+[Speaker 1]
+With those magazines, they're kind of all over the place but like a couple weeks ago there was one on. Ai in the classroom and stuff. That was an interesting article. Uh
+
+[Speaker 2]
+I really dig the emails. They send out but they just send them so frequently three times a week with like 10 different articles on it, you know? It's
+
+[Speaker 1]
+Just wild. Oh, the tech news you're talking about tech news. Yeah.
+
+[Speaker 2]
+I gotta clear out my inbox all the time and I always say, I'm gonna read this stuff because it's interesting and I need to keep up with the, you know, state of things but I never do. Well, maybe once a month
+
+[Speaker 4]
+Wireframe and what? Sorry,
+
+[Speaker 2]
+Program, uh, product
+
+[Speaker 1]
+Blood pressure. If you've got any other kind of design stuff that you're talking through, got a little wire frame,
+
+[Speaker 7]
+Okay, I'll see if I can change just
+
+Um, but actually,
+
+[Speaker 1]
+Once we get the product backlog, I do want to make a change to what's on there. And it's just in the priorities for some of the stuff. Two items, specifically.
+
+[Speaker 7]
+Y'all get the benefit of being the last group for the
+
+[Speaker 1]
+Week. So, I've already talked to this enough time. It's really cool exactly what things were going to say. That's really only true this week because next week everybody's Project's gonna be in a different place somehow.
+
+Okay, so Yeah.
+
+[Speaker 4]
+Okay.
+
+[Speaker 1]
+All right. So from here, the first thing I'm going to do is I'm going to take a couple of these
+
+All right, so the last two items. Okay, so now looking at the product backlog, all the top priority items. Now, taking off those last two that were there. Are all focused on generally setting things up to get ready to work on projects.
+
+[Speaker 4]
+So
+
+[Speaker 1]
+It's as an admin. I need to be able to add users into the system. I need to be able to, you know, remove users out. It's user management stuff which admins will do. And then from there, once we've got, here's the system, an admin can create groups. Every group. Needs to have a manager. So the admin can assign employees to a group, and then one of those employees will become the manager for that group. I'm going to note here that the the second item in the product backlog where it says promote and demote I think gives the wrong impression of how I want manager to work. Its manager isn't like a title that an employee gets you. Not promoted to manager and then we're going to find a group for you now. To be a manager, you are in a group and you are a manager of that group. That relationship is what gives you that. And it gives you some extra privileges within the system related to that group and being able to set a project and things for that group to work on. So promotion to motion is only within. Yeah, so it's really you can you can set someone as manager of a group think of it that way. That's, that's promoting
+
+[Speaker 4]
+It. Okay. So it's
+
+[Speaker 2]
+Like having mod powers in a chat room. It's not actually different. Okay.
+
+[Speaker 1]
+Yeah, so you're still just a user. Now admin is a diff that's like a flag on the user itself. If you're an admin, you get a sweeping set of extra privileges across things, whether you're related to that group or project at all, you can come in and do stuff because you're an admin that's kind of the super user status.
+
+All right, so once we have a group, we have a manager set up, the manager can then add and remove employees from the group. And the manager can create projects. When a project is created, every project has to have at least one group. But potentially, as many as you want, But at least one group has to be added into the project and there has to be a project lead. The project lead has to be the manager of one of the groups on the project.
+
+[Speaker 4]
+If there's multiple groups, there's a leap, okay? And if there's only one,
+
+[Speaker 1]
+If there's only one group, there's still lead but it's just it's
+
+[Speaker 4]
+The manager of that group, okay?
+
+[Speaker 1]
+So think if I'm creating a project, I add in some groups then there's like a drop down box to select.
+
+[Speaker 4]
+Yeah.
+
+[Speaker 1]
+And it
+
+[Speaker 4]
+Only gives me one of those managers. As an options, the lead determined by an admin or is that determined? Whoever
+
+[Speaker 1]
+Is creating the project will set it up and then the project lead can change it from there, so they could like pass off and that person's a manager who's creating the project
+
+[Speaker 4]
+So they can make themselves. Okay?
+
+[Speaker 1]
+Okay,
+
+[Speaker 4]
+All right. Exactly.
+
+[Speaker 1]
+All right, good so far. Yep. All right. Now to complicate this a little bit, okay? I I want like kind of a flat structure to this so no manager is considered above another manager. Admins are a special class of user for certain purposes. But, Managers aren't above other managers. So I don't want a manager to be able to add another manager's group onto their project unilaterally. So I can. Instead of adding, if it's my group I just put it on Project and stop it. If it's somebody else's group, think like I'm inviting them to be on the project and that other manager has to agree to the invitation. Okay,
+
+[Speaker 4]
+So
+
+[Speaker 1]
+You know, if I'm looking at a project, I might see that there's a group that's, you know, pending or invited or something like they that link should be there but they're not fully on That manager hasn't agreed to be part of the project that can't be made project lead. They can't do things in the project yet because that group's not fully added. Until the manager agreements and gives like consent. I do not have a specific idea for how that UI kind of interaction should work for doing the approvals and stuff just that. I want to make sure that it's checked off before they get added in. So there have that has to be covered. That's implemented that process has to has to fall out, okay? It's improval.
+
+[Speaker 4]
+Yep.
+
+[Speaker 2]
+Like adding collaborators to get up. Okay. Um, So the
+
+[Speaker 9]
+Team lead thing,
+
+[Speaker 4]
+This is all Sprint. One.
+
+[Speaker 1]
+No. So the hope is we can get all of this set up so that we have users in, they're in groups projects are set up. They're assigned out to projects and now then the Want to get into is you know, setting up tasks and stuff. So that's the on the product backlog. I made one is 1.5
+
+[Speaker 2]
+It's
+
+[Speaker 1]
+That is setting up the boards for a project because it's somewhere in between setting up the project to do work and doing work. It's more the direct point, and I don't know if you'll get through all of the other things necessarily. Yeah, so leave that as optional for now. Okay, but that's if you've got people in, you've got groups set up, you've got projects all there and you've got, you know, a week left, half a week, left, whatever. What? Is the boards. So, that would be the next thing to start working on.
+
+[Speaker 4]
+Not too complicated. I
+
+[Speaker 2]
+Wasn't listening for a lot of it.
+
+[Speaker 1]
+Should be okay. All right. Um, So, as you're going through this, there's a lot of restrictions on who can do, what, so, you need to make sure that you're putting in proper like, authentication, verification on. Who can do. What, who has? What options, not letting people access things. They shouldn't access. So like the users being able to see, you know just a list of all the users and adding and removing users. That's really just an admin specific feature. So, you know, if that's if there's like a user management page and only admins can go there, Be kind of ideal. Um, Which means you know if I'm logged in, as you know, some other non-admin employee and I you know, specifically type in the URL for going to that page, I still shouldn't be able to get there.
+
+[Speaker 4]
+You got
+
+[Speaker 1]
+To make sure like Page by page. You're doing these checks.
+
+[Speaker 4]
+On the
+
+[Speaker 1]
+Other Pages, it gets a little bit more complicated because it's not just that you can't get to that page. But that some of the things on that page, you may or may not be able to do So, if I'm an employee, I think employees should be able to see all of the groups, they should be able to see who's in those groups think that's just like an org chart. If I'm not a manager or an admin that's all just static information, I can go through If I'm a manager I have, you know a little bit of interactivity on the groups that I'm a manager for, but the others are static for me. And then an admin, you can do whatever you want. Um, So, you know, for that, you have to make sure you're doing within the page. I might view this information but some people have access to extra features that just aren't there for other users. And it's going to have to be like per item per project kind of checks as you're going through and rendering stuff out. So the
+
+[Speaker 4]
+Features The features are there, they're just not available to those people so like gray it out or like this features just don't like it's a complete separate almost UI like that. That's
+
+[Speaker 1]
+A great question. And, um, what you should be careful of here is that you don't have if you have like a button, Don't make it like a hidden button or like a one pixel by one pixel button or something. To try to keep a user from doing it. If they shouldn't be able to access that feature, it should not be in there in the HTML that gets rendered out to them. Yeah, so what
+
+[Speaker 4]
+You can do
+
+[Speaker 1]
+In like CS HTML, you should be able to set up, you know, something that's like an if statement that if you're a manager for this group, we'll put this button here in the HTML. And if you're not, it doesn't put it there and it's just not there at all. Okay. Because if it's hidden, or, you know, visible or something else. Yeah. If it's in the HTML that goes out to the browser Treated as though, they can access that and use that thing. So don't use that as your limitation make sure it's not going to them at all.
+
+[Speaker 4]
+Okay,
+
+[Speaker 2]
+Will you be able? Will you be looking for those things?
+
+[Speaker 1]
+Uh, yes.
+
+[Speaker 2]
+Are you bluffing?
+
+[Speaker 1]
+It's that's the kind of thing. Full transparency. When I go through those projects, I'm not reading line by line. Everybody cut the outfit in this project. It's literally impossible. Yeah, I would, I would dive if you're trying to get through everything. But I will be spot checking for things like that. It's the same thing with that code, styling, I'm going to be doing spot checking. I don't promise. I'm going to notice every style issue across every class, but I am spot checking across to try to spot content things. Yeah.
+
+[Speaker 8]
+So, if you do a really good job of hiding, it
+
+[Speaker 1]
+It'll be fine.
+
+[Speaker 8]
+And if you don't, you'll get an unsatisfactory. Good
+
+[Speaker 2]
+Probably a little bit worse. I'll probably sneak it in there. And I just did it deliberately.
+
+[Speaker 4]
+And that's Sprint ones in two weeks. So yeah so every
+
+[Speaker 1]
+Sprint is two weeks so for her so it's two Cycles. I mean just like Sprint. Zero almost two weeks. Yeah. Really. Um, it feels a little bit different because it kind of work is changing. But Same, same cycle. Yeah,
+
+[Speaker 4]
+We're in that
+
+[Speaker 1]
+Rhythm now,
+
+[Speaker 2]
+And our essays do Is
+
+[Speaker 1]
+On a completely different timetable. It has nothing to do with the project.
+
+[Speaker 2]
+No, but I'm here. Yes.
+
+[Speaker 1]
+Yeah, but yeah, it is coming up this Friday. So Hopefully, y'all are nearly complete with your drafts.
+
+[Speaker 2]
+Yeah.
+
+[Speaker 4]
+Yeah, sure,
+
+[Speaker 1]
+If you if you haven't started,
+
+[Speaker 2]
+Now, I've got a pain but I'm going to use research to flush my now, Because I have the framework but I need to make it. The scientific.
+
+[Speaker 1]
+All right, so
+
+So, same thing, I said the groups anybody should be able to look through. Anybody should be able to look through the projects to a certain extent. So if you're not a member of that project, You shouldn't be able to make any changes like, update tests. You probably shouldn't even be able to see the board for the project. I don't think that makes sense, but you should be able to see the project exist. You should be able to see what groups you're working on it. So, if I see a project and I want to ask a question about that, I can see who's working on it, who's the lead for that. I can go find Them and contact them, if The same thing for the groups, I can see what all the groups are. I can see who's in charge of which group. You know, it's it's there for kind of that purpose and I do want that to be served. Do you
+
+[Speaker 2]
+Want the groups to have a name or do you just want it to be the people?
+
+[Speaker 1]
+Uh I think groups should have names. I think the manager or the admin. Can set what the names are but yeah I think okay, have some, have some group name. So,
+
+[Speaker 4]
+So now is this um this interface that shows all these groups and people are all of these people. Like pre-existing like these, their accounts have already been created in the database and that's what's being shown. Is there
+
+[Speaker 6]
+A counselor is this? Just like the name of the ad? The admin, adds them into the system? Yeah. But then,
+
+[Speaker 4]
+Yeah,
+
+[Speaker 1]
+Just like their, like name contact information kind of stuff is what you would, you would want there,
+
+[Speaker 4]
+Okay,
+
+[Speaker 1]
+Unless you figure out exactly how you want to handle that. So
+
+[Speaker 4]
+What an admin adds them into the system, is the admin, creating them, an account or just adding their Alias. And,
+
+[Speaker 1]
+Yes, that's how that's how the accounts get created because the admin setting it up. Okay, that's adding to the user.
+
+The system, the admin creates it, okay.
+
+[Speaker 2]
+Okay. And then, uh, you assign a group to a project, can a person? Be multiple groups? Yes. Okay.
+
+[Speaker 1]
+And you can be manager of multiple groups, okay? And it can be manager of several groups, a member of other groups.
+
+[Speaker 2]
+Okay, in which case, you're so close to being an event Trader.
+
+[Speaker 8]
+Yeah. Um,
+
+[Speaker 1]
+In practice, I don't know that that would necessarily get used a lot. There might be places where somebody is in charge of a couple different groups. You know for organizational reasons but I think the organization should decide that and that I don't want to put a lot of extra restrictions, right.
+
+[Speaker 2]
+And probably make it harder for us anyway.
+
+[Speaker 1]
+So, probably easier. You know, it might be nice later on to be able to give an admin. You know who's managing this for their organization, the option to say, you know, employees can only be in one group or something. Or you can only be manager of one group or whatever restrictions you want, okay? Things might be nice customizations later, but for now kind of leave it open and let the organization enforce their own rules. Themselves. And not have the system, do it for them, right?
+
+[Speaker 4]
+Considering this. My improved understanding of this project my wireframe is going to be a lot different than what we are anticipating on doing. But I did this like a weekend so See if you can, yeah.
+
+[Speaker 8]
+See
+
+[Speaker 4]
+I just had like the simple login and I had to sign up but now that I know you're not signing up or anything and it's you know you're an admin of creating people and just the navigation to the homepage.
+
+[Speaker 1]
+This is good like you've got space here. You've got the employees page. Yeah. Where I could go if so if I'm an admin I see that option. If I'm not I just And go there. And that's where you would do adding. And removing seeing it was all in there,
+
+[Speaker 8]
+And then you've got
+
+[Speaker 1]
+A groups page, like LinkedIn to your structure and then, a Project's page for sending a project,
+
+[Speaker 8]
+I
+
+[Speaker 1]
+Don't think you're right. That the home page is probably not one of those pages. Yeah,
+
+[Speaker 4]
+Because most
+
+[Speaker 8]
+Of
+
+[Speaker 1]
+The time I'm not going to be making a group
+
+[Speaker 8]
+Making a project
+
+[Speaker 1]
+Or doing like that image that kind of setup level stuff. Most of the time I'm just going to be working on a project. Okay. So more than likely, this page is going to be more
+
+Group project. Yeah, that's it.
+
+[Speaker 8]
+Yeah.
+
+[Speaker 1]
+So having a different landing page, makes sense. You
+
+[Speaker 4]
+Have a
+
+[Speaker 1]
+Sign out button. I'll either
+
+[Speaker 8]
+Sign. I've already had it.
+
+[Speaker 1]
+You know, you say that the system,
+
+Yeah. So, you know, some of the other things we can kind of flesh out as we get there, but You may want to go ahead and this is one of the things going into this now, For the wireframes and things. You don't have to flesh out any of the other things that aren't relevant to what we're working on. But what you should do is look for places where you should set something up to make it easy to go into doing them later. So having your landing page, not be Groups page or something, which is probably not what it's going to be, makes sense to set up now. Yeah, there may not be anything there other
+
+[Speaker 8]
+Than
+
+[Speaker 1]
+A way to navigate to the other page. Yeah. But
+
+[Speaker 4]
+If you
+
+[Speaker 1]
+Said it as the other page, then later on you have to come back and change that out. Yeah,
+
+[Speaker 4]
+I think it's more likely,
+
+[Speaker 1]
+There's going to be different information, some sort of like, dashboard surfacing things up on
+
+[Speaker 8]
+This page and we
+
+[Speaker 1]
+Can figure that out. Once we get a task in and start working with them, what makes the most sense to put there? Yeah, that's
+
+[Speaker 4]
+What I was thinking. Yeah, probably the most sense would be like a mobile dashboard for like the home page just because it's not really something you're going to to do something that's really just you land there. You see what you have to do something
+
+[Speaker 9]
+Else.
+
+[Speaker 1]
+Yeah and it could be something where like I can see some
+
+Get in or I can see
+
+[Speaker 8]
+Projects that
+
+[Speaker 1]
+Are active and I can get into a project quickly. Like something that leads me into the worry that I want to be doing. Yeah. And that work is probably not creating a group.
+
+[Speaker 8]
+Yeah. So
+
+[Speaker 1]
+This is not going to be the stuff we're doing right now. Um,
+
+[Speaker 5]
+So, You know, that also with the database as you're setting up your database,
+
+[Speaker 1]
+Schema. Make sure that you're thinking ahead a little bit. You don't need tables for stuff that's not necessary for the features, we're currently implementing. But when you're setting up these tables make sure it's going to be easy for you to keep building on what you have. Or if there's something, you know you're going to have to put there. You know, go ahead and put it in the schema even though you're not necessarily using it. So you've got that structure work. Done ahead of time. Yeah. You don't want to have to come back and tear down your database and rebuild it because Kind of support for the rest of the things and that's like taking the legs off of your table, you know, it can it can cause larger problems. So make sure you're building something stable that you can keep building off of as you go in. So you have to think of where you're headed with it. Yeah.
+
+[Speaker 4]
+I'm really happy. I took information last semester. Oh yeah.
+
+[Speaker 8]
+All right,
+
+[Speaker 1]
+So the reason that's required before you get to this course,
+
+[Speaker 8]
+I was
+
+[Speaker 2]
+Amazed that you hadn't taken PC2 yet.
+
+[Speaker 1]
+Doing a great job. And we should just lay it out. You have to take every course from one at a time to semester after the other. All of our graduates are retiring after graduation.
+
+[Speaker 4]
+Yeah.
+
+[Speaker 8]
+20-Year curriculum.
+
+[Speaker 2]
+Yeah, twenty years.
+
+[Speaker 4]
+Is there anything else we got for us?
+
+[Speaker 1]
+So that, I mean, that's What I want you're working on is doing the setup stuff, so setting up users in the system. Setting up groups setting up projects and doing those basic like management features and then if all of that is done setting up the boards and then that leads in what I'd like to get to. In the next hopefully is starting to work with tasks and doing that stuff. Would you say everything
+
+[Speaker 4]
+We do? Like logic wise should translate pretty well between web and desktop? Or will
+
+[Speaker 8]
+There be a lot of? That's a good
+
+[Speaker 1]
+Point. So the features that that
+
+You from the desktop, it's all stuff that you would use the web interface for, okay. The desktop is more about, kind of day-to-day work, updating, tasks, and those sorts of things, you know? So think you like come in and maybe it's like a to-do view or something, like it's good. It's going to be a different view of the system. More stripped down to I'm doing work. This is something that I'm using as I'm doing work. So, the
+
+[Speaker 4]
+Desktop is going to be something almost completely.
+
+[Speaker 6]
+You know, we're going to be doing those simultaneously, or does the desktop come later
+
+[Speaker 1]
+We when we get to those features which once we get into like updating, like task status and doing that sort of stuff, it will be relevant and then we'll bring it online. So, right now, all we're doing is
+
+[Speaker 4]
+Web, okay?
+
+[Speaker 2]
+Okay,
+
+[Speaker 8]
+So
+
+[Speaker 2]
+All this
+
+[Speaker 1]
+Is web stuff, uh, including setting up the boards. So if you get to that bit, that's still web only
+
+[Speaker 8]
+And
+
+[Speaker 2]
+Then the desktop is going to be for the individual user most of the time and seeing what they're supposed to be doing.
+
+[Speaker 1]
+Yeah so it's a different view of the system. Now I know this
+
+[Speaker 2]
+Is far off and I'm wasting our time by asking about it. Is it going to be like where when we change a board it's going to propagate down to the user's desktop and they can see the
+
+[Speaker 8]
+Change in real time. So the thing
+
+[Speaker 1]
+Yeah, that's what behind the scenes. You're sharing the same database, so you're using the same data. So as changes happen, one side, they
+
+[Speaker 8]
+Appear on the
+
+[Speaker 1]
+Other. And you know, similarly, if somebody's Application and changes something and somebody's looking at it, you know, different instances of the web application. All that stuff is kind of live changes happening. To some extent.
+
+What's up?
+
+[Speaker 2]
+So,
+
+[Speaker 10]
+That's that's all I want. Y'all
+
+[Speaker 1]
+Kind of focused on going into this. So getting the web set up. Getting it handled. Those deaths and I'll send a little summary of what that was, but it's those all those priority, one items in your product backlog. Now, that's what I want. You focused on, if you're done with that. That 1.5, that's what that's there for, okay.
+
+[Speaker 8]
+But
+
+[Speaker 1]
+Not strictly required. Going into the Sprint. Does that seem reasonable to do in two weeks or do? We scale down a little bit?
+
+[Speaker 4]
+I think we'll we'll know in about a week. I think after a few days of work, we'll Considering. What I've done previously. I'd say that's reasonable but
+
+[Speaker 8]
+There's all these hiccups is I think I think it is
+
+[Speaker 2]
+We're doing, um, All of that stuff. Like I'm, I like building that stuff. Uh, the paperwork, the documentation, And once I get the documentation done, I like to start. Implementing because I have my road map and I think, as long as we can agree, On our class, diagrams, our, ER diagrams. I think.
+
+[Speaker 4]
+Your diagram's going to be the most important thing.
+
+[Speaker 2]
+Yes,
+
+[Speaker 4]
+Since we're
+
+[Speaker 2]
+Right. But we might not entirely know how we want to swim until we get into it.
+
+[Speaker 1]
+What I'd suggest as you are going in, start with your wireframes and use case interference before yard arguing. Okay.
+
+[Speaker 8]
+And
+
+[Speaker 4]
+Then build
+
+[Speaker 1]
+The ER diagram to support those,
+
+[Speaker 8]
+Okay? So,
+
+[Speaker 1]
+Thinking about what information you need in order to support the behavior, and the UI stuff that you want. Store that stuff. Yeah. And
+
+[Speaker 4]
+What
+
+[Speaker 1]
+Do you need to store? Okay, so that it comes from that rather than trying to come up with an error diagram and then build functionality to to bring that to the user because
+
+[Speaker 2]
+Okay, make sure
+
+[Speaker 1]
+The focus is the other way around. Yeah.
+
+[Speaker 2]
+But high level. Low level. Yeah,
+
+[Speaker 1]
+Think of what your user is going to do and then build the system to support that.
+
+[Speaker 2]
+Um, I think I think I think we can do it, but this is one of those things where it's like, next Wednesday is what I'm going to know if we can do this. You know, I think that's fair and the further
+
+[Speaker 1]
+You get into this. I think the better idea you'll have, and your estimates in Sprint. Four are going to be a lot more as accurate than your estimates, in Sprint. One. That's just
+
+[Speaker 2]
+But that also makes me wonder. Do we need a burn down shirt.
+
+[Speaker 1]
+Yeah, so when you do your, but when you do your Sprint, backlog. You can grow, like, software, engineering and grab that as a template, and then there, but you can kind of see you just lay out your estimates and have a place for tracking and updating as you go through and then you generate that from it, okay?
+
+[Speaker 8]
+So
+
+[Speaker 2]
+It's really about
+
+[Speaker 1]
+Keeping track of your work and your progress as you go and that'll give you your burn down your burnout. So
+
+[Speaker 4]
+You really just need to make it at one point and then it would just kind of scale with how we. Yeah but make
+
+[Speaker 1]
+Sure you're updating that stuff and set up.
+
+I recommend something that allows you to do daily updates even though I don't expect you to work everyday. Yeah. So some days there's no progress. That's fine.
+
+[Speaker 8]
+But
+
+[Speaker 1]
+That'll give you a little bit more granularity so that when you get done for the day, you just go and update that Where you are? And you want
+
+[Speaker 2]
+Hours, your story points, doesn't matter. Whatever we want to do, that is up to you, okay?
+
+[Speaker 1]
+Uh, the only thing I do want is every item on there needs to have an estimate. Every item needs to be assigned to one of the two of you no shared tests and overall, your estimates per person need to be roughly the same. Not, you know, exactly point for point the same. But yeah, 20 and 21 is fine. 20. And 10 is not fine. Yeah. Do you
+
+[Speaker 4]
+Want everything
+
+[Speaker 2]
+On our burn down chart to be an issue on our GitHub?
+
+[Speaker 1]
+How you, if you want to use GitHub for like issue, tracking and stuff, that's completely up to you all internally, but it doesn't
+
+[Speaker 2]
+Matter to you.
+
+[Speaker 1]
+No.
+
+[Speaker 7]
+Okay.
+
+[Speaker 1]
+The Sprint backlog needs to lay out. All the work that you're going to do all the tasks broken down and decomposed. And I assume that that's kind of a working document. But if you want to put that in like github's projects, or an issue tracker, or if you want to like spin up jira, Of Overkill. But you know, however you want to practically work with that as long as it's reflected in this front backlog, that's where you're documenting that stuff to provide to me, okay?
+
+Well, I'm good. I'm informed. Ready to go, ready to go. But
+
+[Speaker 4]
+I do feel, I feel like I have a little bit better of an understanding of where we're going with this now. I'll
+
+[Speaker 1]
+Figure that was ago. Will continuously be fine as we go. And we know, do we?
