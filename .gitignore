@@ -37,7 +37,7 @@ Form1.Designer.cs
 *.g.cs
 *.g.i.cs
 
-Migrations/
+
 
 secrets.json
 appsettings.Development.json
