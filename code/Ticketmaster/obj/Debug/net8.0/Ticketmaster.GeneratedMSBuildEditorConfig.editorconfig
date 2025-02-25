@@ -26,24 +26,12 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = C:\Users\nsacand2\Desktop\Capstone\code\Ticketmaster
 build_property._RazorSourceGeneratorDebug = 
 
-[C:/Users/nsacand2/Desktop/Capstone/code/Ticketmaster/Views/EmployeeManagement/Create.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRW1wbG95ZWVNYW5hZ2VtZW50XENyZWF0ZS5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/nsacand2/Desktop/Capstone/code/Ticketmaster/Views/EmployeeManagement/Delete.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRW1wbG95ZWVNYW5hZ2VtZW50XERlbGV0ZS5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/nsacand2/Desktop/Capstone/code/Ticketmaster/Views/EmployeeManagement/Details.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRW1wbG95ZWVNYW5hZ2VtZW50XERldGFpbHMuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/nsacand2/Desktop/Capstone/code/Ticketmaster/Views/EmployeeManagement/Edit.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRW1wbG95ZWVNYW5hZ2VtZW50XEVkaXQuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
 [C:/Users/nsacand2/Desktop/Capstone/code/Ticketmaster/Views/EmployeeManagement/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRW1wbG95ZWVNYW5hZ2VtZW50XEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/nsacand2/Desktop/Capstone/code/Ticketmaster/Views/EmployeeManagement/ReviewChanges.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRW1wbG95ZWVNYW5hZ2VtZW50XFJldmlld0NoYW5nZXMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/nsacand2/Desktop/Capstone/code/Ticketmaster/Views/Home/Index.cshtml]

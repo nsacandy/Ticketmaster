@@ -1,178 +1,206 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Ticketmaster.Data;
 using Ticketmaster.Models;
+using Ticketmaster.Utilities;
 
-namespace Ticketmaster.Controllers
+namespace Ticketmaster.Controllers;
+
+public class EmployeeManagementController : Controller
 {
-    public class EmployeeManagementController : Controller
+    private readonly TicketmasterContext _context;
+    private EmployeeManagementViewModel viewModel;
+
+    /*
+     *Creates a new instance of the EmployeeManagementController class
+     * Initializes the database as the context
+     */
+    public EmployeeManagementController(TicketmasterContext context)
     {
-        private readonly TicketmasterContext _context;
-        private List<AlteredEmployee> alteredEmployees;
+        _context = context;
+        var viewModel = new EmployeeManagementViewModel();
+    }
 
-        public EmployeeManagementController(TicketmasterContext context)
+    // GET: EmployeeManagement
+    public async Task<IActionResult> Index()
+    {
+        var employees = await _context.Employee.ToListAsync();
+        var stagedChanges = HttpContext.Session.GetObjectFromJson<List<EmployeeChange>>("StagedChanges") ??
+                            new List<EmployeeChange>();
+
+        viewModel = new EmployeeManagementViewModel
         {
-            _context = context;
-           alteredEmployees = new List<AlteredEmployee>();
-           alteredEmployees.Add(new AlteredEmployee { Id = 0, FirstName = "John", LastName = "Doe", Status = "Added" });
+            Employees = employees,
+            StagedChanges = stagedChanges
+        };
+
+        return View(viewModel);
+    }
+
+
+    /// <summary>
+    /// Stages the employee delete.
+    /// </summary>
+    /// <param name="employee">The employee.</param>
+    /// <returns></returns>
+    public async Task<IActionResult> StageEmployeeDelete(Employee employee)
+    {
+        var stagedChanges = HttpContext.Session.GetObjectFromJson<List<EmployeeChange>>("StagedChanges") ??
+                            new List<EmployeeChange>();
+
+        var selectedEmployee = await _context.Employee.FindAsync(employee.Id);
+        if (!stagedChanges.Any(employeeChange => employeeChange.Employee.Id == employee.Id))
+        {
+            var change = new EmployeeChange
+            {
+                Action = "Delete",
+                Employee = selectedEmployee
+            };
+            stagedChanges.Add(change);
+            HttpContext.Session.SetObjectAsJson("StagedChanges", stagedChanges);
         }
 
-        private struct AlteredEmployee
-        {
-            public int Id { get; set; }
-            public string FirstName { get; set; }
-            public string LastName { get; set; }
-            public string Status { get; set; }
-        }
-        // GET: EmployeeManagement
-        public async Task<IActionResult> Index()
-        {
-            return View(await _context.Employee.ToListAsync());
-        }
+        return RedirectToAction(nameof(Index));
+    }
 
-        // GET: EmployeeManagement/Details/5
-        public async Task<IActionResult> Details(int? id)
+
+    /// <summary>
+    /// Stages the employee add.
+    /// </summary>
+    /// <param name="employee">The employee.</param>
+    /// <returns></returns>
+    public async Task<IActionResult> StageEmployeeAdd([Bind("Id,FirstName,LastName,Email,PhoneNum")] Employee employee)
+    {
+        var stagedChanges = HttpContext.Session.GetObjectFromJson<List<EmployeeChange>>("StagedChanges") ??
+                            new List<EmployeeChange>();
+
+        var newEmployee = employee;
+        if (!stagedChanges.Any(employeeChange => employeeChange.Employee.Id == employee.Id))
         {
-            if (id == null)
+            var change = new EmployeeChange
             {
-                return NotFound();
-            }
-
-            var employee = await _context.Employee
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (employee == null)
-            {
-                return NotFound();
-            }
-
-            return View(employee);
+                Action = "Add",
+                Employee = newEmployee
+            };
+            stagedChanges.Add(change);
+            HttpContext.Session.SetObjectAsJson("StagedChanges", stagedChanges);
         }
 
-        // GET: EmployeeManagement/Create
-        public IActionResult Create()
+        return RedirectToAction(nameof(Index));
+    }
+
+
+    private bool EmployeeExists(int id)
+    {
+        return _context.Employee.Any(e => e.Id == id);
+    }
+
+    /// <summary>
+    /// Stages the employee edit.
+    /// </summary>
+    /// <param name="employee">The employee.</param>
+    /// <returns></returns>
+    [HttpPost]
+    public async Task<IActionResult> StageEmployeeEdit(Employee employee)
+    {
+        var stagedChanges = HttpContext.Session.GetObjectFromJson<List<EmployeeChange>>("StagedChanges") ??
+                            new List<EmployeeChange>();
+
+        if (!stagedChanges.Any(employeeChange => employeeChange.Employee.Id == employee.Id))
         {
-            return View();
+            var change = new EmployeeChange
+            {
+                Action = "Edit",
+                Employee = employee
+            };
+            stagedChanges.Add(change);
+            HttpContext.Session.SetObjectAsJson("StagedChanges", stagedChanges);
         }
 
-        // POST: EmployeeManagement/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,Email,PhoneNum")] Employee employee)
+        HttpContext.Session.SetObjectAsJson("StagedChanges", stagedChanges);
+        return RedirectToAction(nameof(Index));
+    }
+
+
+    // Apply changes to the database in a transaction
+    /// <summary>
+    /// Commits the changes.
+    /// </summary>
+    /// <returns></returns>
+    [HttpPost]
+    public IActionResult CommitChanges()
+    {
+        var stagedChanges = HttpContext.Session.GetObjectFromJson<List<EmployeeChange>>("StagedChanges");
+
+        if (stagedChanges == null || !stagedChanges.Any())
         {
-            if (ModelState.IsValid)
-            {
-                _context.Add(employee);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(employee);
-        }
-
-        // GET: EmployeeManagement/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var employee = await _context.Employee.FindAsync(id);
-            if (employee == null)
-            {
-                return NotFound();
-            }
-            return View(employee);
-        }
-
-        // POST: EmployeeManagement/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,LastName,Email,PhoneNum")] Employee employee)
-        {
-            if (id != employee.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(employee);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!EmployeeExists(employee.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(employee);
-        }
-
-        // GET: EmployeeManagement/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var employee = await _context.Employee
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (employee == null)
-            {
-                return NotFound();
-            }
-
-            return View(employee);
-        }
-
-        // POST: EmployeeManagement/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var employee = await _context.Employee.FindAsync(id);
-            if (employee != null)
-            {
-                _context.Employee.Remove(employee);
-            }
-
-            await _context.SaveChangesAsync();
+            TempData["Message"] = "No changes to commit.";
             return RedirectToAction(nameof(Index));
         }
 
-        private bool EmployeeExists(int id)
+        using (var transaction = _context.Database.BeginTransaction())
         {
-            return _context.Employee.Any(e => e.Id == id);
-        }
-
-        public string addEmployeeToAlteredList(int id)
-        {
-            var employee =  _context.Employee.FindAsync(id);
-            if (employee != null)
+            try
             {
-                alteredEmployees.Add(new AlteredEmployee { Id = employee.Id, FirstName = employee.FirstName, LastName = employee.LastName, Status = "Added" });
-            }
+                foreach (var change in stagedChanges)
+                    if (change.Action == "Add")
+                    {
+                        _context.Employee.Add(change.Employee);
+                    }
+                    else if (change.Action == "Edit")
+                    {
+                        _context.Employee.Update(change.Employee);
+                    }
+                    else if (change.Action == "Delete")
+                    {
+                        var employee = _context.Employee.Find(change.Employee.Id);
+                        if (employee != null) _context.Employee.Remove(employee);
+                    }
 
-            return alteredEmployees.ToString();
+                _context.SaveChanges();
+                transaction.Commit();
+                HttpContext.Session.Remove("StagedChanges");
+
+                TempData["Message"] = "All changes committed successfully!";
+            }
+            catch
+            {
+                transaction.Rollback();
+                TempData["Error"] = "Error committing changes. Transaction rolled back.";
+            }
         }
+
+        return RedirectToAction(nameof(Index));
+    }
+    
+
+    [HttpPost]
+    public IActionResult RevertEmployeeChange(int id)
+    {
+        var stagedChanges = HttpContext.Session.GetObjectFromJson<List<Employee>>("StagedChanges") ??
+                            new List<Employee>();
+
+        stagedChanges.RemoveAll(e => e.Id == id);
+
+        HttpContext.Session.SetObjectAsJson("StagedChanges", stagedChanges);
+
+        return RedirectToAction(nameof(Index));
+    }
+
+    [HttpPost]
+    public IActionResult DiscardChanges()
+    {
+        HttpContext.Session.Remove("StagedChanges");
+        TempData["Message"] = "All staged changes discarded.";
+        return RedirectToAction(nameof(Index));
+    }
+
+    /*
+     *
+     */
+    public class EmployeeChange
+    {
+        public string Action { get; set; } // "Add", "Edit", "Delete"
+        public Employee Employee { get; set; }
     }
 }

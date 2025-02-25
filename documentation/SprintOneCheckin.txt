@@ -1,0 +1,698 @@
+﻿So, let's start with the wireframes. Actually, I
+
+
+[Speaker 3]
+Actually don't think I'll put that normal repo yet.
+
+
+[Speaker 2]
+We have, if you click on use case diagram one. It has a pretty basic wireframe as part of the use case. And that was basically the design I was thinking. For users, managers, admins, because this is supposed to be the streamlined, web-based version, right? Okay, so this
+
+
+[Speaker 1]
+Is some. This is somewhere between a wireframe and a use case.
+
+
+ You'll need to rework this use case diagram.
+
+
+[Speaker 1]
+It's actually gonna need a little bit more information on this on here, but all of your use. Case scenarios should appear as as the bubble a named bubble here and then you'll need admin. Manager, Project Lead, and employee. As different actors as different actors, and then point them to the things that they can do. Okay? That's,
+
+
+[Speaker 2]
+Uh, that's fine. Yeah. Um, I had that all as use case scenarios, right? But I don't have them all diagrammed. Yeah.
+
+
+[Speaker 1]
+Yeah, and that's for the use case diagram. Since you already have the use case scenarios identified, just take each one. Gets its own bubble and then attach on people who, if they can do that action, just attach them. So,
+
+
+[Speaker 2]
+Make a big thing with all the different actors, all the different actions and lines
+
+
+[Speaker 3]
+Okay
+
+
+[Speaker 1]
+Can do. Yeah, just basic use case diagram here. And thing. It's kind of it kind of becomes a table of contents, but indicates who can do which actions not the big addition to the use case diagram. Okay. All right. So then, from here. We, we don't have full-fledged wireframes.
+
+
+[Speaker 3]
+Uh, no, we just. I just had that one, um, that I showed you last week.
+
+
+[Speaker 1]
+Okay, so. I do need wireframes,
+
+
+
+
+[Speaker 1]
+Remember, okay, yeah, so we've got, so we've got login. Yeah, you're not going to register that same page needs to exist. That's basically your ad user page, add employee page, whatever, and then. You've got your landing page, which is fine. Uh, the content for it being blank is actually fine for now, because I think in the future we'll come back and figure out what needs to go on there. You've got employees, which will take you out to a space where you can manage your employees groups where you got manager groups and then projects where you can go out and manage project stuff and then.
+
+
+[Speaker 3]
+Tools. I'm not sure about. Task task
+
+
+[Speaker 1]
+Makes sense to me and but those phases. We may or may not end up needing so. The first three there employee groups and projects. Definitely keep that, um, homepage link is fine. Sign out. We should have. And then, so employees should take you over to a page where you can see all the employees and you have an option to add employees. Remove employees. Possibly
+
+
+[Speaker 2]
+Edit
+
+
+[Speaker 1]
+Employees.
+
+
+[Speaker 2]
+Yeah, and my thought for that would just be like a button at the bottom. It's like ad employees, and do you? Do you want to just wait until we get to the use case scenarios, or do you want to talk about that now?
+
+
+[Speaker 1]
+Well, it's kind of all at once. The point is to get through it, and we're looking at the documentation for specific details that you have planned out, but kind of talked me through it. Okay, I was thinking,
+
+
+[Speaker 2]
+Um, you go to the page. There's a list of employees, the administrators sort of the first person on there, um, and anybody else. It can be delete employees just a little button. Beside their name, and then at the bottom, it's add new employee. You put in their user, their name, and it generates a new ID for them, and those would really be the only Fields they need or name and ID, because I assume we're not gonna. This isn't gonna be a whole I
+
+
+[Speaker 1]
+Want. I want some contact information for employees, so at the very least an email address, but maybe like email, phone. You know, give me, give me a fax number and an AOL username. Okay, I wasn't thinking some sort of contact information there. Okay, I didn't
+
+
+[Speaker 2]
+Think this was an employee management thing, but if you want that there, well, the point
+
+
+[Speaker 1]
+Of that is so that if I'm working on a project and I want to contact somebody I can see, I can get to their contact information. Okay. Can't do. We can put that in there. That's that's intent there. I don't think we'll need that as primary key, but we can put
+
+
+[Speaker 2]
+That in the database. Yeah,
+
+
+[Speaker 1]
+I would say primary key. I would have like an auto generated ID or something. Yeah, that's my
+
+
+[Speaker 2]
+Plan.
+
+
+[Speaker 3]
+All right then from groups. It's gonna
+
+
+[Speaker 1]
+Be kind of the same thing. You can, but on the. Groups
+
+
+[Speaker 2]
+Page.
+
+
+[Speaker 1]
+The only person who can create groups is an admin, right? The only kind of user, I guess. But then, it when you create a group. This really needs to be like an extra form specific here for creating editing groups because I need to be able to see who all's on that group who the manager for that group is, you know,
+
+
+[Speaker 2]
+Title that
+
+
+[Speaker 1]
+Group and change all of these bits, right? And especially while
+
+
+[Speaker 2]
+I'm
+
+
+[Speaker 1]
+Say editing a group if I'm, you know, changing, who's the manager for that group and adding some new people into the group. I don't want any changes while I'm either creating or editing to persist until I'm done so. I get kind of. A staging screen where I can set up the changes I want. I can save it all out.
+
+
+[Speaker 2]
+Okay, a confirmation button. Yeah,
+
+
+[Speaker 3]
+Okay. So
+
+
+[Speaker 2]
+Don't,
+
+
+[Speaker 1]
+Don't be saving changes live. If I hit, you know? Add user. And that doesn't add it yet until I save the changes. Okay, and
+
+
+[Speaker 2]
+Then we can do the whole thing as a transaction. Yes, exactly. Okay, that's what
+
+
+[Speaker 1]
+We want. Can do? So, you know, go to a page that maybe lists all the groups, and then I can see the group if I'm. If I'm an admin, I can create groups. If I'm an admin, I can edit any of the groups.
+
+
+[Speaker 2]
+If
+
+
+[Speaker 1]
+I am the manager for a particular group, I can edit that group. If I'm just a, you know, anybody else? I can view that group, but I can't change anything right. And
+
+
+[Speaker 2]
+Yes. Uh, I was going to have it to. Yeah, if you're a just a standard user, you can look at your group and you can look at the projects that you've been assigned, uh, it would just have your users in there and then your list of projects. I guess you can click on them and it'll bring up a page with details.
+
+
+[Speaker 3]
+Group
+
+
+[Speaker 2]
+Would have. Like you're saying, as an admin, you can edit the group. You can put people in and out. I was going to have it be sort of like beside every different person. Well, I guess you, you say, you want a staging screen? So you can only sort of check. Mark one person being manager of a group. And once you've gone through with that transaction, uh, nobody else could be made a manager. That option is taken away. It's taken off the table, and then you have to remove that person as a manager in a separate transaction before anybody else can be made a manager. Well, I think
+
+
+[Speaker 1]
+So. At the end of stick with transaction at the end of a transaction, there must be a manager for the group. Okay, there has
+
+
+[Speaker 2]
+To be at
+
+
+[Speaker 1]
+Least one person in the group, and there has to be a manager. So once a group is
+
+
+[Speaker 2]
+A group has to honest formation, have one employee, and that employee automatically be manager.
+
+
+[Speaker 1]
+Yeah, okay, but I could add in like 30 employees all at once, and then select which one of those I want to be manager, so there
+
+
+[Speaker 2]
+Needs to be a group creation page where we can do a bunch of people a name for the group. Okay, can do. Yeah, and then kind of
+
+
+[Speaker 1]
+The same thing is then the edit because you should just be able to edit any of those details. Okay, but
+
+
+[Speaker 2]
+When
+
+
+[Speaker 1]
+I'm done, there shouldn't be any point where I actually like save and persist changes where there's a group that doesn't have a name, a manager, and at least one employee in there. Okay.
+
+
+[Speaker 2]
+Okay, um, that will have to be changed a little bit in the use case scenario that we currently have. Right now. Uh, just. That you can, uh, create a new group by just clicking on the name or just by entering a name. And then, if there was a an existing group already with that name? Uh, it would throw an error message, and that was all you needed, but we'll change that to be like. Have a field for manager? I guess, maybe employee ID?
+
+
+Yeah, you said it would need to have how many, how you
+
+
+[Speaker 1]
+Select the employee like, I think there's a lot of options, so you know, it could be enter an employee ID and then hit add. It could be here's a list of employees or drop down. Yeah, I think that's probably the
+
+
+[Speaker 2]
+Search. Like the thing you're moving from one list to another list and then just be, like, put all these people and let me
+
+
+[Speaker 1]
+Show you. I'm going to show you that in Moodle. Because I have something they have something like that. I'm gonna pick you also. And. We'll do it here. So, like on this page, there's a set of groups that exist, and then I'm adding them all together, but To like, I remove out. Also note that none of these things are. Let me say that again. These are live changes that are happening, as I'm doing this so, but you don't
+
+
+[Speaker 2]
+Be careful about what I'm doing, but life changes on this. Yeah, on ours, you just want to be a staging area again, I assume. Yeah, the
+
+
+[Speaker 3]
+Idea
+
+
+[Speaker 1]
+Is here, you say back? I'm pretty sure their life changes here, so I have to be careful about how to change. So, hopefully they didn't like screw up Sprint zero
+
+
+[Speaker 2]
+Deliverables. Oh, that was, but, oh yeah, that was.
+
+
+[Speaker 1]
+That was the groupings. Um, but everything was set back when I was done so. It should be fun. Not just, I don't think it persists until I go back to groupings, but I'd have to double check, but the intent there is that, as I'm doing that, like swapping things around, nothing persists. It's only for display, like, I'm just moving things around here. And then I'll save it all out and stamp it when I'm done. Okay, so all transactions for anything editing
+
+
+[Speaker 2]
+Wise pretty much. Okay, can do. Okay.
+
+
+All right.
+
+
+[Speaker 1]
+Um, same kind of thing. For projects, I need to be able to see all the projects that are there. Uh, for project admins can create projects, but if you are a manager of any group? You can also create projects.
+
+
+[Speaker 2]
+Okay.
+
+
+[Speaker 1]
+Okay, um, when you create a project a project has to have at least one group assigned to it, it has to have like title description for the project, and it has to have a lead indicated for the project and the lead has to be the manager of one of those groups. Right. So when I get in and I'm creating a project, I have to set up all of those bits of information. Okay, and again, there's going to be that kind of staging ground where I'm pulling things in and indicating whose lead in the same way that pulling in employees and indicating manager, so multiple groups can be on the same project. Okay, because I was going to say
+
+
+[Speaker 2]
+What's point of having a lead if it's just automatically the person? But
+
+
+[Speaker 1]
+Yeah, so if you know, like if we've got the the CS department is doing something with the chemistry Department. What I want in in our system is that somebody has to be indicated as they're kind of taking lead for that, and they're respons. For the top level kind of setup management, not necessarily that they're running the tasks and doing all the work for it, but that they're setting up the structure for the project. And they're, you know, kind of deciding what groups need to be involved in the project that level administration. There's somebody that needs to be that, and I want the manager of one of the groups to be the person that gets appointed that okay.
+
+
+[Speaker 3]
+Yeah, I think
+
+
+[Speaker 2]
+That's far away from where we are right now is like the little nitty-gritty details, but I see what you're saying. So? The. What was I missing? Projects got that. I was gonna do varchar a thousand for the description. Does that sound good?
+
+
+[Speaker 1]
+Um, I mean, it seems reasonable could. Could you just make it string and then just be any length?
+
+
+[Speaker 2]
+I don't know. It's been a long time since I've used SQL. I'll have to
+
+
+[Speaker 1]
+Look. The the types of us are fine. I think having a character limit on the descriptions. Especially, is fine. Otherwise, somebody's gonna put a novel in there. You know, um? And that kind of defeats the purpose of having a succinct description of the project. No. If you want that, you can link to your web page where you posted your Novella later.
+
+
+How's it
+
+
+[Speaker 2]
+Going Nate?
+
+
+[Speaker 1]
+He died briefly, but he's back. It's okay. You got better.
+
+
+[Speaker 2]
+Okay, did you want to look at, uh, use case scenarios and make sure it covered? Yeah,
+
+
+[Speaker 1]
+Let's. Let's pull up a couple of them and kind of look at the structure forum. We talked about a little bit of change in Behavior, so I expect there are going to be some changes relevant to that. Yes. Anyways, but
+
+
+[Speaker 3]
+Are you going
+
+
+[Speaker 2]
+To want all this code done at? Next Wednesday, oh my goodness. Oh, that's gonna be brutal. Oh geez.
+
+
+Uh,
+
+
+[Speaker 1]
+Remember last time when I asked you if this was appropriate scope or things you could do over this course in the next two weeks, and you said yes,
+
+
+[Speaker 3]
+I said, I wouldn't
+
+
+[Speaker 2]
+Know until this week. And I was right. Now I know.
+
+
+We'll get
+
+
+[Speaker 1]
+There, um. And more serious terms. Like, for for delivering things as you're working through this, please choose feature slices so. You know, your user management page is really the first thing it needs to come online. You need you need employees in the system to do. The other things get that fully fleshed out and done, then move on to setting up groups. Then, when that's done, move on to setting up projects, right? Do it in stages so that if you're like in the middle of or getting started on setting up projects, but you've got the other two solid. That's a lot better ending point for the Sprint than if you've got a bunch of partial implementation across these things, but nothing actually works, right?
+
+
+[Speaker 2]
+Yeah, and that makes sense also like database wise because I would start with an employee's table, and then I would start building the other ones off of that.
+
+
+[Speaker 1]
+All right, so.
+
+
+All right. So which use case is this? Number one. This is this is all of them. There's not a name for this use case.
+
+
+[Speaker 4]
+Oh,
+
+
+[Speaker 2]
+What do you mean? What? What? I just did them by numbers. What is
+
+
+[Speaker 1]
+The user doing in this use case?
+
+
+[Speaker 2]
+They are. Oh, this is login. I didn't put login. Okay,
+
+
+[Speaker 1]
+Yeah, so give, give a name for all of your use cases for whatever you know action process, that would probably
+
+
+[Speaker 2]
+Be better than like number one and number two, I guess. Yeah,
+
+
+[Speaker 3]
+Okay, I mean, I don't
+
+
+[Speaker 1]
+Care if you number them, but they should have names, and then also then the name is what shows up in the bubble. In the use case diagram. So, like if you've got to use it so that one's login on your use case diagram, there's a bubble with login.
+
+
+[Speaker 3]
+That's that.
+
+
+[Speaker 1]
+Use case there, and then you would indicate which users for login. It's going to be all of them. Which ones can do that action?
+
+
+[Speaker 3]
+All right,
+
+
+[Speaker 1]
+So log in login screen, so you know they start on the login. Um. I mean, I would take context for login is kind of none. You're just at the start. But.
+
+
+[Speaker 3]
+What's the difference between
+
+
+[Speaker 1]
+Standard credentials and manager credentials?
+
+
+[Speaker 2]
+Uh, the manager credential has. They have to have that there's three roles in the database standard manager administrator. And um, every employee is standard by default, unless they're the administrator.
+
+
+[Speaker 3]
+So it
+
+
+[Speaker 2]
+Checks their credential level when they log in. Are they standard manager or administrator?
+
+
+[Speaker 1]
+Okay, so I see what you're saying. Two things to note here, one at system level agnostic of any particular group or project. You are either an employee, or you're an admin.
+
+
+[Speaker 2]
+Okay.
+
+
+[Speaker 1]
+Then, you're only considered a manager. If you're looking at that particular group and you are the manager of that group, okay. So, it's not that the user is a manager. It's that when they're looking at that group, they have access because they have been selected as manager for that group. It's the relationship to that group that makes you kind of a manager okay.
+
+
+So, and then the process here. The user doesn't enter anything different. They just enter their credentials. Then the system might identify that they're an admin, and there's something different that happens if they're an admin, or it might identify that they're an employee something different happens. There might even identify that they're the manager of a group, and then on that, you know, dashboard page. Maybe there's something different if you are a manager of a group? But it's, you know, the the step where they're entering their credentials? That's cons, the user just enters their credentials. And then it's what the system does after that, that might vary.
+
+
+[Speaker 2]
+And for right
+
+
+[Speaker 1]
+Now, the only thing that I would see that would vary is if the employee page is not accessible to anybody other than admins, because they're really the only ones that need to use it. Um. That doesn't show. Other, you know. So, if they're, if they're, you know, standard user, then? You know, system identifies. User is is? An employee and then displays landing page with options to check groups and projects and. Whatever. Um it, you know if it identifies that they're a manager or an admin? Then, maybe it gives them a different set of options, right? So that that could be alternative flows here, right? But also,
+
+
+[Speaker 2]
+What
+
+
+[Speaker 1]
+Happens? So you've got incorrect credentials? Like, even on that screen failed authentication method. Yeah, so that follows out, I think, basically.
+
+
+[Speaker 2]
+Yeah, we would just delete the whole manager credentials thing, and it would just be the administrator credentials, and then they then have access to edit Pro edit projects and edit groups. And edit employees. Well,
+
+
+[Speaker 1]
+Those those only become relevant when you get to. That screen. And you could just say as part of the context for. You know, editing a project that you have to be? The because it would be the lead for the project is the one who can do that. So, like for editing a project wherever you've got that use case scenario
+
+
+[Speaker 2]
+In the
+
+
+[Speaker 1]
+Context, you could just say, you know, you've. You know you're looking at a project, and this user is the lead for that project, and then say what they can do from there because nobody else can do anything there, right? Okay.
+
+
+Uh, so let's go to, um. Do you have one for for? Uh, setting up a let's go with setting up a project. I think that's the last setting up a project or setting up a group. They're going to be similar.
+
+
+[Speaker 4]
+I've logged in and wishes to create a group.
+
+
+[Speaker 1]
+Okay. So, here, you're saying, they have to be an admin, yes.
+
+
+[Speaker 2]
+All
+
+
+[Speaker 1]
+Right, and they're here so. Another little thing to mention as you're doing this where you've got. User clicks the edit groups button.
+
+
+[Speaker 3]
+In the
+
+
+[Speaker 1]
+Future. If I don't want that to be a button, if there's some other UI way of doing this, then I've got to come back to the use case scenario and update that otherwise. The use case scenario and the UI don't match anymore, so be as generic as possible. Yeah,
+
+
+[Speaker 2]
+Okay, so
+
+
+[Speaker 1]
+You know they they select to create a group? How they how they did that? Is irrelevant, you know? Voice command button, whatever? Okay. Um, the same thing like if they needed to select a employee from a list of employees to say a user that you know they select and employ. And then, whether that's a combo box or a search bar or just a list that they have to pick it out of or whatever it that's UI implementation. The process, though. Doesn't care exactly how they selected it. It's still they're doing the same general action. It's just how they realize that action in the UI could differ. Okay, I think
+
+
+[Speaker 2]
+What I'm thinking about is like when you read a? Like a screenplay like, the nouns are always bold, and it's very specific items, but I hear
+
+
+[Speaker 1]
+What
+
+
+[Speaker 2]
+You're saying is to do more generic on the use case scenarios so we can, uh, it's like that hook thing.
+
+
+[Speaker 1]
+Let's think for like a screenplay. You might see something that they exclaim, right. But then, how the actor chooses to exclaim, right, could
+
+
+[Speaker 2]
+Differ
+
+
+[Speaker 1]
+From actor to actor.
+
+
+[Speaker 2]
+You're giving just
+
+
+[Speaker 1]
+Enough direction to indicate what needs to happen and then leaving space for that to be interpreted as appropriate to particular. Text threat, so you know, we're implementing this as a web system. Certain UI expectations for how we're going to do that if we we're doing a mobile system. It would look a little bit different, but the process of what they're doing. Isn't dependent on the specific implementation that we chose okay? So, try to try to capture that level of detail here. And then the UI will document those things. Hold on. One second, this is my kids. I don't know why they're calling me. Hello! Hey, what's up?
+
+
+[Speaker 5]
+I'm in a meeting.
+
+
+Uh, after this
+
+
+[Speaker 1]
+Meeting at some point. I'd call you when I'm leaving here if you want.
+
+
+[Speaker 3]
+Can I go to Sailors,
+
+
+[Speaker 1]
+Uh, not until after your mother or I are?
+
+
+Okay.
+
+
+[Speaker 3]
+Yes, Deja.
+
+
+A half hour.
+
+
+[Speaker 1]
+All, right, y'all, I gotta go, I'll go when I'm leaving. Okay.
+
+
+I've been stuck at home all day, and this is the third day of the week. I think they've run out of things to do. Why are they stuck at home? Um, they're out of school this week. Oh, that's right, yeah, because it's interpreting. Anyways, so back to this for your use case scenarios. If you can set those up to be kind of description of the process that the user is taking and what the system needs to do in response and be specific about, like, where certain bits of information are required. So, if you're creating a project. You know, the user has to indicate the title and the description and what groups are involved and? Uh, who the lead for the Project's going to be, which has to be one of those managers, like all of the specific detail you need to mention. Because that's required, but then you'll notice I said they need to indicate what groups are involved. It doesn't say how they're going to do that. That's where you get over into the UI design, and the system can Implement as long as it meets those requirements. The implementation would match, and you know, we'll review those requirements separately. Or the implementation separated? Makes sense. But that's why the wireframes. Are needed because this is going to describe the process and then the wireframes are going to lay out. Here's how we plan to implement that thing so that you can get feedback on that.
+
+
+I'm looking at the screen like Nate's gonna not in response.
+
+
+[Speaker 2]
+Yeah, like, I, I don't know. Exactly! Doing one thing here. All right, so.
+
+
+[Speaker 1]
+I'm just gonna put in a note.
+
+
+Update the use case scenarios.
+
+
+[Speaker 6]
+To be more implementation agnostic.
+
+
+[Speaker 1]
+Sounds good.
+
+
+And then.
+
+
+[Speaker 6]
+You see missing wire frames?
+
+
+All right, so
+
+
+[Speaker 1]
+I would like Ellen go ahead and finish out the wireframes for this stuff and update the use case scenarios, and you can just put those into the repository. Uh, another thing I mentioned for the use case scenarios. Instead of a single Word document, I would like for you to make it one text file per use case scenario. So, like, you can just take each one of these and copy it out into a text file. Um, so they're separated out. That'll make it a little bit easier. Uh, going forward because you're going to keep updating and adding on. I don't know when I have to keep coming back to this word document that's just getting longer and longer and find stuff.
+
+
+[Speaker 2]
+Yeah, what I actually use to make the use case scenario was. Uh, software engineering one, uh, how you describe to do it in homework, which I guess would be different than this project?
+
+
+[Speaker 1]
+Yeah, yeah, and that's. And that's, that's like the structure of them is generally fine. It's just take them and split them out. Also, if they're in-text documents in the future. If we edit any of them, get will version the line changes that we made within a document, whereas if it's a Word document, it'll just say it used to be this binary blob. And now, with this binary blah bl? Okay. So, you get a little bit of extra power from from gets versioning if they're text files, and it can read the line by line changes. In theory, you could have version tracking on in your word document, but nobody does that.
+
+
+[Speaker 3]
+All right, so.
+
+
+[Speaker 1]
+Do y'all have any general questions?
+
+
+[Speaker 2]
+No, I thought we were going to go through all the use case scenarios and just see, like, if they were correct, and we were doing things right, yeah. But I mean?
+
+
+[Speaker 1]
+I think there's I think there's some missing details in some of these that, like, we could go through, like each one, and point out like when you're editing group.
+
+
+You know what? What information are you actually editing? What information needs to be provided when you edit? What are requirements and expectations like the little details in there that I'm mentioning? And then you know you've got a lot of mentions of specific button and? Don't see any like search bar kind of stuff or anything in any of these, but? You know, user user clicks cancel. Versus, you know, selects. They cancel like, there's some minor wording things that we could talk about, just rewording. But also.
+
+
+Without the wireframes. They also miss some of the context of what that's going to look like, too. So if if y'all will kind of go back over the use case scenario, split them out a little bit, and then update the wireframes ping me, and I can go over those and I'll send you some more notes if I see anything from there. But um, in general, I think things are okay, like the. You know?
+
+
+But it's hard to. It's hard to follow in some places because they're not. Title that I have to kind of read through to figure out what it is that use. Case scenario is about to figure out what it I would expect it to be doing. Yeah, I thought it
+
+
+[Speaker 2]
+Was just you. Put that in the context, but I see what you're saying is that they should be named a more.
+
+
+[Speaker 1]
+Summarily titled thing. Yeah, so like, I think use K6 is making is changing the manager. So, as we mentioned before, I think at one point you mentioned like removing a manager. But yeah, you edit a group there has. When you're done, editing there has to be a manager selected, right?
+
+
+[Speaker 2]
+Yeah, I feel like these, uh, exactly how you wanted. This implemented this sort of new. So, I'm having to change it a little bit.
+
+
+[Speaker 1]
+Uh, you could put it. You could put it there and just say that they can change any of these details, and you could have like a single case for editing a group and say that the user can change. You know, the the current manager, or which members are in there or the like title for the group?
+
+
+But like all of those have to be provided, what the, what the new values are any one of those, so you could make one that kind of covers all of that, rather than having a separate one for changing the manager and then one for changing the title. Okay. Yeah, that would be fun. Okay, well, we will fix
+
+
+[Speaker 2]
+That stuff and. I guess we'll try to get it done by like Friday. And pinky on it.
+
+
+[Speaker 1]
+Okay.
+
+
+[Speaker 2]
+Okie dokie. What's up?
+
+
+[Speaker 1]
+We're coming out of here. You clear on kind of what we wanted the system to do, how I want things to operate now. I think. So, okay, good that. That's the main goal here, and there's usually going to be a little bit of. Of bits where you know you started to go one way, but I really wanted Javier a little bit left somewhere. And some course correction. That's why we're having these meetings. Um, because I would, I would hate for it to get like the end of the Sprint. Then you deliver something, and it implements. And they're like that isn't really what I wanted there. Yeah, the
+
+
+[Speaker 2]
+Only thing I'm worried about is actual implementation versus catching up on wireframes. But I guess we have to make sure the carts behind the horse. So, yeah, and the wireframes
+
+
+[Speaker 1]
+For the wireframes don't spend excessive amount of time building them. Like, go grab a whiteboard and sketch out what you think the page should look like? What kind of stuff you would expect there and then just take a picture of it and upload that. Okay, it doesn't have to be a fancy thing. Um, for the use case scenarios, you'll need to spend a little bit more time, but for now, if you've got a wireframes there, you can start implementing based on that and kind of update the use case scenarios as you're going through. And if you want to pay me a bit at a time as you're going through stuff and updating things. It doesn't have to be, do all of this. Before you do any implementation, like I said, I would start with the employee management stuff, so make sure you've got your wireframes there and that you, you know, understand what Behavior you want on that page and have it detailed and are implementing that stuff. And I can give you some feedback on bits and stages as you go. Okay, so feel free
+
+
+[Speaker 3]
+To ping me a couple times over the next week. It's fine. Okie dokie.

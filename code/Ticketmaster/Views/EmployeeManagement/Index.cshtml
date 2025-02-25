@@ -1,100 +1,139 @@
-﻿@using System.Collections.Immutable
-@model IEnumerable<Ticketmaster.Models.Employee>
-@
-
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model Ticketmaster.Utilities.EmployeeManagementViewModel
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Employee Management</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+<!-- Employee Table -->
 <table class="table">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.FirstName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.LastName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Email)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PhoneNum)
-            </th>
+            <th>@Html.DisplayNameFor(model => model.Employees.First().FirstName)</th>
+            <th>@Html.DisplayNameFor(model => model.Employees.First().LastName)</th>
+            <th>@Html.DisplayNameFor(model => model.Employees.First().Email)</th>
+            <th>@Html.DisplayNameFor(model => model.Employees.First().PhoneNum)</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Employees)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.FirstName)</td>
+                <td>@Html.DisplayFor(modelItem => item.LastName)</td>
+                <td>@Html.DisplayFor(modelItem => item.Email)</td>
+                <td>@Html.DisplayFor(modelItem => item.PhoneNum)</td>
+                <td>
+                <form asp-action="StageEmployeeEdit" method="post">
+                    <tr>
+                    <td>
+                        <input type="hidden" name="id" value="@item.Id" />
+                        <input type="text" name="FirstName" value="@item.FirstName" class="form-control" />
+                    </td>
+                    <td>
+                        <input type="text" name="LastName" value="@item.LastName" class="form-control" />
+                    </td>
+                    <td>
+                        <input type="text" name="Email" value="@item.Email" class="form-control" />
+                    </td>
+                    <td>
+                        <input type="text" name="PhoneNum" value="@item.PhoneNum" class="form-control" />
+                    </td>
+                    <td>
+                        <button type="submit" name="action" value="Edit" class="btn btn-warning">Stage Edit</button>
+                    </td>
+                    </form>
+                <td><form asp-action="StageEmployeeDelete" method="post">
+                        <input type="hidden" name="id" value="@item.Id" />
+                        <button type="submit" name="action" value="Delete" class="btn btn-danger">Stage Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+        
+        <form asp-action="StageEmployeeAdd" method="post">
+            <tr>
+            <td>
+                <input type="text" name="FirstName" value="First Name" class="form-control" />
+            </td>
+            <td>
+                <input type="text" name="LastName" value="Last Name" class="form-control" />
+            </td>
+            <td>
+                <input type="text" name="Email" value="Email" class="form-control" />
+            </td>
+            <td>
+                <input type="text" name="PhoneNum" value="PhoneNum" class="form-control" />
+            </td>
+            <td>
+                <button type="submit" name="action" value="Edit" class="btn btn-warning">Add New Employee</button>
+            </td>
+        </form>
+        </tbody>
+</table>
+
+<h2>Staged Changes</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Phone Num</th>
+            <th>Email</th>
+
+            <th>Action</th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @foreach (var item in Model.StagedChanges)
         {
             <tr>
+                <td>@item.Employee.FirstName @item.Employee.LastName</td>
+                <td>@item.Employee.PhoneNum</td>
+                <td>@item.Employee.Email</td>
+                <td>@item.Action</td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.FirstName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.LastName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Email)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.PhoneNum)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    <form asp-action="RevertEmployeeChange" method="post">
+                        <input type="hidden" name="Id" value="@item.Employee.Id" />
+                        <button type="submit" class="btn btn-danger">Revert</button>
+                    </form>
                 </td>
             </tr>
         }
     </tbody>
 </table>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                Name
-            </th>
+<!-- Commit Changes -->
+<p>
+<form asp-action="CommitChanges" method="post">
+    <button type="submit" class="btn btn-success">Commit Changes</button>
+</form>
+</p>
+<!-- Discard Changes Button -->
+<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#discardChangesModal">
+    Discard Changes
+</button>
 
-            <th>
-                Status
-            </th>
-            <th>
-
-            </th>
-
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var employee in )
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.FirstName)
-                    @Html.DisplayFor(modelItem => item.LastName)
-                </td>
-
-                <td>
-                    @item.FirstName
-                </td>
-
-                <td>
-                    <button>Revert Changes</button>
-                </td>
-
-                <td>
-                    @Html.DisplayFor(modelItem => item.Email)
-                    </td>
-               
-            </tr>
-        }
-    </tbody>
-</table>
-<span><button>Click Here</button><button>Click Here</button><button>Click Here</button></span>
+<!-- Modal -->
+<div class="modal fade" id="discardChangesModal" tabindex="-1" aria-labelledby="discardChangesModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="discardChangesModalLabel">Confirm Discard</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to discard all staged changes? This action cannot be undone.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <form asp-action="DiscardChanges" method="post">
+                    <button type="submit" class="btn btn-danger">Discard</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
