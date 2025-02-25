@@ -1,54 +1,57 @@
-﻿@using System.Collections.Immutable
-@model IEnumerable<Ticketmaster.Models.Employee>
-@
-
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model Ticketmaster.Views.EmployeeManagement.EmployeeManagementViewModel
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Employee Management</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+
+<!-- Employee Table -->
 <table class="table">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.FirstName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.LastName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Email)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PhoneNum)
-            </th>
-            <th></th>
+            <th>@Html.DisplayNameFor(model => model.Employees.First().FirstName)</th>
+            <th>@Html.DisplayNameFor(model => model.Employees.First().LastName)</th>
+            <th>@Html.DisplayNameFor(model => model.Employees.First().Email)</th>
+            <th>@Html.DisplayNameFor(model => model.Employees.First().PhoneNum)</th>
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @foreach (var item in Model.Employees)
         {
             <tr>
+                <td>@Html.DisplayFor(modelItem => item.FirstName)</td>
+                <td>@Html.DisplayFor(modelItem => item.LastName)</td>
+                <td>@Html.DisplayFor(modelItem => item.Email)</td>
+                <td>@Html.DisplayFor(modelItem => item.PhoneNum)</td>
+                <td><a asp-action="Details" asp-route-id="@item.Id">Details</a></td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.FirstName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.LastName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Email)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.PhoneNum)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <form asp-action="StageEmployeeChange" method="post">
+                        <tr>
+                            <td>
+                                <input type="hidden" name="id" value="@item.Id" />
+                                <input type="text" name="FirstName" value="@item.FirstName" class="form-control" />
+                            </td>
+                            <td>
+                                <input type="text" name="LastName" value="@item.LastName" class="form-control" />
+                            </td>
+                            <td>
+                                <input type="text" name="Email" value="@item.Email" class="form-control" />
+                            </td>
+                            <td>
+                                <input type="text" name="PhoneNum" value="@item.PhoneNum" class="form-control" />
+                            </td>
+                            <td>
+                                <button type="submit" class="btn btn-warning">Stage Edit</button>
+                            </td>
+                        </tr>
+                    </form>
                     <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                 </td>
             </tr>
@@ -56,45 +59,33 @@
     </tbody>
 </table>
 
+<h2>Staged Changes</h2>
 <table class="table">
     <thead>
         <tr>
-            <th>
-                Name
-            </th>
-
-            <th>
-                Status
-            </th>
-            <th>
-
-            </th>
-
+            <th>Name</th>
+            <th>Action</th>
+            <th>Revert</th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var employee in )
+        @foreach (var item in Model.StagedChanges)
         {
             <tr>
+                <td>@item.FirstName @item.LastName</td>
+                <td>Pending Edit</td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.FirstName)
-                    @Html.DisplayFor(modelItem => item.LastName)
+                    <form asp-action="RevertEmployeeChange" method="post">
+                        <input type="hidden" name="Id" value="@item.Id" />
+                        <button type="submit" class="btn btn-danger">Revert</button>
+                    </form>
                 </td>
-
-                <td>
-                    @item.FirstName
-                </td>
-
-                <td>
-                    <button>Revert Changes</button>
-                </td>
-
-                <td>
-                    @Html.DisplayFor(modelItem => item.Email)
-                    </td>
-               
             </tr>
         }
     </tbody>
 </table>
-<span><button>Click Here</button><button>Click Here</button><button>Click Here</button></span>
+
+<!-- Commit Changes -->
+<form asp-action="CommitChanges" method="post">
+    <button type="submit" class="btn btn-success">Commit Changes</button>
+</form>
