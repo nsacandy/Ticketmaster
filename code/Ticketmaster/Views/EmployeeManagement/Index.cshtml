@@ -50,6 +50,9 @@
                             <td>
                                 <button type="submit" class="btn btn-warning">Stage Edit</button>
                             </td>
+                            <td>
+                                <button type="submit" class="btn btn-warning">Delete</button>
+                            </td>
                         </tr>
                     </form>
                     <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
@@ -72,11 +75,11 @@
         @foreach (var item in Model.StagedChanges)
         {
             <tr>
-                <td>@item.FirstName @item.LastName</td>
+                <td>@item.Employee.FirstName @item.Employee.LastName</td>
                 <td>Pending Edit</td>
                 <td>
                     <form asp-action="RevertEmployeeChange" method="post">
-                        <input type="hidden" name="Id" value="@item.Id" />
+                        <input type="hidden" name="Id" value="@item.Employee.Id" />
                         <button type="submit" class="btn btn-danger">Revert</button>
                     </form>
                 </td>

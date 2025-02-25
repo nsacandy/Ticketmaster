@@ -16,6 +16,7 @@ namespace Ticketmaster.Controllers
     public class EmployeeManagementController : Controller
     {
         private readonly TicketmasterContext _context;
+        private EmployeeManagementViewModel viewModel;
 
         /*
          *Creates a new instance of the EmployeeManagementController class
@@ -24,9 +25,10 @@ namespace Ticketmaster.Controllers
         public EmployeeManagementController(TicketmasterContext context)
         {
             _context = context;
-        }
+        EmployeeManagementViewModel viewModel = new EmployeeManagementViewModel();
+            }
 
-        public class EmployeeChange
+    public class EmployeeChange
         {
             public string Action { get; set; }  // "Add", "Edit", "Delete"
             public Employee Employee { get; set; }
@@ -36,9 +38,9 @@ namespace Ticketmaster.Controllers
         public async Task<IActionResult> Index()
         {
             var employees = await _context.Employee.ToListAsync();
-            var stagedChanges = HttpContext.Session.GetObjectFromJson<List<Employee>>("StagedChanges") ?? new List<Employee>();
+            var stagedChanges = HttpContext.Session.GetObjectFromJson<List<EmployeeChange>>("StagedChanges") ?? new List<EmployeeChange>();
 
-            var viewModel = new EmployeeManagementViewModel
+            this.viewModel = new EmployeeManagementViewModel
             {
                 Employees = employees,
                 StagedChanges = stagedChanges
@@ -156,26 +158,30 @@ namespace Ticketmaster.Controllers
             return View(employee);
         }
 
-        // POST: EmployeeManagement/Delete/5
-/*        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var employee = await _context.Employee.FindAsync(id);
-            if (employee != null)
-            {
-                _context.Employee.Remove(employee);
-            }
-
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }*/
 
         private bool EmployeeExists(int id)
         {
             return _context.Employee.Any(e => e.Id == id);
         }
 
+        [HttpPost]
+        public IActionResult StageEmployeeChange(Employee employee)
+        {
+            var stagedChanges = HttpContext.Session.GetObjectFromJson<List<EmployeeChange>>("StagedChanges") ?? new List<EmployeeChange>();
+
+            if (!stagedChanges.Any(employeeChange => employeeChange.Employee.Id == employee.Id))
+            {
+                var change = new EmployeeChange
+                {
+                    Action = "Edit",
+                    Employee = employee
+                };
+                stagedChanges.Add(change);
+                HttpContext.Session.SetObjectAsJson("StagedChanges", stagedChanges);
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
 
 
         // Apply changes to the database in a transaction
@@ -230,19 +236,6 @@ namespace Ticketmaster.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        [HttpPost]
-        public IActionResult StageEmployeeChange(Employee employee)
-        {
-            var stagedChanges = HttpContext.Session.GetObjectFromJson<List<Employee>>("StagedChanges") ?? new List<Employee>();
-
-            if (!stagedChanges.Any(e => e.Id == employee.Id))
-            {
-                stagedChanges.Add(employee);
-                HttpContext.Session.SetObjectAsJson("StagedChanges", stagedChanges);
-            }
-
-            return RedirectToAction(nameof(Index));
-        }
 
         public IActionResult ReviewChanges()
         {
