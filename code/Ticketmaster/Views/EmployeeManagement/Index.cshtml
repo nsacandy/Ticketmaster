@@ -7,10 +7,6 @@
 
 <h1>Employee Management</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-
 <!-- Employee Table -->
 <table class="table">
     <thead>
@@ -49,8 +45,7 @@
                     <td>
                         <button type="submit" name="action" value="Edit" class="btn btn-warning">Stage Edit</button>
                     </td>
-
-                </form>
+                    </form>
                 <td><form asp-action="StageEmployeeDelete" method="post">
                         <input type="hidden" name="id" value="@item.Id" />
                         <button type="submit" name="action" value="Delete" class="btn btn-danger">Stage Delete</button>
@@ -58,7 +53,26 @@
                 </td>
             </tr>
         }
-    </tbody>
+        
+        <form asp-action="StageEmployeeAdd" method="post">
+            <tr>
+            <td>
+                <input type="text" name="FirstName" value="First Name" class="form-control" />
+            </td>
+            <td>
+                <input type="text" name="LastName" value="Last Name" class="form-control" />
+            </td>
+            <td>
+                <input type="text" name="Email" value="Email" class="form-control" />
+            </td>
+            <td>
+                <input type="text" name="PhoneNum" value="PhoneNum" class="form-control" />
+            </td>
+            <td>
+                <button type="submit" name="action" value="Edit" class="btn btn-warning">Add New Employee</button>
+            </td>
+        </form>
+        </tbody>
 </table>
 
 <h2>Staged Changes</h2>
@@ -93,6 +107,33 @@
 </table>
 
 <!-- Commit Changes -->
+<p>
 <form asp-action="CommitChanges" method="post">
     <button type="submit" class="btn btn-success">Commit Changes</button>
 </form>
+</p>
+<!-- Discard Changes Button -->
+<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#discardChangesModal">
+    Discard Changes
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="discardChangesModal" tabindex="-1" aria-labelledby="discardChangesModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="discardChangesModalLabel">Confirm Discard</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to discard all staged changes? This action cannot be undone.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <form asp-action="DiscardChanges" method="post">
+                    <button type="submit" class="btn btn-danger">Discard</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
