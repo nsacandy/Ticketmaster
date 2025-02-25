@@ -9,7 +9,6 @@ using Ticketmaster.Data;
 using Ticketmaster.Models;
 using Ticketmaster.Utilities;
 using Microsoft.AspNetCore.Http;
-using Ticketmaster.Views.EmployeeManagement;
 
 namespace Ticketmaster.Controllers
 {
@@ -50,7 +49,7 @@ namespace Ticketmaster.Controllers
         }
 
         // GET: EmployeeManagement/Details
-        public async Task<IActionResult> Details(int? id)
+        /*public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {
@@ -65,7 +64,7 @@ namespace Ticketmaster.Controllers
             }
 
             return View(employee);
-        }
+        }*/
 
         // GET: EmployeeManagement/Create
         public IActionResult Create()
@@ -141,21 +140,23 @@ namespace Ticketmaster.Controllers
         }
 
         // GET: EmployeeManagement/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> StageEmployeeDelete(Employee employee)
         {
-            if (id == null)
+            var stagedChanges = HttpContext.Session.GetObjectFromJson<List<EmployeeChange>>("StagedChanges") ?? new List<EmployeeChange>();
+
+            var selectedEmployee = await _context.Employee.FindAsync(employee.Id);
+            if (!stagedChanges.Any(employeeChange => employeeChange.Employee.Id == employee.Id))
             {
-                return NotFound();
+                var change = new EmployeeChange
+                {
+                    Action = "Delete",
+                    Employee = selectedEmployee
+                };
+                stagedChanges.Add(change);
+                HttpContext.Session.SetObjectAsJson("StagedChanges", stagedChanges);
             }
 
-            var employee = await _context.Employee
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (employee == null)
-            {
-                return NotFound();
-            }
-
-            return View(employee);
+            return RedirectToAction(nameof(Index));
         }
 
 
@@ -165,7 +166,7 @@ namespace Ticketmaster.Controllers
         }
 
         [HttpPost]
-        public IActionResult StageEmployeeChange(Employee employee)
+        public async Task<IActionResult> StageEmployeeEdit(Employee employee)
         {
             var stagedChanges = HttpContext.Session.GetObjectFromJson<List<EmployeeChange>>("StagedChanges") ?? new List<EmployeeChange>();
 
@@ -180,6 +181,7 @@ namespace Ticketmaster.Controllers
                 HttpContext.Session.SetObjectAsJson("StagedChanges", stagedChanges);
             }
 
+            HttpContext.Session.SetObjectAsJson("StagedChanges", stagedChanges);
             return RedirectToAction(nameof(Index));
         }
 

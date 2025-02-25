@@ -1,5 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
-@model Ticketmaster.Views.EmployeeManagement.EmployeeManagementViewModel
+@model Ticketmaster.Utilities.EmployeeManagementViewModel
 
 @{
     ViewData["Title"] = "Index";
@@ -30,32 +30,31 @@
                 <td>@Html.DisplayFor(modelItem => item.LastName)</td>
                 <td>@Html.DisplayFor(modelItem => item.Email)</td>
                 <td>@Html.DisplayFor(modelItem => item.PhoneNum)</td>
-                <td><a asp-action="Details" asp-route-id="@item.Id">Details</a></td>
                 <td>
-                    <form asp-action="StageEmployeeChange" method="post">
-                        <tr>
-                            <td>
-                                <input type="hidden" name="id" value="@item.Id" />
-                                <input type="text" name="FirstName" value="@item.FirstName" class="form-control" />
-                            </td>
-                            <td>
-                                <input type="text" name="LastName" value="@item.LastName" class="form-control" />
-                            </td>
-                            <td>
-                                <input type="text" name="Email" value="@item.Email" class="form-control" />
-                            </td>
-                            <td>
-                                <input type="text" name="PhoneNum" value="@item.PhoneNum" class="form-control" />
-                            </td>
-                            <td>
-                                <button type="submit" class="btn btn-warning">Stage Edit</button>
-                            </td>
-                            <td>
-                                <button type="submit" class="btn btn-warning">Delete</button>
-                            </td>
-                        </tr>
+                <form asp-action="StageEmployeeEdit" method="post">
+                    <tr>
+                    <td>
+                        <input type="hidden" name="id" value="@item.Id" />
+                        <input type="text" name="FirstName" value="@item.FirstName" class="form-control" />
+                    </td>
+                    <td>
+                        <input type="text" name="LastName" value="@item.LastName" class="form-control" />
+                    </td>
+                    <td>
+                        <input type="text" name="Email" value="@item.Email" class="form-control" />
+                    </td>
+                    <td>
+                        <input type="text" name="PhoneNum" value="@item.PhoneNum" class="form-control" />
+                    </td>
+                    <td>
+                        <button type="submit" name="action" value="Edit" class="btn btn-warning">Stage Edit</button>
+                    </td>
+
+                </form>
+                <td><form asp-action="StageEmployeeDelete" method="post">
+                        <input type="hidden" name="id" value="@item.Id" />
+                        <button type="submit" name="action" value="Delete" class="btn btn-danger">Stage Delete</button>
                     </form>
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                 </td>
             </tr>
         }
@@ -67,8 +66,11 @@
     <thead>
         <tr>
             <th>Name</th>
+            <th>Phone Num</th>
+            <th>Email</th>
+
             <th>Action</th>
-            <th>Revert</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -76,7 +78,9 @@
         {
             <tr>
                 <td>@item.Employee.FirstName @item.Employee.LastName</td>
-                <td>Pending Edit</td>
+                <td>@item.Employee.PhoneNum</td>
+                <td>@item.Employee.Email</td>
+                <td>@item.Action</td>
                 <td>
                     <form asp-action="RevertEmployeeChange" method="post">
                         <input type="hidden" name="Id" value="@item.Employee.Id" />
