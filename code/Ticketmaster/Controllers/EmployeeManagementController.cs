@@ -48,8 +48,8 @@ public class EmployeeManagementController : Controller
         var stagedChanges = HttpContext.Session.GetObjectFromJson<List<EmployeeChange>>("StagedChanges") ??
                             new List<EmployeeChange>();
 
-        var selectedEmployee = await _context.Employee.FindAsync(employee.Id);
-        if (!stagedChanges.Any(employeeChange => employeeChange.Employee.Id == employee.Id))
+        var selectedEmployee = await _context.Employee.FindAsync(employee.employee_id);
+        if (!stagedChanges.Any(employeeChange => employeeChange.Employee.employee_id == employee.employee_id))
         {
             var change = new EmployeeChange
             {
@@ -69,13 +69,13 @@ public class EmployeeManagementController : Controller
     /// </summary>
     /// <param name="employee">The employee.</param>
     /// <returns></returns>
-    public async Task<IActionResult> StageEmployeeAdd([Bind("Id,FirstName,LastName,Email,PhoneNum")] Employee employee)
+    public async Task<IActionResult> StageEmployeeAdd([Bind("employee_id,first_name,last_name")] Employee employee)
     {
         var stagedChanges = HttpContext.Session.GetObjectFromJson<List<EmployeeChange>>("StagedChanges") ??
                             new List<EmployeeChange>();
 
         var newEmployee = employee;
-        if (!stagedChanges.Any(employeeChange => employeeChange.Employee.Id == employee.Id))
+        if (!stagedChanges.Any(employeeChange => employeeChange.Employee.employee_id == employee.employee_id))
         {
             var change = new EmployeeChange
             {
@@ -92,7 +92,7 @@ public class EmployeeManagementController : Controller
 
     private bool EmployeeExists(int id)
     {
-        return _context.Employee.Any(e => e.Id == id);
+        return _context.Employee.Any(e => e.employee_id == id);
     }
 
     /// <summary>
@@ -106,7 +106,7 @@ public class EmployeeManagementController : Controller
         var stagedChanges = HttpContext.Session.GetObjectFromJson<List<EmployeeChange>>("StagedChanges") ??
                             new List<EmployeeChange>();
 
-        if (!stagedChanges.Any(employeeChange => employeeChange.Employee.Id == employee.Id))
+        if (!stagedChanges.Any(employeeChange => employeeChange.Employee.employee_id == employee.employee_id))
         {
             var change = new EmployeeChange
             {
@@ -153,7 +153,7 @@ public class EmployeeManagementController : Controller
                     }
                     else if (change.Action == "Delete")
                     {
-                        var employee = _context.Employee.Find(change.Employee.Id);
+                        var employee = _context.Employee.Find(change.Employee.employee_id);
                         if (employee != null) _context.Employee.Remove(employee);
                     }
 
@@ -180,7 +180,7 @@ public class EmployeeManagementController : Controller
         var stagedChanges = HttpContext.Session.GetObjectFromJson<List<Employee>>("StagedChanges") ??
                             new List<Employee>();
 
-        stagedChanges.RemoveAll(e => e.Id == id);
+        stagedChanges.RemoveAll(e => e.employee_id == id);
 
         HttpContext.Session.SetObjectAsJson("StagedChanges", stagedChanges);
 
