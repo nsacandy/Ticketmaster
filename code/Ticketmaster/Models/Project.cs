@@ -15,6 +15,6 @@ namespace Ticketmaster.Models
 
         public string ProjectDescription { get; set; }
 
-        public string InvolvedGroups { get; set; } // Comma-separated GroupIds
+        public string InvolvedGroups { get; set; }
     }
 }

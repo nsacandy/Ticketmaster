@@ -45,7 +45,7 @@
     </div>
 </div>
 
-<!-- Modal for Viewing Project Details -->
+<!-- Viewing Project Details -->
 <div class="modal fade" id="projectDetailsModal" tabindex="-1" aria-labelledby="projectDetailsModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -67,7 +67,7 @@
     </div>
 </div>
 
-<!-- Modal for Editing Project -->
+<!-- Editing Project -->
 <div class="modal fade" id="editProjectModal" tabindex="-1" aria-labelledby="editProjectModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -96,7 +96,7 @@
     </div>
 </div>
 
-<!-- Modal for Confirming Edit -->
+<!-- Confirming Edit -->
 <div class="modal fade" id="confirmEditModal" tabindex="-1" aria-labelledby="confirmEditModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -115,7 +115,7 @@
     </div>
 </div>
 
-<!-- Modal for Creating Project -->
+<!-- Creating Project -->
 <div class="modal fade" id="createProjectModal" tabindex="-1" aria-labelledby="createProjectModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -162,7 +162,6 @@
             });
         });
 
-        // Open Edit Modal when "Edit" is clicked
         document.getElementById("editProjectBtn").addEventListener("click", function () {
             document.getElementById("editProjectId").value = document.getElementById("projectId").textContent;
             document.getElementById("editProjectName").value = document.getElementById("projectName").textContent;
@@ -171,18 +170,15 @@
             new bootstrap.Modal(document.getElementById("editProjectModal")).show();
         });
 
-        // Open Confirmation Modal when "Confirm" is clicked
         document.getElementById("confirmEditBtn").addEventListener("click", function () {
             new bootstrap.Modal(document.getElementById("confirmEditModal")).show();
         });
 
-        // Apply Edits when "Yes, Update" is clicked
         document.getElementById("applyEditBtn").addEventListener("click", async function () {
             let projectId = document.getElementById("editProjectId").value;
             let updatedName = document.getElementById("editProjectName").value;
             let updatedDescription = document.getElementById("editProjectDescription").value;
 
-            // Send Update to Server
             let response = await fetch('/ProjectManagement/EditProject', {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -194,7 +190,7 @@
             });
 
             if (response.ok) {
-                location.reload(); // Reload page to update UI
+                location.reload();
             } else {
                 alert("Error updating project. Try again.");
             }
