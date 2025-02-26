@@ -6,6 +6,6 @@
         public String  FirstName   { get; set; }
         public String  LastName    { get; set; }
         public String  Email       { get; set; }
-        public int PhoneNum { get; set; }
+        public String PhoneNum { get; set; }
     }
 }
