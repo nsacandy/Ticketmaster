@@ -1,0 +1,132 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model Ticketmaster.Utilities.ProjectManagementViewModel
+
+@{
+    ViewData["Title"] = "Project Management";
+}
+
+<div class="container">
+    <div class="row">
+        <!-- Left Side: Group List -->
+        <div class="col-md-5">
+            <h3>Select Groups</h3>
+            <form id="projectForm">
+                <ul class="list-group">
+                    @foreach (var group in Model.Groups)
+                    {
+                        <li class="list-group-item">
+                            <input type="checkbox" name="selectedGroups" value="@group.GroupId" class="group-checkbox" />
+                            @group.GroupName
+                        </li>
+                    }
+                </ul>
+                <button type="button" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#createProjectModal">
+                    Create Project
+                </button>
+            </form>
+        </div>
+
+        <!-- Right Side: Project List -->
+        <div class="col-md-5">
+            <h3>Projects</h3>
+            <ul class="list-group" id="projectList">
+                @foreach (var project in Model.Projects)
+                {
+                    <li class="list-group-item project-item"
+                        data-projectid="@project.ProjectId"
+                        data-projectname="@project.ProjectName"
+                        data-projectdescription="@project.ProjectDescription"
+                        data-involvedgroups="@project.InvolvedGroups">
+                        @project.ProjectName
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Modal for Viewing Project Details -->
+<div class="modal fade" id="projectDetailsModal" tabindex="-1" aria-labelledby="projectDetailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="projectDetailsModalLabel">Project Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p><strong>Project ID:</strong> <span id="projectId"></span></p>
+                <p><strong>Project Name:</strong> <span id="projectName"></span></p>
+                <p><strong>Description:</strong> <span id="projectDescription"></span></p>
+                <p><strong>Involved Groups:</strong> <span id="involvedGroups"></span></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal for Creating Project -->
+<div class="modal fade" id="createProjectModal" tabindex="-1" aria-labelledby="createProjectModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createProjectModalLabel">Create New Project</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form asp-action="CreateProject" method="post">
+                    <div class="mb-3">
+                        <label for="projectName" class="form-label">Project Name</label>
+                        <input type="text" id="projectName" name="projectName" class="form-control" required />
+                    </div>
+                    <div class="mb-3">
+                        <label for="projectDescription" class="form-label">Project Description</label>
+                        <textarea id="projectDescription" name="projectDescription" class="form-control" required></textarea>
+                    </div>
+                    <input type="hidden" id="selectedGroupIds" name="selectedGroupIds" />
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Create Project</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        let checkboxes = document.querySelectorAll(".group-checkbox");
+        let selectedGroupIdsInput = document.getElementById("selectedGroupIds");
+        let projectItems = document.querySelectorAll(".project-item");
+
+        projectItems.forEach(item => {
+            item.addEventListener("dblclick", function () {
+                document.getElementById("projectId").textContent = this.getAttribute("data-projectid");
+                document.getElementById("projectName").textContent = this.getAttribute("data-projectname");
+                document.getElementById("projectDescription").textContent = this.getAttribute("data-projectdescription");
+                document.getElementById("involvedGroups").textContent = this.getAttribute("data-involvedgroups");
+
+                new bootstrap.Modal(document.getElementById("projectDetailsModal")).show();
+            });
+        });
+
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener("change", updateSelectedGroups);
+        });
+
+        function updateSelectedGroups() {
+            let selectedGroups = [];
+
+            checkboxes.forEach(checkbox => {
+                if (checkbox.checked) {
+                    selectedGroups.push(checkbox.value);
+                }
+            });
+
+            selectedGroupIdsInput.value = selectedGroups.join(",");
+        }
+    });
+</script>

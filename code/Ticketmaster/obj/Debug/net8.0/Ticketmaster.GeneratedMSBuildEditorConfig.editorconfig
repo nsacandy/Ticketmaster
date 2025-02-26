@@ -32,10 +32,6 @@ build_property.EnableCodeStyleSeverity =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRW1wbG95ZWVNYW5hZ2VtZW50XEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/WestGA/Spring25/Capstone/Ticketmaster/code/Ticketmaster/Views/EmployeeManagement/ReviewChanges.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRW1wbG95ZWVNYW5hZ2VtZW50XFJldmlld0NoYW5nZXMuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
 [C:/WestGA/Spring25/Capstone/Ticketmaster/code/Ticketmaster/Views/GroupManagement/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcR3JvdXBNYW5hZ2VtZW50XEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
@@ -46,6 +42,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/WestGA/Spring25/Capstone/Ticketmaster/code/Ticketmaster/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/WestGA/Spring25/Capstone/Ticketmaster/code/Ticketmaster/Views/ProjectManagement/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvamVjdE1hbmFnZW1lbnRcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/WestGA/Spring25/Capstone/Ticketmaster/code/Ticketmaster/Views/Shared/Error.cshtml]
