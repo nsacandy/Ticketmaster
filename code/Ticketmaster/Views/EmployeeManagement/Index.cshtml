@@ -16,7 +16,9 @@
             <th>@Html.DisplayNameFor(model => model.Employees.First().FirstName)</th>
             <th>@Html.DisplayNameFor(model => model.Employees.First().LastName)</th>
             <th>@Html.DisplayNameFor(model => model.Employees.First().Email)</th>
+            <th>@Html.DisplayNameFor(model => model.Employees.First().Pword)</th>
             <th>@Html.DisplayNameFor(model => model.Employees.First().PhoneNum)</th>
+            <th>@Html.DisplayNameFor(model => model.Employees.First().ERole)</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -27,7 +29,9 @@
                 <td>@Html.DisplayFor(modelItem => item.FirstName)</td>
                 <td>@Html.DisplayFor(modelItem => item.LastName)</td>
                 <td>@Html.DisplayFor(modelItem => item.Email)</td>
+                <td>@Html.DisplayFor(modelItem => item.Pword)</td>
                 <td>@Html.DisplayFor(modelItem => item.PhoneNum)</td>
+                <td>@Html.DisplayFor(modelItem => item.ERole)</td>
                 <td>
                 <form asp-action="StageEmployeeEdit" method="post">
                     <tr>
@@ -42,7 +46,13 @@
                         <input type="text" name="Email" value="@item.Email" class="form-control" />
                     </td>
                     <td>
+                        <input type="text" name="Pword" value="@item.Pword" class="form-control" />
+                    </td>
+                    <td>
                         <input type="text" name="PhoneNum" value="@item.PhoneNum" class="form-control" />
+                    </td>
+                    <td>
+                        <input type="text" name="ERole" value="@item.ERole" class="form-control" />
                     </td>
                     <td>
                         <button type="submit" name="action" value="Edit" class="btn btn-warning">Stage Edit</button>
@@ -59,16 +69,22 @@
         <form asp-action="StageEmployeeAdd" method="post">
             <tr>
             <td>
-                <input type="text" name="FirstName" value="First Name" class="form-control" />
+                <input type="text" name="FirstName" value="" class="form-control" />
             </td>
             <td>
-                <input type="text" name="LastName" value="Last Name" class="form-control" />
+                <input type="text" name="LastName" value="" class="form-control" />
             </td>
             <td>
-                <input type="text" name="Email" value="Email" class="form-control" />
+                <input type="text" name="Email" value="" class="form-control" />
             </td>
             <td>
-                <input type="text" name="PhoneNum" value="PhoneNum" class="form-control" />
+                <input type="text" name="Pword" value="" class="form-control" />
+            </td>
+            <td>
+                <input type="text" name="PhoneNum" value="" class="form-control" />
+            </td>
+            <td>
+                <input type="text" name="ERole" value="" class="form-control" />
             </td>
             <td>
                 <button type="submit" name="action" value="Edit" class="btn btn-warning">Add New Employee</button>
@@ -82,8 +98,10 @@
     <thead>
         <tr>
             <th>Name</th>
-            <th>Phone Num</th>
             <th>Email</th>
+            <th>Password</th>
+            <th>Phone Number</th>
+            <th>Role</th>
 
             <th>Action</th>
             <th></th>
@@ -94,8 +112,10 @@
         {
             <tr>
                 <td>@item.Employee.FirstName @item.Employee.LastName</td>
-                <td>@item.Employee.PhoneNum</td>
                 <td>@item.Employee.Email</td>
+                <td>@item.Employee.Pword</td>
+                <td>@item.Employee.PhoneNum</td>
+                <td>@item.Employee.ERole</td>
                 <td>@item.Action</td>
                 <td>
                     <form asp-action="RevertEmployeeChange" method="post">

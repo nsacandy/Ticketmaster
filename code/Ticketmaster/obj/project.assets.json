@@ -7672,23 +7672,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\nsacand2\\.nuget\\packages\\": {},
+    "C:\\Users\\nates\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\nsacand2\\Desktop\\Capstone\\code\\Ticketmaster\\Ticketmaster.csproj",
+      "projectUniqueName": "C:\\WestGA\\Spring25\\Capstone\\Ticketmaster\\code\\Ticketmaster\\Ticketmaster.csproj",
       "projectName": "Ticketmaster",
-      "projectPath": "C:\\Users\\nsacand2\\Desktop\\Capstone\\code\\Ticketmaster\\Ticketmaster.csproj",
-      "packagesPath": "C:\\Users\\nsacand2\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\nsacand2\\Desktop\\Capstone\\code\\Ticketmaster\\obj\\",
+      "projectPath": "C:\\WestGA\\Spring25\\Capstone\\Ticketmaster\\code\\Ticketmaster\\Ticketmaster.csproj",
+      "packagesPath": "C:\\Users\\nates\\.nuget\\packages\\",
+      "outputPath": "C:\\WestGA\\Spring25\\Capstone\\Ticketmaster\\code\\Ticketmaster\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\nsacand2\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\nates\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -7714,7 +7714,8 @@
         "enableAudit": "true",
         "auditLevel": "low",
         "auditMode": "direct"
-      }
+      },
+      "SdkAnalysisLevel": "9.0.200"
     },
     "frameworks": {
       "net8.0": {
@@ -7760,7 +7761,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.307/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.200/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

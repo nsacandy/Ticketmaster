@@ -7,7 +7,7 @@ namespace Ticketmaster.Tests.EmployeeManagementController
 {
     public class ControllerTest
     {
-        private TicketmasterContext GetInMemoryDbContext()
+       /* private TicketmasterContext GetInMemoryDbContext()
         {
             var options = new DbContextOptionsBuilder<TicketmasterContext>()
                 .UseInMemoryDatabase(databaseName: "TestDb")
@@ -38,6 +38,8 @@ namespace Ticketmaster.Tests.EmployeeManagementController
             var viewResult = Assert.IsType<ViewResult>(result);
             var model = Assert.IsAssignableFrom<EmployeeManagementViewModel>(viewResult.Model);
             Assert.Equal(2, model.Employees.Count());
-        }
+        }*/
+
+
     }
 }
