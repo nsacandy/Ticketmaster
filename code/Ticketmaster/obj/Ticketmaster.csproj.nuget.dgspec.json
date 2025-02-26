@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\WestGA\\Spring25\\Capstone\\GODHELPME\\code\\Ticketmaster\\Ticketmaster.csproj": {}
+    "C:\\WestGA\\Spring25\\Capstone\\Ticketmaster\\code\\Ticketmaster\\Ticketmaster.csproj": {}
   },
   "projects": {
-    "C:\\WestGA\\Spring25\\Capstone\\GODHELPME\\code\\Ticketmaster\\Ticketmaster.csproj": {
+    "C:\\WestGA\\Spring25\\Capstone\\Ticketmaster\\code\\Ticketmaster\\Ticketmaster.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\WestGA\\Spring25\\Capstone\\GODHELPME\\code\\Ticketmaster\\Ticketmaster.csproj",
+        "projectUniqueName": "C:\\WestGA\\Spring25\\Capstone\\Ticketmaster\\code\\Ticketmaster\\Ticketmaster.csproj",
         "projectName": "Ticketmaster",
-        "projectPath": "C:\\WestGA\\Spring25\\Capstone\\GODHELPME\\code\\Ticketmaster\\Ticketmaster.csproj",
+        "projectPath": "C:\\WestGA\\Spring25\\Capstone\\Ticketmaster\\code\\Ticketmaster\\Ticketmaster.csproj",
         "packagesPath": "C:\\Users\\nates\\.nuget\\packages\\",
-        "outputPath": "C:\\WestGA\\Spring25\\Capstone\\GODHELPME\\code\\Ticketmaster\\obj\\",
+        "outputPath": "C:\\WestGA\\Spring25\\Capstone\\Ticketmaster\\code\\Ticketmaster\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

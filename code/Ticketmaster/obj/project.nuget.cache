@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "TtwkB0Txglw=",
+  "dgSpecHash": "Q9LRy65aa1Y=",
   "success": true,
-  "projectFilePath": "C:\\WestGA\\Spring25\\Capstone\\GODHELPME\\code\\Ticketmaster\\Ticketmaster.csproj",
+  "projectFilePath": "C:\\WestGA\\Spring25\\Capstone\\Ticketmaster\\code\\Ticketmaster\\Ticketmaster.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\nates\\.nuget\\packages\\azure.core\\1.38.0\\azure.core.1.38.0.nupkg.sha512",
     "C:\\Users\\nates\\.nuget\\packages\\azure.identity\\1.11.4\\azure.identity.1.11.4.nupkg.sha512",
