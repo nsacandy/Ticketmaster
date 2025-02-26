@@ -1,0 +1,16 @@
+Add Employee 
+Context: An Administrator has logged in and is on the “Dashboard”. They wish to add an employee to the system.
+1.	The user navigates to the EmployeesManagement page.
+2.	The EmployeesManagement screen populates with all known employees
+3.	The User enters the employee information
+4.	The user confirms the changes
+5.	The information is staged
+6.	The user  confirms the information and submits
+7.  The new employee is added
+
+2A. The database fails to retrieve the data.
+3A. An error popup is displayed. The user remains on the Dashboard
+	
+6B. The database fails to add the new employee
+7B. An error message is displayed
+7B. The user is returned to the employeeManagement page with no changes made

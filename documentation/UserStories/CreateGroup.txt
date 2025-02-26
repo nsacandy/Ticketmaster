@@ -1,0 +1,21 @@
+Create Group
+Context: An Admin has logged in and wishes to create a group. 
+1.	The user navigates to the group page
+3.	The user selects to add a group
+4.	The creation is staged
+5.	The user confirms
+6.	The user is brought back to the Groups page with the new group present.
+
+
+2A. The database fails to retrieve the groups.
+3A. An error is displayed
+4A. The user stays on the Dashboard.
+
+
+4B. The user clicks cancel.
+5B. The user is back at the Groups page
+
+
+4C. The user enters the name of a group that already exists
+5C. An error is displayed
+6C. User is still on groups page

@@ -1,0 +1,20 @@
+Delete Employee
+Context: An Administrator has logged in and is on the dashboard. They wish to Delete an employee from the system. 
+1.	The user navigates to the EmployeeManagement page
+2.	The EmployeeManagement page populates with all employees
+3.	The user selects to delete a selected employee
+4.	The delete is staged
+5.	The user confirms
+6.	A success message is displayed
+7.	The user is brought back to the “Employees” page. 
+
+2A. The database fails to retrieve the data.
+3A. An error is displayed. The user remains on the Dashboard.
+	
+5B. The user clicks No.
+6B. The user is returned to the Employees page with no changes made.
+
+
+6C. The database fails to delete the employee
+7C. An error message is displayed
+8C. The user is returned to the EmployeeManagement page with no changes made

@@ -1,0 +1,17 @@
+Delete Group
+Context: An administrator is logged in and wishes to delete a group.
+1.	The user navigates to the groups page
+2.	The user selects a group
+3.	The user deletes the group
+4.	A confirmation notice appears
+5.	The user confirms
+6.	The user is brought back to the groups page with the group removed 
+
+
+2A. The database fails to retrieve the groups.
+3A. An error message is displayed.
+4A. The user stays on the Dashboard.
+
+
+4B. The user does not confirm
+5B. The user is back at the groups screen.
