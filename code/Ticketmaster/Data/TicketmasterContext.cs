@@ -16,6 +16,8 @@ namespace Ticketmaster.Data
 
         public DbSet<Ticketmaster.Models.Employee> Employee { get; set; } = default!;
         public DbSet<Ticketmaster.Models.Group> Groups { get; set; } = default!;
+        public DbSet<Ticketmaster.Models.Project> Projects { get;  set; } = default!;
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
