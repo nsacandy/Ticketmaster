@@ -18,7 +18,6 @@ namespace Ticketmaster.Controllers
             _context = context;
         }
 
-        // GET: ProjectManagement
         public async Task<IActionResult> Index()
         {
             var groups = await _context.Groups.ToListAsync();
@@ -33,7 +32,6 @@ namespace Ticketmaster.Controllers
             return View(viewModel);
         }
 
-        // POST: CreateProject
         [HttpPost]
         public async Task<IActionResult> CreateProject(string projectName, string projectDescription, string selectedGroupIds)
         {
@@ -47,7 +45,7 @@ namespace Ticketmaster.Controllers
             {
                 ProjectName = projectName,
                 ProjectDescription = projectDescription,
-                InvolvedGroups = selectedGroupIds // Store as comma-separated values
+                InvolvedGroups = selectedGroupIds 
             };
 
             _context.Projects.Add(newProject);
@@ -56,5 +54,19 @@ namespace Ticketmaster.Controllers
             TempData["Success"] = "Project created successfully!";
             return RedirectToAction(nameof(Index));
         }
+
+        [HttpPost]
+        public async Task<IActionResult> EditProject([FromBody] Project updatedProject)
+        {
+            var existingProject = await _context.Projects.FindAsync(updatedProject.ProjectId);
+            if (existingProject == null) return NotFound();
+
+            existingProject.ProjectName = updatedProject.ProjectName;
+            existingProject.ProjectDescription = updatedProject.ProjectDescription;
+
+            await _context.SaveChangesAsync();
+            return Ok();
+        }
+
     }
 }

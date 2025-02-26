@@ -60,7 +60,56 @@
                 <p><strong>Involved Groups:</strong> <span id="involvedGroups"></span></p>
             </div>
             <div class="modal-footer">
+                <button type="button" class="btn btn-warning" id="editProjectBtn">Edit</button>
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal for Editing Project -->
+<div class="modal fade" id="editProjectModal" tabindex="-1" aria-labelledby="editProjectModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editProjectModalLabel">Edit Project</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editProjectForm">
+                    <input type="hidden" id="editProjectId" />
+                    <div class="mb-3">
+                        <label for="editProjectName" class="form-label">Project Name</label>
+                        <input type="text" id="editProjectName" class="form-control" required />
+                    </div>
+                    <div class="mb-3">
+                        <label for="editProjectDescription" class="form-label">Project Description</label>
+                        <textarea id="editProjectDescription" class="form-control" required></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-primary" id="confirmEditBtn">Confirm</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal for Confirming Edit -->
+<div class="modal fade" id="confirmEditModal" tabindex="-1" aria-labelledby="confirmEditModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirm Changes</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to update this project?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-success" id="applyEditBtn">Yes, Update</button>
             </div>
         </div>
     </div>
@@ -111,6 +160,44 @@
 
                 new bootstrap.Modal(document.getElementById("projectDetailsModal")).show();
             });
+        });
+
+        // Open Edit Modal when "Edit" is clicked
+        document.getElementById("editProjectBtn").addEventListener("click", function () {
+            document.getElementById("editProjectId").value = document.getElementById("projectId").textContent;
+            document.getElementById("editProjectName").value = document.getElementById("projectName").textContent;
+            document.getElementById("editProjectDescription").value = document.getElementById("projectDescription").textContent;
+
+            new bootstrap.Modal(document.getElementById("editProjectModal")).show();
+        });
+
+        // Open Confirmation Modal when "Confirm" is clicked
+        document.getElementById("confirmEditBtn").addEventListener("click", function () {
+            new bootstrap.Modal(document.getElementById("confirmEditModal")).show();
+        });
+
+        // Apply Edits when "Yes, Update" is clicked
+        document.getElementById("applyEditBtn").addEventListener("click", async function () {
+            let projectId = document.getElementById("editProjectId").value;
+            let updatedName = document.getElementById("editProjectName").value;
+            let updatedDescription = document.getElementById("editProjectDescription").value;
+
+            // Send Update to Server
+            let response = await fetch('/ProjectManagement/EditProject', {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    ProjectId: projectId,
+                    ProjectName: updatedName,
+                    ProjectDescription: updatedDescription
+                })
+            });
+
+            if (response.ok) {
+                location.reload(); // Reload page to update UI
+            } else {
+                alert("Error updating project. Try again.");
+            }
         });
 
         checkboxes.forEach(checkbox => {
