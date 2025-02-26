@@ -69,7 +69,7 @@ public class EmployeeManagementController : Controller
     /// </summary>
     /// <param name="employee">The employee.</param>
     /// <returns></returns>
-    public async Task<IActionResult> StageEmployeeAdd([Bind("Id,FirstName,LastName,Email,PhoneNum")] Employee employee)
+    public async Task<IActionResult> StageEmployeeAdd([Bind("Id,FirstName,LastName,Email,Pword,PhoneNum,ERole")] Employee employee)
     {
         var stagedChanges = HttpContext.Session.GetObjectFromJson<List<EmployeeChange>>("StagedChanges") ??
                             new List<EmployeeChange>();
