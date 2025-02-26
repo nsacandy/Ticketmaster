@@ -1,7 +1,6 @@
 ﻿using Ticketmaster.Controllers;
-using Ticketmaster.Models;
 
-namespace Ticketmaster.Utilities
+namespace Ticketmaster.Models
 {
     public class EmployeeManagementViewModel
     {

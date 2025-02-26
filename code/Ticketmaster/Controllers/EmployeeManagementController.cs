@@ -36,14 +36,13 @@ public class EmployeeManagementController : Controller
 
         return View(viewModel);
     }
-
-
+    
     /// <summary>
-    /// Stages the employee delete.
-    /// </summary>
-    /// <param name="employee">The employee.</param>
-    /// <returns></returns>
-    public async Task<IActionResult> StageEmployeeDelete(Employee employee)
+        /// Stages the employee delete.
+        /// </summary>
+        /// <param name="employee">The employee.</param>
+        /// <returns></returns>
+        public async Task<IActionResult> StageEmployeeDelete(Employee employee)
     {
         var stagedChanges = HttpContext.Session.GetObjectFromJson<List<EmployeeChange>>("StagedChanges") ??
                             new List<EmployeeChange>();
@@ -75,6 +74,7 @@ public class EmployeeManagementController : Controller
                             new List<EmployeeChange>();
 
         var newEmployee = employee;
+
         if (!stagedChanges.Any(employeeChange => employeeChange.Employee.Id == employee.Id))
         {
             var change = new EmployeeChange
@@ -103,22 +103,24 @@ public class EmployeeManagementController : Controller
     [HttpPost]
     public async Task<IActionResult> StageEmployeeEdit(Employee employee)
     {
-        var stagedChanges = HttpContext.Session.GetObjectFromJson<List<EmployeeChange>>("StagedChanges") ??
-                            new List<EmployeeChange>();
 
-        if (!stagedChanges.Any(employeeChange => employeeChange.Employee.Id == employee.Id))
-        {
-            var change = new EmployeeChange
+            var stagedChanges = HttpContext.Session.GetObjectFromJson<List<EmployeeChange>>("StagedChanges") ??
+                                new List<EmployeeChange>();
+
+            if (!stagedChanges.Any(employeeChange => employeeChange.Employee.Id == employee.Id))
             {
-                Action = "Edit",
-                Employee = employee
-            };
-            stagedChanges.Add(change);
-            HttpContext.Session.SetObjectAsJson("StagedChanges", stagedChanges);
-        }
+                var change = new EmployeeChange
+                {
+                    Action = "Edit",
+                    Employee = employee
+                };
+                stagedChanges.Add(change);
+                HttpContext.Session.SetObjectAsJson("StagedChanges", stagedChanges);
+            }
 
-        HttpContext.Session.SetObjectAsJson("StagedChanges", stagedChanges);
-        return RedirectToAction(nameof(Index));
+            HttpContext.Session.SetObjectAsJson("StagedChanges", stagedChanges);
+            return RedirectToAction(nameof(Index));
+
     }
 
 

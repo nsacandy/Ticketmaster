@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Ticketmaster.Tests": {
+      "commandName": "Project",
+      "sqlDebugging": true
+    }
+  }
+}
