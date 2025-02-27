@@ -48,3 +48,6 @@ appsettings.Development.json
 *.cache
 
 *.orig
+/code/Ticketmaster/obj/Debug/net8.0/Ticketmaster.AssemblyInfoInputs.cache
+/code/Ticketmaster/obj/Debug/net8.0/Ticketmaster.AssemblyInfo.cs
+/code/Ticketmaster/obj/Debug/net8.0/Ticketmaster.GeneratedMSBuildEditorConfig.editorconfig
