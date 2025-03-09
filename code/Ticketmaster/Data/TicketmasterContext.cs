@@ -23,6 +23,8 @@ namespace Ticketmaster.Data
         {
             modelBuilder.Entity<Employee>().ToTable("Employee");
             modelBuilder.Entity<Group>().ToTable("Groups");
+            modelBuilder.Entity<Project>().ToTable("Projects");
+
         }
 
 
