@@ -68,14 +68,30 @@ public class EmployeeManagementController : Controller
     /// </summary>
     /// <param name="employee">The employee.</param>
     /// <returns></returns>
-    public async Task<IActionResult> StageEmployeeAdd([Bind("Id,FirstName,LastName,Email,Pword,PhoneNum,ERole")] Employee employee)
+    public async Task<IActionResult> StageEmployeeAdd(int id, string firstName, string lastName, string email, string pword, string phoneNum, string eRole)
     {
+        if (id == 0 || string.IsNullOrEmpty(firstName) || string.IsNullOrEmpty(lastName) ||
+            string.IsNullOrEmpty(email) || string.IsNullOrEmpty(pword) || string.IsNullOrEmpty(phoneNum) || string.IsNullOrEmpty(eRole))
+        {
+            TempData["Error"] = "Please fill in all required fields.";
+            return RedirectToAction(nameof(Index));
+        }
+
         var stagedChanges = HttpContext.Session.GetObjectFromJson<List<EmployeeChange>>("StagedChanges") ??
                             new List<EmployeeChange>();
 
-        var newEmployee = employee;
+        var newEmployee = new Employee
+        {
+            Id = id,
+            FirstName = firstName,
+            LastName = lastName,
+            Email = email,
+            Pword = pword,
+            PhoneNum = phoneNum,
+            ERole = eRole
+        };
 
-        if (!stagedChanges.Any(employeeChange => employeeChange.Employee.Id == employee.Id))
+        if (!stagedChanges.Any(employeeChange => employeeChange.Employee.Id == id))
         {
             var change = new EmployeeChange
             {
@@ -86,6 +102,7 @@ public class EmployeeManagementController : Controller
             HttpContext.Session.SetObjectAsJson("StagedChanges", stagedChanges);
         }
 
+        TempData["Success"] = "Employee staged successfully!";
         return RedirectToAction(nameof(Index));
     }
 

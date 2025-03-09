@@ -5,7 +5,7 @@ VisualStudioVersion = 17.10.35431.56
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ticketmaster", "Ticketmaster.csproj", "{9B204BBB-B637-40D8-982C-52AB0EB8DDD1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ticketmaster.Tests", "..\Ticketmaster.Tests\Ticketmaster.Tests.csproj", "{145A77A4-C638-4D13-806C-C0C47CD0A4F8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ticketmaster.Tests", "..\Ticketmaster.Tests\Ticketmaster.Tests.csproj", "{145A77A4-C638-4D13-806C-C0C47CD0A4F8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
