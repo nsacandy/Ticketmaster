@@ -5,6 +5,8 @@
 bin/
 obj/
 
+Migrations/*.Designer.cs
+
 packages/
 !packages/repositories.config
 
