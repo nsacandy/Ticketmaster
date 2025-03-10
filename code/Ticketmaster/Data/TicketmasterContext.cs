@@ -16,14 +16,14 @@ namespace Ticketmaster.Data
 
         public DbSet<Ticketmaster.Models.Employee> Employee { get; set; } = default!;
         public DbSet<Ticketmaster.Models.Group> Groups { get; set; } = default!;
-        public DbSet<Ticketmaster.Models.Project> Projects { get;  set; } = default!;
+        public DbSet<Ticketmaster.Models.Project> Project { get;  set; } = default!;
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Employee>().ToTable("Employee");
             modelBuilder.Entity<Group>().ToTable("Groups");
-            modelBuilder.Entity<Project>().ToTable("Projects");
+            modelBuilder.Entity<Project>().ToTable("Project");
 
         }
 
