@@ -23,7 +23,7 @@ public class EmployeeManagementController : Controller
     /// </summary>
     /// <param name="context">The context.</param>
     public EmployeeManagementController(TicketmasterContext context)
-    {   
+    {
         _context = context;
         var viewModel = new EmployeeManagementViewModel();
     }
@@ -43,7 +43,7 @@ public class EmployeeManagementController : Controller
             StagedChanges = stagedChanges
         };
 
-        return View(viewModel); 
+        return View(viewModel);
     }
 
 
@@ -52,7 +52,7 @@ public class EmployeeManagementController : Controller
     /// </summary>
     /// <param name="employee">The employee to delete</param>
     /// <returns>Page with employee removed</returns>
-    
+
     public async Task<IActionResult> StageEmployeeDelete(Employee employee)
     {
         var stagedChanges = HttpContext.Session.GetObjectFromJson<List<EmployeeChange>>("StagedChanges") ??
@@ -104,7 +104,7 @@ public class EmployeeManagementController : Controller
             ERole = eRole
         };
 
-       // newEmployee.Pword = this._passwordHasher.HashPassword(newEmployee, newEmployee.Pword);
+        // newEmployee.Pword = this._passwordHasher.HashPassword(newEmployee, newEmployee.Pword);
         if (!stagedChanges.Any(employeeChange => employeeChange.Employee.Id == id))
         {
             var change = new EmployeeChange
@@ -207,12 +207,21 @@ public class EmployeeManagementController : Controller
     [HttpPost]
     public IActionResult RevertEmployeeChange(int id)
     {
-        var stagedChanges = HttpContext.Session.GetObjectFromJson<List<Employee>>("StagedChanges") ??
-                            new List<Employee>();
+        try
+        {
+            var stagedChanges = HttpContext.Session.GetObjectFromJson<List<EmployeeChange>>("StagedChanges") ??
+                                new List<EmployeeChange>();
 
-        stagedChanges.RemoveAll(e => e.Id == id);
+            stagedChanges.RemoveAll(e => e.Employee.Id == id);
 
-        HttpContext.Session.SetObjectAsJson("StagedChanges", stagedChanges);
+            HttpContext.Session.SetObjectAsJson("StagedChanges", stagedChanges);
+        }
+        catch (NullReferenceException n)
+        {
+            Console.WriteLine(n.StackTrace);
+        }
+
+
 
         return RedirectToAction(nameof(Index));
     }
