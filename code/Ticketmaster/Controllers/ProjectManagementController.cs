@@ -21,7 +21,7 @@ namespace Ticketmaster.Controllers
         public async Task<IActionResult> Index()
         {
             var groups = await _context.Groups.ToListAsync();
-            var projects = await _context.Projects.ToListAsync();
+            var projects = await _context.Project.ToListAsync();
 
             var viewModel = new ProjectManagementViewModel
             {
@@ -48,7 +48,7 @@ namespace Ticketmaster.Controllers
                 InvolvedGroups = selectedGroupIds 
             };
 
-            _context.Projects.Add(newProject);
+            _context.Project.Add(newProject);
             await _context.SaveChangesAsync();
 
             TempData["Success"] = "Project created successfully!";
@@ -58,7 +58,7 @@ namespace Ticketmaster.Controllers
         [HttpPost]
         public async Task<IActionResult> EditProject([FromBody] Project updatedProject)
         {
-            var existingProject = await _context.Projects.FindAsync(updatedProject.ProjectId);
+            var existingProject = await _context.Project.FindAsync(updatedProject.ProjectId);
             if (existingProject == null) return NotFound();
 
             existingProject.ProjectName = updatedProject.ProjectName;

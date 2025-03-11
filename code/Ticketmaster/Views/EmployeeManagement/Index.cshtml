@@ -1,5 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
-@model Ticketmaster.Models.EmployeeManagementViewModel
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model Ticketmaster.Utilities.EmployeeManagementViewModel
 
 @{
     ViewData["Title"] = "Employee Management Page";
@@ -29,7 +30,7 @@
                 <td>@Html.DisplayFor(modelItem => item.FirstName)</td>
                 <td>@Html.DisplayFor(modelItem => item.LastName)</td>
                 <td>@Html.DisplayFor(modelItem => item.Email)</td>
-                <td>@Html.DisplayFor(modelItem => item.Pword)</td>
+                <td>*****</td>
                 <td>@Html.DisplayFor(modelItem => item.PhoneNum)</td>
                 <td>@Html.DisplayFor(modelItem => item.ERole)</td>
                 <td>
@@ -46,7 +47,7 @@
                         <input type="text" name="Email" value="@item.Email" class="form-control" />
                     </td>
                     <td>
-                        <input type="text" name="Pword" value="@item.Pword" class="form-control" />
+                        <input type="text" name="Pword" value="" class="form-control" />
                     </td>
                     <td>
                         <input type="text" name="PhoneNum" value="@item.PhoneNum" class="form-control" />
