@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Ticketmaster.Data;
 using Ticketmaster.Models;
@@ -6,22 +7,30 @@ using Ticketmaster.Utilities;
 
 namespace Ticketmaster.Controllers;
 
+
+/// <summary>
+/// Controls the employeeManagement  page.
+/// </summary>
+/// <seealso cref="Microsoft.AspNetCore.Mvc.Controller" />
 public class EmployeeManagementController : Controller
 {
     private readonly TicketmasterContext _context;
     private EmployeeManagementViewModel viewModel;
 
-    /*
-     *Creates a new instance of the EmployeeManagementController class
-     * Initializes the database as the context
-     */
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="EmployeeManagementController"/> class.
+    /// </summary>
+    /// <param name="context">The context.</param>
     public EmployeeManagementController(TicketmasterContext context)
-    {
+    {   
         _context = context;
         var viewModel = new EmployeeManagementViewModel();
     }
 
+
     // GET: EmployeeManagement
+
     public async Task<IActionResult> Index()
     {
         var employees = await _context.Employee.ToListAsync();
@@ -34,15 +43,17 @@ public class EmployeeManagementController : Controller
             StagedChanges = stagedChanges
         };
 
-        return View(viewModel);
+        return View(viewModel); 
     }
+
+
+    /// <summary>
+    /// Stages the employee delete.
+    /// </summary>
+    /// <param name="employee">The employee to delete</param>
+    /// <returns>Page with employee removed</returns>
     
-         /// <summary>
-        /// Stages the employee delete.
-        /// </summary>
-        /// <param name="employee">The employee.</param>
-        /// <returns></returns>
-        public async Task<IActionResult> StageEmployeeDelete(Employee employee)
+    public async Task<IActionResult> StageEmployeeDelete(Employee employee)
     {
         var stagedChanges = HttpContext.Session.GetObjectFromJson<List<EmployeeChange>>("StagedChanges") ??
                             new List<EmployeeChange>();
@@ -68,10 +79,12 @@ public class EmployeeManagementController : Controller
     /// </summary>
     /// <param name="employee">The employee.</param>
     /// <returns></returns>
-    public async Task<IActionResult> StageEmployeeAdd(int id, string firstName, string lastName, string email, string pword, string phoneNum, string eRole)
+    public async Task<IActionResult> StageEmployeeAdd(int id, string firstName, string lastName, string email,
+        string pword, string phoneNum, string eRole)
     {
-        if (id == 0 || string.IsNullOrEmpty(firstName) || string.IsNullOrEmpty(lastName) ||
-            string.IsNullOrEmpty(email) || string.IsNullOrEmpty(pword) || string.IsNullOrEmpty(phoneNum) || string.IsNullOrEmpty(eRole))
+        if (string.IsNullOrEmpty(firstName) || string.IsNullOrEmpty(lastName) ||
+            string.IsNullOrEmpty(email) || string.IsNullOrEmpty(pword) || string.IsNullOrEmpty(phoneNum) ||
+            string.IsNullOrEmpty(eRole))
         {
             TempData["Error"] = "Please fill in all required fields.";
             return RedirectToAction(nameof(Index));
@@ -91,6 +104,7 @@ public class EmployeeManagementController : Controller
             ERole = eRole
         };
 
+       // newEmployee.Pword = this._passwordHasher.HashPassword(newEmployee, newEmployee.Pword);
         if (!stagedChanges.Any(employeeChange => employeeChange.Employee.Id == id))
         {
             var change = new EmployeeChange
@@ -107,10 +121,6 @@ public class EmployeeManagementController : Controller
     }
 
 
-    private bool EmployeeExists(int id)
-    {
-        return _context.Employee.Any(e => e.Id == id);
-    }
 
     /// <summary>
     /// Stages the employee edit.
@@ -121,22 +131,22 @@ public class EmployeeManagementController : Controller
     public async Task<IActionResult> StageEmployeeEdit(Employee employee)
     {
 
-            var stagedChanges = HttpContext.Session.GetObjectFromJson<List<EmployeeChange>>("StagedChanges") ??
-                                new List<EmployeeChange>();
+        var stagedChanges = HttpContext.Session.GetObjectFromJson<List<EmployeeChange>>("StagedChanges") ??
+                            new List<EmployeeChange>();
 
-            if (!stagedChanges.Any(employeeChange => employeeChange.Employee.Id == employee.Id))
+        if (!stagedChanges.Any(employeeChange => employeeChange.Employee.Id == employee.Id))
+        {
+            var change = new EmployeeChange
             {
-                var change = new EmployeeChange
-                {
-                    Action = "Edit",
-                    Employee = employee
-                };
-                stagedChanges.Add(change);
-                HttpContext.Session.SetObjectAsJson("StagedChanges", stagedChanges);
-            }
-
+                Action = "Edit",
+                Employee = employee
+            };
+            stagedChanges.Add(change);
             HttpContext.Session.SetObjectAsJson("StagedChanges", stagedChanges);
-            return RedirectToAction(nameof(Index));
+        }
+
+        HttpContext.Session.SetObjectAsJson("StagedChanges", stagedChanges);
+        return RedirectToAction(nameof(Index));
 
     }
 
@@ -164,6 +174,7 @@ public class EmployeeManagementController : Controller
                 foreach (var change in stagedChanges)
                     if (change.Action == "Add")
                     {
+                        change.Employee.Pword = EmployeePasswordHasher.HashPassword(change.Employee.Pword);
                         _context.Employee.Add(change.Employee);
                     }
                     else if (change.Action == "Edit")
@@ -191,7 +202,7 @@ public class EmployeeManagementController : Controller
 
         return RedirectToAction(nameof(Index));
     }
-    
+
 
     [HttpPost]
     public IActionResult RevertEmployeeChange(int id)
@@ -221,5 +232,10 @@ public class EmployeeManagementController : Controller
     {
         public string Action { get; set; } // "Add", "Edit", "Delete"
         public Employee Employee { get; set; }
+    }
+
+    private bool EmployeeExists(int id)
+    {
+        return _context.Employee.Any(e => e.Id == id);
     }
 }

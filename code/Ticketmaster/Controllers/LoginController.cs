@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Ticketmaster.Data;
 using Microsoft.AspNetCore.Authentication;
 using Ticketmaster.Models;
+using Microsoft.AspNetCore.Identity;
+using Ticketmaster.Utilities;
 
 namespace Ticketmaster.Controllers
 {
@@ -24,11 +26,12 @@ namespace Ticketmaster.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(string email, string password)
         {
-            var employee = await _context.Employee.FirstOrDefaultAsync(e => e.Email == email && e.Pword == password);
-            if (employee == null || !VerifyPassword(employee, password))
+            var employee = await _context.Employee.FirstOrDefaultAsync(e => e.Email == email);
+
+            if (employee == null || !VerifyPassword(password, employee.Pword)) 
             {
-                TempData["Error"] = "Invalid credentials.";
-                return RedirectToAction("Index");
+                TempData["error"] = "invalid credentials.";
+                return RedirectToAction("index");
             }
 
             var claims = new List<Claim>
@@ -42,12 +45,17 @@ namespace Ticketmaster.Controllers
 
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
 
-            return RedirectToAction("Index", "Home"); // Redirect to homepage
+            if (User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Home"); // Redirect to homepage
+            }
+            else return RedirectToAction("Index");
         }
 
-        private bool VerifyPassword(Employee employee, string password)
+        private bool VerifyPassword(String password, string hashedPassword)
         {
-            return employee.Pword == password;
+           
+            return EmployeePasswordHasher.VerifyPassword(hashedPassword, password);
         }
     }
 }
