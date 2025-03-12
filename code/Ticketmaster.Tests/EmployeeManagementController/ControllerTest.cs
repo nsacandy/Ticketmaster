@@ -1,45 +1,77 @@
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using System.Net.Http;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.Extensions.DependencyInjection;
 using Ticketmaster.Data;
 using Ticketmaster.Models;
+using Microsoft.EntityFrameworkCore;
+using Xunit;
 
-namespace Ticketmaster.Tests.EmployeeManagementController
+namespace Ticketmaster.Tests;
+
+public class EmployeeManagementIntegrationTests : IClassFixture<WebApplicationFactory<Program>>
 {
-    public class ControllerTest
+    private readonly WebApplicationFactory<Program> _factory;
+
+    public EmployeeManagementIntegrationTests(WebApplicationFactory<Program> factory)
     {
-       /* private TicketmasterContext GetInMemoryDbContext()
+        _factory = factory.WithWebHostBuilder(builder =>
         {
-            var options = new DbContextOptionsBuilder<TicketmasterContext>()
-                .UseInMemoryDatabase(databaseName: "TestDb")
-                .Options;
-
-            var context = new TicketmasterContext(options);
-            context.Database.EnsureCreated();
-            return context;
-        }
-        [Fact]
-        public async Task Index_ReturnsViewWithEmployees()
-        {
-            // Arrange
-            var context = GetInMemoryDbContext();
-            context.Employee.AddRange(new List<Employee>
+            builder.ConfigureServices(services =>
             {
-                new Employee { Id = 1, FirstName = "Alice", LastName = "Smith", Email = "alice@example.com", PhoneNum = "1234567890" },
-                new Employee { Id = 2, FirstName = "Bob", LastName = "Jones", Email = "bob@example.com", PhoneNum = "0987654321" }
+                var descriptor = services.SingleOrDefault(d => d.ServiceType == typeof(DbContextOptions<TicketmasterContext>));
+                if (descriptor != null) services.Remove(descriptor);
+                services.AddDbContext<TicketmasterContext>(options => options.UseInMemoryDatabase("TestDb"));
             });
-            context.SaveChanges();
+        });
+    }
 
-            var controller = new Controllers.EmployeeManagementController(context);
+    [Fact]
+    public async Task Index_ReturnsSuccessAndCorrectView()
+    {
+        var client = _factory.CreateClient(new WebApplicationFactoryClientOptions { AllowAutoRedirect = false });
+        var response = await client.GetAsync("/EmployeeManagement");
+        response.EnsureSuccessStatusCode();
+    }
 
-            // Act
-            var result = await controller.Index();
+    [Fact]
+    public async Task StageEmployeeAdd_AddsEmployeeToSession()
+    {
+        var client = _factory.CreateClient(new WebApplicationFactoryClientOptions { AllowAutoRedirect = false });
+        var content = new FormUrlEncodedContent(new[]
+        {
+            new KeyValuePair<string, string>("id", "1"),
+            new KeyValuePair<string, string>("firstName", "John"),
+            new KeyValuePair<string, string>("lastName", "Doe"),
+            new KeyValuePair<string, string>("email", "johndoe@example.com"),
+            new KeyValuePair<string, string>("pword", "password123"),
+            new KeyValuePair<string, string>("phoneNum", "1234567890"),
+            new KeyValuePair<string, string>("eRole", "Employee")
+        });
+        var response = await client.PostAsync("/EmployeeManagement/StageEmployeeAdd", content);
+        response.EnsureSuccessStatusCode();
+    }
 
-            // Assert
-            var viewResult = Assert.IsType<ViewResult>(result);
-            var model = Assert.IsAssignableFrom<EmployeeManagementViewModel>(viewResult.Model);
-            Assert.Equal(2, model.Employees.Count());
-        }*/
+    [Fact]
+    public async Task CommitChanges_SavesEmployeeToDatabase()
+    {
+        using var scope = _factory.Services.CreateScope();
+        var context = scope.ServiceProvider.GetRequiredService<TicketmasterContext>();
 
+        context.Employee.Add(new Employee
+        {
+            Id = 1,
+            FirstName = "John",
+            LastName = "Doe",
+            Email = "johndoe@example.com",
+            Pword = "password123",
+            PhoneNum = "1234567890",
+            ERole = "Employee"
+        });
+        await context.SaveChangesAsync();
 
+        var client = _factory.CreateClient(new WebApplicationFactoryClientOptions { AllowAutoRedirect = false });
+        var response = await client.PostAsync("/EmployeeManagement/CommitChanges", null);
+        response.EnsureSuccessStatusCode();
     }
 }

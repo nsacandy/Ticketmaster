@@ -28,7 +28,7 @@ public class EmployeeManagementController : Controller
     public EmployeeManagementController(TicketmasterContext context)
     {
         _context = context;
-        var viewModel = new EmployeeManagementViewModel();
+        viewModel = new EmployeeManagementViewModel();
     }
 
 
@@ -141,7 +141,7 @@ public class EmployeeManagementController : Controller
         {
             if (employee.Pword.IsNullOrEmpty())
             {
-                employee.Pword = _context.Employee.Find(employee.Id).Pword;
+                employee.Pword = (await _context.Employee.FindAsync(employee.Id)).Pword;
             }
             else
             {
