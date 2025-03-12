@@ -5,117 +5,35 @@
     ViewData["Title"] = "Project Management";
 }
 
-<div class="container">
-    <div class="row">
-        <!-- Left Side: Group List -->
-        <div class="col-md-5">
-            <h3>Select Groups</h3>
-            <form id="projectForm">
-                <ul class="list-group">
-                    @foreach (var group in Model.Groups)
-                    {
-                        <li class="list-group-item">
-                            <input type="checkbox" name="selectedGroups" value="@group.GroupId" class="group-checkbox" />
-                            @group.GroupName
-                        </li>
-                    }
-                </ul>
-                <button type="button" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#createProjectModal">
-                    Create Project
-                </button>
-            </form>
-        </div>
+<div class="container text-center">
+    <h3 class="d-inline">Projects</h3>
+    <button type="button" class="btn btn-success float-end" id="openCreateProjectModal">
+        +
+    </button>
 
-        <!-- Right Side: Project List -->
-        <div class="col-md-5">
-            <h3>Projects</h3>
-            <ul class="list-group" id="projectList">
-                @foreach (var project in Model.Projects)
-                {
-                    <li class="list-group-item project-item"
-                        data-projectid="@project.ProjectId"
-                        data-projectname="@project.ProjectName"
-                        data-projectdescription="@project.ProjectDescription"
-                        data-involvedgroups="@project.InvolvedGroups">
-                        @project.ProjectName
-                    </li>
-                }
-            </ul>
-        </div>
-    </div>
+    <style>
+        .selected {
+            background-color: #007bff;
+            color: white;
+        }
+    </style>
+
+    <ul class="list-group mx-auto mt-3" style="max-width: 600px;" id="projectList">
+        @foreach (var project in Model.Project)
+        {
+            <li class="list-group-item project-item"
+                data-projectid="@project.ProjectId"
+                data-projectname="@project.ProjectName"
+                data-projectdescription="@project.ProjectDescription"
+                data-involvedgroups="@project.InvolvedGroups"
+                data-projectlead="@project.ProjectLeadId">
+                @project.ProjectName
+            </li>
+        }
+    </ul>
 </div>
 
-<!-- Viewing Project Details -->
-<div class="modal fade" id="projectDetailsModal" tabindex="-1" aria-labelledby="projectDetailsModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="projectDetailsModalLabel">Project Details</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <p><strong>Project ID:</strong> <span id="projectId"></span></p>
-                <p><strong>Project Name:</strong> <span id="projectName"></span></p>
-                <p><strong>Description:</strong> <span id="projectDescription"></span></p>
-                <p><strong>Involved Groups:</strong> <span id="involvedGroups"></span></p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-warning" id="editProjectBtn">Edit</button>
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Editing Project -->
-<div class="modal fade" id="editProjectModal" tabindex="-1" aria-labelledby="editProjectModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="editProjectModalLabel">Edit Project</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="editProjectForm">
-                    <input type="hidden" id="editProjectId" />
-                    <div class="mb-3">
-                        <label for="editProjectName" class="form-label">Project Name</label>
-                        <input type="text" id="editProjectName" class="form-control" required />
-                    </div>
-                    <div class="mb-3">
-                        <label for="editProjectDescription" class="form-label">Project Description</label>
-                        <textarea id="editProjectDescription" class="form-control" required></textarea>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="button" class="btn btn-primary" id="confirmEditBtn">Confirm</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Confirming Edit -->
-<div class="modal fade" id="confirmEditModal" tabindex="-1" aria-labelledby="confirmEditModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Confirm Changes</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <p>Are you sure you want to update this project?</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-success" id="applyEditBtn">Yes, Update</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Creating Project -->
+<!-- Create Project Modal -->
 <div class="modal fade" id="createProjectModal" tabindex="-1" aria-labelledby="createProjectModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -124,16 +42,56 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form asp-action="CreateProject" method="post">
+                <form id="projectCreationForm">
                     <div class="mb-3">
                         <label for="projectName" class="form-label">Project Name</label>
                         <input type="text" id="projectName" name="projectName" class="form-control" required />
                     </div>
+
                     <div class="mb-3">
-                        <label for="projectDescription" class="form-label">Project Description</label>
+                        <label for="projectDescription" class="form-label">Description</label>
                         <textarea id="projectDescription" name="projectDescription" class="form-control" required></textarea>
                     </div>
-                    <input type="hidden" id="selectedGroupIds" name="selectedGroupIds" />
+
+                    <div class="mb-3">
+                        <label class="form-label">Lead</label>
+                        <input type="text" id="projectLeadBox" class="form-control" readonly />
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label class="form-label">Available Groups</label>
+                            <input type="text" id="searchGroup" class="form-control mb-2" placeholder="Search...">
+                            <ul class="list-group" id="availableGroupsList">
+                                @foreach (var group in Model.Groups)
+                                {
+                                    <li class="list-group-item group-item"
+                                        data-groupid="@group.GroupId"
+                                        data-groupname="@group.GroupName"
+                                        data-managerid="@group.ManagerId"
+                                        data-managername="@(group.Manager != null ? group.Manager.Employee.FirstName + " " + group.Manager.Employee.LastName : "No Manager")">
+                                        @group.GroupName
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+
+                        <div class="col-md-2 text-center mt-4">
+                            <button type="button" class="btn btn-secondary mb-2" id="setProjectLeadBtn">L</button><br>
+                            <button type="button" class="btn btn-primary mb-2" id="addGroupBtn">></button><br>
+                            <button type="button" class="btn btn-primary" id="removeGroupBtn"><</button>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="form-label">Project Groups</label>
+                            <ul class="list-group" id="projectGroupsList"></ul>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="form-label">Group Managers</label>
+                            <ul class="list-group" id="groupManagersList"></ul>
+                        </div>
+                    </div>
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -146,70 +104,162 @@
 </div>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        let checkboxes = document.querySelectorAll(".group-checkbox");
-        let selectedGroupIdsInput = document.getElementById("selectedGroupIds");
-        let projectItems = document.querySelectorAll(".project-item");
+        document.addEventListener("DOMContentLoaded", function () {
+        let availableGroupsList = document.getElementById("availableGroupsList");
+        let projectGroupsList = document.getElementById("projectGroupsList");
+        let groupManagersList = document.getElementById("groupManagersList");
+        let projectLeadBox = document.getElementById("projectLeadBox");
+        let selectedGroup = null;
+        let selectedManager = null;
+        let previousLead = null;
 
-        projectItems.forEach(item => {
-            item.addEventListener("dblclick", function () {
-                document.getElementById("projectId").textContent = this.getAttribute("data-projectid");
-                document.getElementById("projectName").textContent = this.getAttribute("data-projectname");
-                document.getElementById("projectDescription").textContent = this.getAttribute("data-projectdescription");
-                document.getElementById("involvedGroups").textContent = this.getAttribute("data-involvedgroups");
+        document.getElementById("openCreateProjectModal").addEventListener("click", function () {
+            new bootstrap.Modal(document.getElementById("createProjectModal")).show();
+        });
 
-                new bootstrap.Modal(document.getElementById("projectDetailsModal")).show();
+        function selectGroup(list, item) {
+            list.querySelectorAll(".list-group-item").forEach(g => g.classList.remove("selected"));
+            item.classList.add("selected");
+            selectedGroup = item;
+        }
+
+        document.querySelectorAll("#availableGroupsList .list-group-item, #projectGroupsList .list-group-item").forEach(item => {
+            item.addEventListener("click", function () {
+                selectGroup(this.parentElement, this);
             });
         });
 
-        document.getElementById("editProjectBtn").addEventListener("click", function () {
-            document.getElementById("editProjectId").value = document.getElementById("projectId").textContent;
-            document.getElementById("editProjectName").value = document.getElementById("projectName").textContent;
-            document.getElementById("editProjectDescription").value = document.getElementById("projectDescription").textContent;
+        document.getElementById("addGroupBtn").addEventListener("click", function () {
+            if (selectedGroup && selectedGroup.parentElement === availableGroupsList) {
+                projectGroupsList.appendChild(selectedGroup);
+                selectedGroup.classList.remove("selected");
 
-            new bootstrap.Modal(document.getElementById("editProjectModal")).show();
-        });
+                let managerName = selectedGroup.getAttribute("data-managername");
+                let managerId = selectedGroup.getAttribute("data-managerid");
+                if (managerName !== "No Manager") {
+                    let managerItem = document.createElement("li");
+                    managerItem.classList.add("list-group-item");
+                    managerItem.setAttribute("data-managerid", managerId);
+                    managerItem.textContent = managerName;
 
-        document.getElementById("confirmEditBtn").addEventListener("click", function () {
-            new bootstrap.Modal(document.getElementById("confirmEditModal")).show();
-        });
+                    groupManagersList.appendChild(managerItem);
+                    attachManagerSelection(managerItem);
+                }
 
-        document.getElementById("applyEditBtn").addEventListener("click", async function () {
-            let projectId = document.getElementById("editProjectId").value;
-            let updatedName = document.getElementById("editProjectName").value;
-            let updatedDescription = document.getElementById("editProjectDescription").value;
-
-            let response = await fetch('/ProjectManagement/EditProject', {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    ProjectId: projectId,
-                    ProjectName: updatedName,
-                    ProjectDescription: updatedDescription
-                })
-            });
-
-            if (response.ok) {
-                location.reload();
-            } else {
-                alert("Error updating project. Try again.");
+                selectedGroup = null;
             }
         });
 
-        checkboxes.forEach(checkbox => {
-            checkbox.addEventListener("change", updateSelectedGroups);
+        document.getElementById("removeGroupBtn").addEventListener("click", function () {
+            if (selectedGroup && selectedGroup.parentElement === projectGroupsList) {
+                availableGroupsList.appendChild(selectedGroup);
+
+                let managerId = selectedGroup.getAttribute("data-managerid");
+                document.querySelector(`#groupManagersList .list-group-item[data-managerid='${managerId}']`)?.remove();
+
+                selectedGroup.classList.remove("selected");
+                selectedGroup = null;
+            }
         });
 
-        function updateSelectedGroups() {
-            let selectedGroups = [];
-
-            checkboxes.forEach(checkbox => {
-                if (checkbox.checked) {
-                    selectedGroups.push(checkbox.value);
-                }
+        function attachManagerSelection(item) {
+            item.addEventListener("click", function () {
+                groupManagersList.querySelectorAll(".list-group-item").forEach(m => m.classList.remove("selected"));
+                item.classList.add("selected");
+                selectedManager = item;
             });
-
-            selectedGroupIdsInput.value = selectedGroups.join(",");
         }
+
+        document.querySelectorAll("#groupManagersList .list-group-item").forEach(item => {
+            attachManagerSelection(item);
+        });
+
+        document.getElementById("setProjectLeadBtn").addEventListener("click", function () {
+            let projectLeadBox = document.getElementById("projectLeadBox");
+
+            if (selectedManager && selectedManager.parentElement === groupManagersList) {
+                if (previousLead) {
+                    groupManagersList.appendChild(previousLead);
+                }
+
+                projectLeadBox.value = selectedManager.textContent;
+                projectLeadBox.setAttribute("data-employeeid", selectedManager.getAttribute("data-managerid"));
+
+                previousLead = selectedManager;
+                selectedManager.remove();
+                selectedManager = null;
+            }
+        });
+
+
+        document.getElementById("projectCreationForm").addEventListener("submit", function (event) {
+            event.preventDefault();
+
+            let projectName = document.getElementById("projectName").value.trim();
+            let projectDescription = document.getElementById("projectDescription").value.trim();
+            let projectLeadElement = document.getElementById("projectLeadBox");
+            let projectLeadId = projectLeadElement && projectLeadElement.hasAttribute("data-employeeid")
+                ? parseInt(projectLeadElement.getAttribute("data-employeeid"))
+                : 0;
+            let selectedGroups = [...document.querySelectorAll("#projectGroupsList .list-group-item")]
+                .map(item => parseInt(item.getAttribute("data-groupid")));
+
+            console.log("Selected Groups:", selectedGroups);
+            if (selectedGroups.length === 0) {
+                alert("You must select at least one group for the project.");
+                return;
+            }
+
+            console.log("Selected Lead ID:", projectLeadId);
+            if (projectLeadId === 0) {
+                alert("You must assign a project lead.");
+                return;
+            }
+
+            let requestData = {
+                projectName: document.getElementById("projectName").value.trim(),
+                projectDescription: document.getElementById("projectDescription").value.trim(),
+                projectLeadId: projectLeadId || 0,
+                involvedGroups: selectedGroups
+            };
+
+            console.log("Sending request data:", requestData);
+
+            if (!requestData.projectName || !requestData.projectDescription) {
+                alert("Please enter a project name and description.");
+                return;
+            }
+
+            if (requestData.projectLeadId === 0) {
+                alert("You must assign a project lead.");
+                return;
+            }
+
+            if (requestData.involvedGroups.length === 0) {
+                alert("You must select at least one group.");
+                return;
+            }
+
+            fetch("/ProjectManagement/CreateProject", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(requestData)
+            })
+            .then(response => response.json().then(data => ({ status: response.status, body: data })))
+            .then(result => {
+                if (result.status === 200) {
+                    alert(result.body.message);
+                    location.reload();
+                } else {
+                    console.error("Request failed:", result.body);
+                    alert("Error creating project: " + (result.body.message || "Unknown error"));
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                alert("Error creating project: " + error.message);
+            });
+        });
     });
+
 </script>
