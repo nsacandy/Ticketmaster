@@ -19,8 +19,8 @@ builder.Services.AddSession(options =>
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
-        options.LoginPath = "/Login/Index"; // Redirect if not authenticated
-        options.AccessDeniedPath = "/Login/Index"; // Redirect if unauthorized
+        options.LoginPath = "/Login/Index"; 
+        options.AccessDeniedPath = "/Home/AccessDenied";
     });
 
 

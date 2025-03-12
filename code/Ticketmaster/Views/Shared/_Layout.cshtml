@@ -2,7 +2,10 @@
         var controller = ViewContext.RouteData.Values["Controller"]?.ToString();
         var action = ViewContext.RouteData.Values["Action"]?.ToString();
         var isLoginPage = controller == "Login" && action == "Index";
+        var isAccessDenied = controller == "Home" && action == "AccessDenied";
+
     }
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -27,7 +30,7 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        @if (!isLoginPage)
+                        @if (!isLoginPage && !isAccessDenied)
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
@@ -66,8 +69,24 @@
             @RenderBody()
         </main>
     </div>
+<div class="modal fade" id="accessDeniedModal" tabindex="-1" aria-labelledby="accessDeniedModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="accessDeniedModalLabel">Access Denied</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                You don’t have permission to access this page.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
 
-    <footer class="border-top footer text-muted">
+<footer class="border-top footer text-muted">
         <div class="container">
             <div class="container">
                 @if (!isLoginPage)
@@ -83,5 +102,6 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
+    
 </body>
 </html>
