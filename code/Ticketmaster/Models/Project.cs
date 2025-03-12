@@ -16,5 +16,8 @@ namespace Ticketmaster.Models
         public string ProjectDescription { get; set; }
 
         public string InvolvedGroups { get; set; }
+
+        public int ProjectLeadId { get; set; }
+
     }
 }
