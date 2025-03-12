@@ -42,7 +42,8 @@ namespace Ticketmaster.Controllers
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, employee.Email),
-                new Claim("Email", employee.Email)
+                new Claim("Email", employee.Email),
+                new Claim(ClaimTypes.Role, employee.ERole) // Store the role
             };
 
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -52,7 +53,7 @@ namespace Ticketmaster.Controllers
 
             if (User.Identity.IsAuthenticated)
             {
-                return RedirectToAction("Index", "Home"); // Redirect to homepage
+                return RedirectToAction("Index", "Home");
             }
             else return RedirectToAction("Index");
         }

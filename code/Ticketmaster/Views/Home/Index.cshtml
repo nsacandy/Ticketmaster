@@ -7,9 +7,11 @@
     <h1 style="font-size: 14px;">(Patent Pending)</h1>
 
     <div class="mt-4">
-        <a class="btn btn-secondary" asp-controller="EmployeeManagement" asp-action="Index">Manage Employees</a>
         <a class="btn btn-secondary" asp-controller="GroupManagement" asp-action="Index">Manage Groups</a>
+        @if (User.IsInRole("admin"))
+        {
+        <a class="btn btn-secondary" asp-controller="EmployeeManagement" asp-action="Index">Manage Employees</a>
+        }
         <a class="btn btn-secondary" asp-controller="ProjectManagement" asp-action="Index">Manage Projects</a>
-
     </div>
 </div>

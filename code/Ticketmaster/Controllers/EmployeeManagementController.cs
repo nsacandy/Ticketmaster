@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Ticketmaster.Data;
 using Ticketmaster.Models;
 using Ticketmaster.Utilities;
@@ -136,6 +137,15 @@ public class EmployeeManagementController : Controller
 
         if (!stagedChanges.Any(employeeChange => employeeChange.Employee.Id == employee.Id))
         {
+            if (employee.Pword.IsNullOrEmpty())
+            {
+                employee.Pword = _context.Employee.Find(employee.Id).Pword;
+            }
+            else
+            {
+                employee.Pword = EmployeePasswordHasher.HashPassword(employee.Pword);
+            }
+
             var change = new EmployeeChange
             {
                 Action = "Edit",
