@@ -10,7 +10,7 @@
         <a class="btn btn-secondary" asp-controller="GroupManagement" asp-action="Index">Manage Groups</a>
         @if (User.IsInRole("admin"))
         {
-        <a class="btn btn-secondary" asp-controller="EmployeeManagement" asp-action="Index">Manage Employees</a>
+            <a class="btn btn-secondary" asp-controller="EmployeeManagement" asp-action="Index">Manage Employees</a>
         }
         <a class="btn btn-secondary" asp-controller="ProjectManagement" asp-action="Index">Manage Projects</a>
     </div>

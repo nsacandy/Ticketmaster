@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -13,6 +14,7 @@ namespace Ticketmaster.Controllers;
 /// Controls the employeeManagement  page.
 /// </summary>
 /// <seealso cref="Microsoft.AspNetCore.Mvc.Controller" />
+ [Authorize(Roles = "admin")]
 public class EmployeeManagementController : Controller
 {
     private readonly TicketmasterContext _context;
