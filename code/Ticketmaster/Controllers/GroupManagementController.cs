@@ -3,6 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using Ticketmaster.Data;
 using Ticketmaster.Models;
 using Ticketmaster.Utilities;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace Ticketmaster.Controllers
 {
@@ -18,7 +21,10 @@ namespace Ticketmaster.Controllers
         public async Task<IActionResult> Index()
         {
             var employees = await _context.Employee.ToListAsync();
-            var groups = await _context.Groups.Include(g => g.Manager).ToListAsync();
+            var groups = await _context.Groups
+                .Include(g => g.Manager)
+                .ThenInclude(m => m.Employee)
+                .ToListAsync();
 
             var viewModel = new GroupManagementViewModel
             {
@@ -30,58 +36,37 @@ namespace Ticketmaster.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateGroup(string groupName, int managerId, string selectedEmployeeIds)
+        public async Task<IActionResult> CreateGroup([FromBody] CreateGroupRequest request)
         {
-            if (string.IsNullOrEmpty(groupName) || managerId == 0 || string.IsNullOrEmpty(selectedEmployeeIds))
+            if (string.IsNullOrEmpty(request.GroupName) || request.ManagerId == 0 || request.EmployeeIds == null || !request.EmployeeIds.Any())
             {
-                TempData["Error"] = "Please provide a group name, select a manager, and select at least one employee.";
-                return RedirectToAction(nameof(Index));
+                return BadRequest(new { message = "Group name, manager, and at least one employee are required." });
             }
 
-            var employeeIds = selectedEmployeeIds.Split(',').Select(int.Parse).ToList();
-            employeeIds.Remove(managerId);
+            var employeeIds = request.EmployeeIds.Distinct().ToList();
+            employeeIds.Remove(request.ManagerId);
 
-            var managerExists = await _context.Set<Manager>().AnyAsync(m => m.ManagerId == managerId);
-
-            if (!managerExists)
+            if (!await _context.Manager.AnyAsync(m => m.ManagerId == request.ManagerId))
             {
-                var newManager = new Manager { ManagerId = managerId };
-                _context.Set<Manager>().Add(newManager);
+                _context.Manager.Add(new Manager { ManagerId = request.ManagerId });
                 await _context.SaveChangesAsync();
             }
 
             var newGroup = new Group
             {
-                GroupName = groupName,
-                ManagerId = managerId,
+                GroupName = request.GroupName,
+                ManagerId = request.ManagerId,
                 EmployeeIds = string.Join(",", employeeIds)
             };
 
             _context.Groups.Add(newGroup);
             await _context.SaveChangesAsync();
 
-            TempData["Success"] = "Group created successfully!";
-            return RedirectToAction(nameof(Index));
+            return Ok(new { message = "Group created successfully!" });
         }
 
         [HttpPost]
-        public async Task<IActionResult> DeleteGroup(int id)
-        {
-            var group = await _context.Groups.FindAsync(id);
-            if (group == null)
-            {
-                return NotFound();
-            }
-
-            _context.Groups.Remove(group);
-            await _context.SaveChangesAsync();
-
-            return Ok();
-        }
-
-        [HttpPost]
-        [HttpPost]
-        public async Task<IActionResult> ChangeManager([FromBody] ChangeManagerRequest request)
+        public async Task<IActionResult> EditGroup([FromBody] EditGroupRequest request)
         {
             var group = await _context.Groups.FindAsync(request.GroupId);
             if (group == null)
@@ -89,40 +74,46 @@ namespace Ticketmaster.Controllers
                 return NotFound();
             }
 
-            int previousManagerId = group.ManagerId ?? 0;
-
-            var managerExists = await _context.Set<Manager>().AnyAsync(m => m.ManagerId == request.NewManagerId);
-            if (!managerExists)
+            if (!string.IsNullOrEmpty(request.GroupName) && request.GroupName != group.GroupName)
             {
-                var newManager = new Manager { ManagerId = request.NewManagerId };
-                _context.Set<Manager>().Add(newManager);
-                await _context.SaveChangesAsync();
+                group.GroupName = request.GroupName;
             }
 
-            var employeeIds = string.IsNullOrEmpty(group.EmployeeIds)
-                ? new List<int>()
-                : group.EmployeeIds.Split(',').Select(int.Parse).ToList();
-
-            employeeIds.Remove(request.NewManagerId);
-
-            if (!employeeIds.Contains(previousManagerId))
+            if (request.ManagerId != 0 && request.ManagerId != group.ManagerId)
             {
-                employeeIds.Add(previousManagerId);
+                var managerExists = await _context.Manager.AnyAsync(m => m.ManagerId == request.ManagerId);
+                if (!managerExists)
+                {
+                    _context.Manager.Add(new Manager { ManagerId = request.ManagerId });
+                    await _context.SaveChangesAsync();
+                }
+                group.ManagerId = request.ManagerId;
             }
 
-            group.ManagerId = request.NewManagerId;
-            group.EmployeeIds = string.Join(",", employeeIds);
+            if (request.EmployeeIds != null && request.EmployeeIds.Count > 0)
+            {
+                request.EmployeeIds.Remove(request.ManagerId);
+                group.EmployeeIds = string.Join(",", request.EmployeeIds);
+            }
 
             await _context.SaveChangesAsync();
 
-            return Ok(new { newEmployeeIds = group.EmployeeIds });
+            return Ok(new { message = "Group updated successfully!" });
         }
+    }
 
-        public class ChangeManagerRequest
-        {
-            public int GroupId { get; set; }
-            public int NewManagerId { get; set; }
-        }
+    public class CreateGroupRequest
+    {
+        public string GroupName { get; set; }
+        public int ManagerId { get; set; }
+        public List<int> EmployeeIds { get; set; }
+    }
 
+    public class EditGroupRequest
+    {
+        public int GroupId { get; set; }
+        public string GroupName { get; set; }
+        public int ManagerId { get; set; }
+        public List<int> EmployeeIds { get; set; }
     }
 }
