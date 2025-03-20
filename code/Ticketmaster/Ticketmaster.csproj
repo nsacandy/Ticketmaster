@@ -29,4 +29,8 @@
     <None Include="Views\Home\AccessDenied.cshtml" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
 </Project>

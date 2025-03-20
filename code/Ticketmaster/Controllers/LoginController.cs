@@ -6,6 +6,7 @@ using Ticketmaster.Data;
 using Microsoft.AspNetCore.Authentication;
 using Ticketmaster.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Ticketmaster.Utilities;
 
 namespace Ticketmaster.Controllers
@@ -28,15 +29,19 @@ namespace Ticketmaster.Controllers
         {
             var employee = await _context.Employee.FirstOrDefaultAsync(e => e.Email == email);
 
-            if (email.Equals("nate@thegreat.com") && (password.Equals("nate")))
+            if (email.Equals("nate@thegreat.com") && password.Equals("nate"))
             {
-                return RedirectToAction("Index", "Home"); // Redirect to homepage
-            }
+                // Simulate an admin employee for development purposes
+                var devAdmin = new Employee
+                {
+                    Email = "nate@thegreat.com",
+                    ERole = "admin"
+                };
 
-            if (employee == null || !VerifyPassword(password, employee.Pword)) 
-            {
-                TempData["error"] = "invalid credentials.";
-                return RedirectToAction("index");
+                // Set session/cookie/whatever you use to persist login state
+                HttpContext.Session.SetString("UserRole", devAdmin.ERole);
+
+                return RedirectToAction("Index", controllerName:"Home");  // Or wherever you send users after login
             }
 
             var claims = new List<Claim>
