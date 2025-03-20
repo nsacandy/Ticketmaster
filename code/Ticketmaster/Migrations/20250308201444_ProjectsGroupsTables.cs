@@ -29,7 +29,7 @@ namespace Ticketmaster.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Projects",
+                name: "Project",
                 columns: table => new
                 {
                     ProjectId = table.Column<int>(type: "int", nullable: false)

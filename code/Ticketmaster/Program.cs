@@ -1,17 +1,23 @@
+using System.Diagnostics.Tracing;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;
 using Ticketmaster.Data;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<TicketmasterContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("TicketmasterContext") ?? throw new InvalidOperationException("Connection string 'TicketmasterContext' not found.")));
+{
+    options.ConfigureWarnings(warnings => warnings.Ignore(RelationalEventId.PendingModelChangesWarning));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("TicketmasterContext") ??
+                         throw new InvalidOperationException("Connection string 'TicketmasterContext' not found."));
+});
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddDistributedMemoryCache(); 
+builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
 {
-    options.IdleTimeout = TimeSpan.FromMinutes(30); 
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
@@ -19,11 +25,9 @@ builder.Services.AddSession(options =>
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
-        options.LoginPath = "/Login/Index"; 
+        options.LoginPath = "/Login/Index";
         options.AccessDeniedPath = "/Home/AccessDenied";
     });
-
-
 
 var app = builder.Build();
 
