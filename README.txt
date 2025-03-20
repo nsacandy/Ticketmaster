@@ -1,67 +1,51 @@
-----------------------------------------------------------------------------------
+Ticketmaster Database Setup Instructions
 
-DATABASE ACCESS INSTRUCTIONS
+Step 1: Verify LocalDB Installation
 
-Step 1: Verify that LocalDB is installed
+1. Open Command Prompt and run:
 
-Open cmd and run:
+    sqllocaldb info
 
-	sqllocaldb info
+2. If installed, it should list instances like:
 
-If installed, it will list instances like:
+    MSSQLLocalDB
 
-	MSSQLLocalDB
+3. If MSSQLLocalDB isn't listed, start it with:
 
-If MSSQLLocalDB isn't listed, start it via:
+    sqllocaldb start MSSQLLocalDB
 
-	sqllocaldb start MSSQLLocalDB
+------------------------------------------------------------
 
-----------------------------------------------------------------------------------
+Step 2: Install Required Packages
 
-Step 2: In Visual Studio's nuget package manager, run the following commands:
+In Visual Studio's Package Manager Console, run:
 
-	Install-Package Microsoft.EntityFrameworkCore
-	Install-Package Microsoft.EntityFrameworkCore.SqlServer
-	Install-Package Microsoft.EntityFrameworkCore.Tools
-	Install-Package Microsoft.EntityFrameworkCore.Design
-	Install-Package Microsoft.EntityFrameworkCore.Relational
+    Install-Package Microsoft.EntityFrameworkCore
+    Install-Package Microsoft.EntityFrameworkCore.SqlServer
+    Install-Package Microsoft.EntityFrameworkCore.Tools
+    Install-Package Microsoft.EntityFrameworkCore.Design
+    Install-Package Microsoft.EntityFrameworkCore.Relational
 
-----------------------------------------------------------------------------------
+------------------------------------------------------------
 
-Step 3: Verify the database exists
+Step 3: Build the Database
 
-Open cmd as an admin and type:
+1. In Visual Studio's Package Manager Console, run:
 
-	sqlcmd -S (localdb)\MSSQLLocalDB -E
+    dotnet ef migrations add InitialCreate
+    dotnet ef database update
 
-Once the SQL query prompt comes up, type:
+This will create the database and seed the admin user automatically.
 
-	SELECT name FROM sys.databases;
-	GO
+------------------------------------------------------------
 
-Make sure your database is listed. If not, open Nuget package manager in visual studio, 
-and run the following command:
+Step 4: Log in as Admin
 
-	Update-Database
+Once the database is set up, use these credentials to log in:
 
-----------------------------------------------------------------------------------
+    Email: admin@ticketmaster.com
+    Password: AdminPass123
 
-Step 4: Add yourself as an admin.
+------------------------------------------------------------
 
-	sqlcmd -S (localdb)\MSSQLLocalDB -E
-
-Once the SQL query prompt comes up, type:
-
-	
-	CREATE LOGIN [insert computer name here\insert computer user here] FROM WINDOWS;
-	ALTER SERVER ROLE sysadmin ADD MEMBER [insert computer name here\insert computer user here];
-	exit
-
-----------------------------------------------------------------------------------
-
-Step 5: Restart the DB
-
-	sqllocaldb stop MSSQLLocalDB
-	sqllocaldb start MSSQLLocalDB
-
-----------------------------------------------------------------------------------
+That’s it! The database should be up and running, with the admin account ready for use.
