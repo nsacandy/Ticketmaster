@@ -8,9 +8,11 @@ using Ticketmaster.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Ticketmaster.Utilities;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Ticketmaster.Controllers
 {
+    [AllowAnonymous]
     public class LoginController : Controller
     {
         private readonly TicketmasterContext _context;
@@ -28,22 +30,10 @@ namespace Ticketmaster.Controllers
         public async Task<IActionResult> Login(string email, string password)
         {
             var employee = await _context.Employee.FirstOrDefaultAsync(e => e.Email == email);
-
-            if (email.Equals("nate@thegreat.com") && password.Equals("nate"))
+            if (employee == null)
             {
-                // Simulate an admin employee for development purposes
-                var devAdmin = new Employee
-                {
-                    Email = "nate@thegreat.com",
-                    ERole = "admin"
-                };
-
-                // Set session/cookie/whatever you use to persist login state
-                HttpContext.Session.SetString("UserRole", devAdmin.ERole);
-
-                return RedirectToAction("Index", controllerName:"Home");  // Or wherever you send users after login
+               return RedirectToAction("AccessDenied", "Home");
             }
-
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, employee.Email),
@@ -60,7 +50,7 @@ namespace Ticketmaster.Controllers
             {
                 return RedirectToAction("Index", "Home");
             }
-            else return RedirectToAction("Index");
+            else return RedirectToAction("AccessDenied", "Home");
         }
 
         private bool VerifyPassword(String password, string hashedPassword)

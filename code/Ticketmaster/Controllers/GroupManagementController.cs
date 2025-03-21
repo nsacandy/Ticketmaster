@@ -6,9 +6,12 @@ using Ticketmaster.Utilities;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Ticketmaster.Controllers
 {
+    [Authorize(Roles = "admin,standard")]
+
     public class GroupManagementController : Controller
     {
         private readonly TicketmasterContext _context;

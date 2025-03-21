@@ -7,9 +7,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Ticketmaster.Controllers
 {
+    [Authorize(Roles = "admin,standard")]
+
     public class ProjectManagementController : Controller
     {
         private readonly TicketmasterContext _context;

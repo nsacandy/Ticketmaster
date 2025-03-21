@@ -13,7 +13,10 @@ builder.Services.AddDbContext<TicketmasterContext>(options =>
 });
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews(options =>
+{
+    options.Filters.Add(new Microsoft.AspNetCore.Mvc.Authorization.AuthorizeFilter());
+});
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
 {
