@@ -6,24 +6,37 @@ using Ticketmaster.Data;
 using Ticketmaster.Models;
 using Microsoft.EntityFrameworkCore;
 using Xunit;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
 
 namespace Ticketmaster.Tests;
 
-public class EmployeeManagementIntegrationTests : IClassFixture<WebApplicationFactory<Program>>
+public class EmployeeManagementIntegrationTests
 {
-    private readonly WebApplicationFactory<Program> _factory;
 
-    public EmployeeManagementIntegrationTests(WebApplicationFactory<Program> factory)
+    public EmployeeManagementIntegrationTests(WebApplicationFactory)
     {
-        _factory = factory.WithWebHostBuilder(builder =>
+        var builder = WebApplication.CreateBuilder(args);
+        builder.Services.AddDbContext<TicketmasterContext>(options =>
+            options.UseSqlServer(builder.Configuration.GetConnectionString("TicketmasterContext") ?? throw new InvalidOperationException("Connection string 'TicketmasterContext' not found.")));
+
+        // Add services to the container.
+        builder.Services.AddControllersWithViews();
+        builder.Services.AddDistributedMemoryCache();
+        builder.Services.AddSession(options =>
         {
-            builder.ConfigureServices(services =>
-            {
-                var descriptor = services.SingleOrDefault(d => d.ServiceType == typeof(DbContextOptions<TicketmasterContext>));
-                if (descriptor != null) services.Remove(descriptor);
-                services.AddDbContext<TicketmasterContext>(options => options.UseInMemoryDatabase("TestDb"));
-            });
+            options.IdleTimeout = TimeSpan.FromMinutes(30);
+            options.Cookie.HttpOnly = true;
+            options.Cookie.IsEssential = true;
         });
+
+        builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+            .AddCookie(options =>
+            {
+                options.LoginPath = "/Login/Index";
+                options.AccessDeniedPath = "/Home/AccessDenied";
+            });
     }
 
     [Fact]
