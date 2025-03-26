@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Ticketmaster.Data;
 
@@ -10,9 +11,11 @@ using Ticketmaster.Data;
 namespace Ticketmaster.Migrations
 {
     [DbContext(typeof(TicketmasterContext))]
-    partial class TicketmasterContextModelSnapshot : ModelSnapshot
+    [Migration("20250320191431_SecondaryCreate")]
+    partial class SecondaryCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -73,7 +76,7 @@ namespace Ticketmaster.Migrations
                             FirstName = "Admin",
                             LastName = "User",
                             PhoneNum = "123-456-7890",
-                            Pword = "AQAAAAIAAYagAAAAEOfJutc11x46Shi1uOq6zdozoRZUrzN6wgA0uuTG6gBR3xTV7iDuo3tDZWwj/t/r5A=="
+                            Pword = "AQAAAAIAAYagAAAAELKC5cm4ZxIaVm1ZYZkV2iNRjc8Fji9hPJRKWg5+cU8krHyxxkuunzWDvA1KAv0Jfg=="
                         });
                 });
 

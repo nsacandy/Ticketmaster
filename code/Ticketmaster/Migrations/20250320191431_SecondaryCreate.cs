@@ -5,7 +5,7 @@
 namespace Ticketmaster.Migrations
 {
     /// <inheritdoc />
-    public partial class ProjectsGroupsTables : Migration
+    public partial class SecondaryCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -29,18 +29,19 @@ namespace Ticketmaster.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Projects",
+                name: "Project",
                 columns: table => new
                 {
                     ProjectId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ProjectName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     ProjectDescription = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    InvolvedGroups = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    InvolvedGroups = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ProjectLeadId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Projects", x => x.ProjectId);
+                    table.PrimaryKey("PK_Project", x => x.ProjectId);
                 });
 
             migrationBuilder.CreateTable(
@@ -80,6 +81,11 @@ namespace Ticketmaster.Migrations
                         principalColumn: "ManagerId");
                 });
 
+            migrationBuilder.InsertData(
+                table: "Employee",
+                columns: new[] { "Id", "ERole", "Email", "FirstName", "LastName", "PhoneNum", "Pword" },
+                values: new object[] { 1, "admin", "admin@ticketmaster.com", "Admin", "User", "123-456-7890", "AQAAAAIAAYagAAAAELKC5cm4ZxIaVm1ZYZkV2iNRjc8Fji9hPJRKWg5+cU8krHyxxkuunzWDvA1KAv0Jfg==" });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Groups_ManagerId",
                 table: "Groups",
@@ -93,7 +99,7 @@ namespace Ticketmaster.Migrations
                 name: "Groups");
 
             migrationBuilder.DropTable(
-                name: "Projects");
+                name: "Project");
 
             migrationBuilder.DropTable(
                 name: "Manager");

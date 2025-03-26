@@ -7,9 +7,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Ticketmaster.Controllers
 {
+    [Authorize(Roles = "admin,standard")]
+
     public class ProjectManagementController : Controller
     {
         private readonly TicketmasterContext _context;
@@ -38,14 +41,12 @@ namespace Ticketmaster.Controllers
         {
             try
             {
-                // Log incoming request data
                 Console.WriteLine($"Received CreateProject request: " +
                     $"Name={request?.ProjectName}, " +
                     $"Description={request?.ProjectDescription}, " +
                     $"LeadId={request?.ProjectLeadId}, " +
                     $"Groups={(request?.InvolvedGroups != null ? string.Join(",", request.InvolvedGroups) : "NULL")}");
 
-                // Debug: Log received data
                 Console.WriteLine($"Received request - Name: {request?.ProjectName}, Desc: {request?.ProjectDescription}, LeadId: {request?.ProjectLeadId}, Groups: {string.Join(",", request?.InvolvedGroups ?? new List<int>())}");
 
                 if (request == null)
@@ -84,10 +85,64 @@ namespace Ticketmaster.Controllers
             }
         }
 
+        [HttpPost]
+        public async Task<IActionResult> EditProject([FromBody] EditProjectRequest request)
+        {
+            try
+            {
+                var project = await _context.Project.FindAsync(request.ProjectId);
+                if (project == null)
+                {
+                    return NotFound(new { message = "Project not found." });
+                }
+
+                if (!string.IsNullOrEmpty(request.ProjectName) && request.ProjectName != project.ProjectName)
+                {
+                    project.ProjectName = request.ProjectName;
+                }
+
+                if (!string.IsNullOrEmpty(request.ProjectDescription) && request.ProjectDescription != project.ProjectDescription)
+                {
+                    project.ProjectDescription = request.ProjectDescription;
+                }
+
+                if (request.ProjectLeadId != 0 && request.ProjectLeadId != project.ProjectLeadId)
+                {
+                    var leadExists = await _context.Employee.AnyAsync(e => e.Id == request.ProjectLeadId);
+                    if (!leadExists)
+                    {
+                        return BadRequest(new { message = "Invalid Project Lead." });
+                    }
+                    project.ProjectLeadId = request.ProjectLeadId;
+                }
+
+                if (request.InvolvedGroups != null && request.InvolvedGroups.Count > 0)
+                {
+                    project.InvolvedGroups = string.Join(",", request.InvolvedGroups);
+                }
+
+                await _context.SaveChangesAsync();
+
+                return Ok(new { message = "Project updated successfully!" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "An internal server error occurred.", details = ex.Message });
+            }
+        }
     }
 
     public class CreateProjectRequest
     {
+        public string ProjectName { get; set; }
+        public string ProjectDescription { get; set; }
+        public int ProjectLeadId { get; set; }
+        public List<int> InvolvedGroups { get; set; }
+    }
+
+    public class EditProjectRequest
+    {
+        public int ProjectId { get; set; }
         public string ProjectName { get; set; }
         public string ProjectDescription { get; set; }
         public int ProjectLeadId { get; set; }

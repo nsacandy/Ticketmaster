@@ -6,10 +6,13 @@ using Ticketmaster.Data;
 using Microsoft.AspNetCore.Authentication;
 using Ticketmaster.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Ticketmaster.Utilities;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Ticketmaster.Controllers
 {
+    [AllowAnonymous]
     public class LoginController : Controller
     {
         private readonly TicketmasterContext _context;
@@ -27,18 +30,10 @@ namespace Ticketmaster.Controllers
         public async Task<IActionResult> Login(string email, string password)
         {
             var employee = await _context.Employee.FirstOrDefaultAsync(e => e.Email == email);
-
-            if (email.Equals("nate@thegreat.com") && (password.Equals("nate")))
+            if (employee == null)
             {
-                return RedirectToAction("Index", "Home"); // Redirect to homepage
+               return RedirectToAction("AccessDenied", "Home");
             }
-
-            if (employee == null || !VerifyPassword(password, employee.Pword)) 
-            {
-                TempData["error"] = "invalid credentials.";
-                return RedirectToAction("index");
-            }
-
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, employee.Email),
@@ -55,7 +50,7 @@ namespace Ticketmaster.Controllers
             {
                 return RedirectToAction("Index", "Home");
             }
-            else return RedirectToAction("Index");
+            else return RedirectToAction("AccessDenied", "Home");
         }
 
         private bool VerifyPassword(String password, string hashedPassword)
