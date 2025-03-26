@@ -14,30 +14,30 @@ using Microsoft.Extensions.Configuration;
 public class EmployeeManagementController
 {
 
-    public EmployeeManagementIntegrationTests(WebApplicationFactory)
-    {
-        var builder = WebApplication.CreateBuilder(args);
-        builder.Services.AddDbContext<TicketmasterContext>(options =>
-            options.UseSqlServer(builder.Configuration.GetConnectionString("TicketmasterContext") ?? throw new InvalidOperationException("Connection string 'TicketmasterContext' not found.")));
+    //public void EmployeeManagementIntegrationTests(WebApplicationFactory)
+    //{
+    //    var builder = WebApplication.CreateBuilder(args);
+    //    builder.Services.AddDbContext<TicketmasterContext>(options =>
+    //        options.UseSqlServer(builder.Configuration.GetConnectionString("TicketmasterContext") ?? throw new InvalidOperationException("Connection string 'TicketmasterContext' not found.")));
 
-        // Add services to the container.
-        builder.Services.AddControllersWithViews();
-        builder.Services.AddDistributedMemoryCache();
-        builder.Services.AddSession(options =>
-        {
-            options.IdleTimeout = TimeSpan.FromMinutes(30);
-            options.Cookie.HttpOnly = true;
-            options.Cookie.IsEssential = true;
-        });
+    //    // Add services to the container.
+    //    builder.Services.AddControllersWithViews();
+    //    builder.Services.AddDistributedMemoryCache();
+    //    builder.Services.AddSession(options =>
+    //    {
+    //        options.IdleTimeout = TimeSpan.FromMinutes(30);
+    //        options.Cookie.HttpOnly = true;
+    //        options.Cookie.IsEssential = true;
+    //    });
 
-        builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-            .AddCookie(options =>
-            {
-                options.LoginPath = "/Login/Index";
-                options.AccessDeniedPath = "/Home/AccessDenied";
-            });
+    //    builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    //        .AddCookie(options =>
+    //        {
+    //            options.LoginPath = "/Login/Index";
+    //            options.AccessDeniedPath = "/Home/AccessDenied";
+    //        });
 
-    }
+    //}
 
 //    [Fact]
 //    public async Task Index_ReturnsSuccessAndCorrectView()
