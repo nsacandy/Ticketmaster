@@ -6,18 +6,38 @@ using Ticketmaster.Data;
 using Ticketmaster.Models;
 using Microsoft.EntityFrameworkCore;
 using Xunit;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
 
-namespace Ticketmaster.Tests.EmployeeManagementController
+
+public class EmployeeManagementController
 {
 
-    public class EmployeeManagementIntegrationTests
-    {
-        private readonly WebApplicationFactory<Program> _factory;
+    //public void EmployeeManagementIntegrationTests(WebApplicationFactory)
+    //{
+    //    var builder = WebApplication.CreateBuilder(args);
+    //    builder.Services.AddDbContext<TicketmasterContext>(options =>
+    //        options.UseSqlServer(builder.Configuration.GetConnectionString("TicketmasterContext") ?? throw new InvalidOperationException("Connection string 'TicketmasterContext' not found.")));
 
-        public EmployeeManagementIntegrationTests(WebApplicationFactory<Program> factory)
-        {
-            var server = new WebApplicationFactory<>()
-        }
+    //    // Add services to the container.
+    //    builder.Services.AddControllersWithViews();
+    //    builder.Services.AddDistributedMemoryCache();
+    //    builder.Services.AddSession(options =>
+    //    {
+    //        options.IdleTimeout = TimeSpan.FromMinutes(30);
+    //        options.Cookie.HttpOnly = true;
+    //        options.Cookie.IsEssential = true;
+    //    });
+
+    //    builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    //        .AddCookie(options =>
+    //        {
+    //            options.LoginPath = "/Login/Index";
+    //            options.AccessDeniedPath = "/Home/AccessDenied";
+    //        });
+
+    //}
 
         [Fact]
         public async Task Get_EmployeeManagement()
@@ -90,10 +110,9 @@ namespace Ticketmaster.Tests.EmployeeManagementController
             Assert.Contains("Test Employee Updated", responseString);
         }
 
-        [Fact]
-        public async Task Get_EmployeeManagement_Delete()
-        {
-            // Arrange
-        }
+//        var client = _factory.CreateClient(new WebApplicationFactoryClientOptions { AllowAutoRedirect = false });
+//        var response = await client.PostAsync("/EmployeeManagement/CommitChanges", null);
+//        response.EnsureSuccessStatusCode();
+//    }
+//}
     }
-}

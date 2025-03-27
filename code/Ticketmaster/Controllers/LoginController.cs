@@ -46,7 +46,7 @@ namespace Ticketmaster.Controllers
 
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
 
-            if (User.Identity.IsAuthenticated)
+            if (claimsIdentity.IsAuthenticated)
             {
                 return RedirectToAction("Index", "Home");
             }
@@ -62,6 +62,7 @@ namespace Ticketmaster.Controllers
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            
             return RedirectToAction("Index");
         }
     }

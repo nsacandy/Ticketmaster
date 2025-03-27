@@ -28,10 +28,11 @@
                 data-managername="@(group.Manager != null ? group.Manager.Employee.FirstName + " " + group.Manager.Employee.LastName : "No Manager")"
                 data-employeeids="@group.EmployeeIds"
                 data-employeenames="@(string.Join(", ", Model.Employees.Where(e => group.EmployeeIds.Split(',').Contains(e.Id.ToString())).Select(e => e.FirstName + " " + e.LastName)))">
-                @group.GroupName
+                @group.GroupName @(group.Manager != null ? $"({group.Manager.Employee.FirstName} {group.Manager.Employee.LastName})" : "")
             </li>
         }
     </ul>
+
 </div>
 
 <!-- Create Group Modal -->
