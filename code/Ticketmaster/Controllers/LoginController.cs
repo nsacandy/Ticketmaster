@@ -30,9 +30,9 @@ namespace Ticketmaster.Controllers
         public async Task<IActionResult> Login(string email, string password)
         {
             var employee = await _context.Employee.FirstOrDefaultAsync(e => e.Email == email);
-            if (employee == null)
+            if (employee == null || !VerifyPassword(password, employee.Pword))
             {
-               return RedirectToAction("AccessDenied", "Home");
+                return LocalRedirect("/Home/AccessDenied");
             }
             var claims = new List<Claim>
             {
