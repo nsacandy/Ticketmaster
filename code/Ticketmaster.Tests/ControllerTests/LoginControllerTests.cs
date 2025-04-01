@@ -82,13 +82,41 @@ public class LoginControllerTests : IDisposable
     }
 
     [Fact]
-    public async Task SuccessfulLogin()
+    public async Task SuccessfulLoginGoesToHomePage()
     {
         var result = await _loginController.Login("hank@hill.com", "hank");
 
         var redirectResult = Assert.IsType<RedirectToActionResult>(result);
         Assert.Equal("Index", redirectResult.ActionName);
         Assert.Equal("Home", redirectResult.ControllerName);
+    }
+
+    [Fact]
+    public async Task TestLogoutReturnsToIndex()
+    {
+        await _loginController.Login("hank@hill.com", "hank");
+
+        var result = await _loginController.Logout();
+        var redirectResult = Assert.IsType<RedirectToActionResult>(result);
+        Assert.Equal("Index", redirectResult.ActionName);
+    }
+
+    [Fact]
+    public async Task TestGetIndex()
+    {
+        var result = _loginController.Index();
+        var redirectResult = Assert.IsType<ViewResult>(result);
+    }
+
+    [Fact]
+    public async Task FailLoginStaysOnLogin()
+    {
+        var result = await _loginController.Login("hank@hill.com", "Spank");
+
+        var viewResult = Assert.IsType<ViewResult>(result);
+        Assert.Equal("Index", viewResult.ViewName);
+        Assert.True(_loginController.ViewData.ContainsKey("LoginError"));
+        Assert.Equal("Invalid email or password.", _loginController.ViewData["LoginError"]);
     }
 
     public void Dispose()
