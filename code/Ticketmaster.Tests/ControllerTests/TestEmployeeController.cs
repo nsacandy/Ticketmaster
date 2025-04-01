@@ -8,6 +8,7 @@ using Moq;
 using Ticketmaster.Controllers;
 using Ticketmaster.Data;
 using Microsoft.AspNetCore.Mvc.Routing;
+using Ticketmaster.Models;
 using Ticketmaster.Utilities;
 
 namespace Ticketmaster.Tests.ControllerTests;
@@ -76,6 +77,26 @@ public class TestEmployeeController
         Assert.Single(stagedChanges);
         Assert.Equal("Bob", stagedChanges[0].Employee.FirstName);
     }
+
+    //[Fact]
+    //public async Task StageEmployeeDelete()
+    //{
+    //    // Arrange
+    //    var employee = new Employee { Id = 101, FirstName = "Bob", LastName = "Builder" };
+    //    await _context.Employee.AddAsync(employee);
+    //    await _context.SaveChangesAsync();
+    //    // Act
+    //    var result = await _controller.StageEmployeeDelete(employee);
+    //    // Assert
+    //    var redirect = Assert.IsType<RedirectToActionResult>(result);
+    //    Assert.Equal("Index", redirect.ActionName);
+    //    Assert.True(_controller.TempData.ContainsKey("Success"));
+    //    var stagedChanges = _httpContext.Session.GetObjectFromJson<List<EmployeeManagementController.EmployeeChange>>("StagedChanges");
+    //    Assert.Single(stagedChanges);
+    //    Assert.Equal("Delete", stagedChanges[0].Action);
+    //    Assert.Equal("Bob", stagedChanges[0].Employee.FirstName);
+    //}
+
 
     private class DummySession : ISession
     {
