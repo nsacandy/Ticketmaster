@@ -130,6 +130,22 @@ namespace Ticketmaster.Controllers
                 return StatusCode(500, new { message = "An internal server error occurred.", details = ex.Message });
             }
         }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteProject([FromBody] DeleteProjectRequest request)
+        {
+            var project = await _context.Project.FindAsync(request.ProjectId);
+            if (project == null)
+            {
+                return NotFound(new { message = "Project not found." });
+            }
+
+            _context.Project.Remove(project);
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "Project deleted successfully!" });
+        }
+
     }
 
     public class CreateProjectRequest
@@ -147,6 +163,11 @@ namespace Ticketmaster.Controllers
         public string ProjectDescription { get; set; }
         public int ProjectLeadId { get; set; }
         public List<int> InvolvedGroups { get; set; }
+    }
+
+    public class DeleteProjectRequest
+    {
+        public int ProjectId { get; set; }
     }
 
 }
