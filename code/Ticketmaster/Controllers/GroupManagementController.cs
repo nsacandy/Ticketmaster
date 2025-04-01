@@ -103,6 +103,21 @@ namespace Ticketmaster.Controllers
 
             return Ok(new { message = "Group updated successfully!" });
         }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteGroup([FromBody] DeleteGroupRequest request)
+        {
+            var group = await _context.Groups.FindAsync(request.GroupId);
+            if (group == null)
+            {
+                return NotFound(new { message = "Group not found." });
+            }
+
+            _context.Groups.Remove(group);
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "Group deleted successfully!" });
+        }
     }
 
     public class CreateGroupRequest
@@ -118,5 +133,9 @@ namespace Ticketmaster.Controllers
         public string GroupName { get; set; }
         public int ManagerId { get; set; }
         public List<int> EmployeeIds { get; set; }
+    }
+    public class DeleteGroupRequest
+    {
+        public int GroupId { get; set; }
     }
 }
