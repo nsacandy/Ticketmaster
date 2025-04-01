@@ -120,7 +120,7 @@ public class EmployeeManagementController : Controller
         }
 
         TempData["Success"] = "Employee staged successfully!";
-        return RedirectToAction(nameof(Index));
+        return RedirectToAction("Index");
     }
 
 
