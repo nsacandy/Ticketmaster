@@ -21,13 +21,19 @@
     <ul class="list-group mx-auto mt-3" style="max-width: 600px;" id="projectList">
         @foreach (var project in Model.Project)
         {
+            var lead = Model.Groups
+            .FirstOrDefault(g => g.ManagerId == project.ProjectLeadId)?
+            .Manager?.Employee;
+
+            var leadFullName = lead != null ? $"{lead.FirstName} {lead.LastName}" : "";
+
             <li class="list-group-item project-item"
                 data-projectid="@project.ProjectId"
                 data-projectname="@project.ProjectName"
                 data-projectdescription="@project.ProjectDescription"
                 data-involvedgroups="@project.InvolvedGroups"
                 data-projectlead="@project.ProjectLeadId">
-                @project.ProjectName
+                @project.ProjectName @(string.IsNullOrEmpty(leadFullName) ? "" : $"({leadFullName})")
             </li>
         }
     </ul>
