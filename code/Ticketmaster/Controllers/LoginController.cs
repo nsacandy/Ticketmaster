@@ -32,13 +32,15 @@ namespace Ticketmaster.Controllers
             var employee = await _context.Employee.FirstOrDefaultAsync(e => e.Email == email);
             if (employee == null || !VerifyPassword(password, employee.Pword))
             {
-                return LocalRedirect("/Home/AccessDenied");
+                ViewData["LoginError"] = "Invalid email or password.";
+                return View("Index"); // Stay on login page
             }
+
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, employee.Email),
                 new Claim("Email", employee.Email),
-                new Claim(ClaimTypes.Role, employee.ERole) // Store the role
+                new Claim(ClaimTypes.Role, employee.ERole)
             };
 
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -46,11 +48,7 @@ namespace Ticketmaster.Controllers
 
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
 
-            if (claimsIdentity.IsAuthenticated)
-            {
-                return RedirectToAction("Index", "Home");
-            }
-            else return RedirectToAction("AccessDenied", "Home");
+            return RedirectToAction("Index", "Home");
         }
 
         private bool VerifyPassword(String password, string hashedPassword)

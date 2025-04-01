@@ -3,7 +3,7 @@
         var action = ViewContext.RouteData.Values["Action"]?.ToString();
         var isLoginPage = controller == "Login" && action == "Index";
         var isAccessDenied = controller == "Home" && action == "AccessDenied";
-
+		var isFailedLogin = controller == "Login" && ViewData["LoginError"] != null;
     }
 
 <!DOCTYPE html>
@@ -30,7 +30,7 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        @if (!isLoginPage && !isAccessDenied)
+                        @if (!isLoginPage && !isAccessDenied && !isFailedLogin)
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
@@ -50,7 +50,7 @@
                         }
                         <li class="nav-item">
 
-                            @if (!isLoginPage)
+                            @if (!isLoginPage && !isFailedLogin)
                             {
                                 <form method="post" asp-controller="Login" asp-action="Logout">
                                     <button type="submit" class="btn btn-danger">Sign Out</button>

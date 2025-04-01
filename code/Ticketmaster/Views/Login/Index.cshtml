@@ -11,10 +11,13 @@
         <label>Username (email)</label>
         <input type="email" name="Email"  required="true"/>
     </p>
-
     <p>
         <label>Password</label>
         <input type="password" name="Password" required="true"/>
     </p>
     <button type="submit">Login</button>
 </form>
+    @if (ViewData["LoginError"] != null)
+    {
+	    <span class="text-danger">Invalid username or password</span>	    
+    }

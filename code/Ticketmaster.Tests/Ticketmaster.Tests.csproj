@@ -4,7 +4,9 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-
+	<IsCollectCoverage>true</IsCollectCoverage>
+	<CoverletOutputFormat>cobertura</CoverletOutputFormat>
+	<CoverletOutput>./TestResults/</CoverletOutput>
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
   </PropertyGroup>
