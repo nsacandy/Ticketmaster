@@ -430,6 +430,10 @@
                     console.error("Request failed:", result.body);
                     errorDiv.textContent = result.body.message || "Error deleting group.";
                     errorDiv.classList.remove("d-none");
+
+                    setTimeout(() => {
+                        errorDiv.classList.add("d-none");
+                    }, 3000);
                 }
             })
             .catch(error => {
@@ -437,6 +441,10 @@
                 const errorDiv = document.getElementById("deleteGroupError");
                 errorDiv.textContent = "Error deleting group: " + error.message;
                 errorDiv.classList.remove("d-none");
+
+                setTimeout(() => {
+                    errorDiv.classList.add("d-none");
+                }, 3000);
             });
         });
     });
