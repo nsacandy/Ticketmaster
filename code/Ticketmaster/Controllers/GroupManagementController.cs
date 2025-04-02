@@ -10,17 +10,35 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Ticketmaster.Controllers
 {
-    [Authorize(Roles = "admin,standard")]
 
+    /// <summary>
+    /// Controller responsible for managing employee groups within the system,
+    /// including creation, editing, and deletion of groups.
+    /// </summary>
+    /// <remarks>
+    /// Groups are associated with managers and employees. Only users with roles
+    /// "admin" or "standard" are authorized to access these endpoints.
+    /// </remarks>
+    /// <author>Nate Schaab</author>
+    /// <email>nschaab@my.westga.edu</email>
+    [Authorize(Roles = "admin,standard")]
     public class GroupManagementController : Controller
     {
         private readonly TicketmasterContext _context;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GroupManagementController"/> class.
+        /// </summary>
+        /// <param name="context">The application's database context.</param>
         public GroupManagementController(TicketmasterContext context)
         {
             _context = context;
         }
 
+        /// <summary>
+        /// Loads the group management view with a list of employees and their group assignments.
+        /// </summary>
+        /// <returns>The group management view.</returns>
         public async Task<IActionResult> Index()
         {
             var employees = await _context.Employee.ToListAsync();
@@ -38,6 +56,11 @@ namespace Ticketmaster.Controllers
             return View(viewModel);
         }
 
+        /// <summary>
+        /// Creates a new group with the specified name, manager, and list of employees.
+        /// </summary>
+        /// <param name="request">The group creation request containing group name, manager ID, and employee IDs.</param>
+        /// <returns>A success message or a BadRequest result if validation fails.</returns>
         [HttpPost]
         public async Task<IActionResult> CreateGroup([FromBody] CreateGroupRequest request)
         {
@@ -68,6 +91,11 @@ namespace Ticketmaster.Controllers
             return Ok(new { message = "Group created successfully!" });
         }
 
+        /// <summary>
+        /// Edits the specified group with updated information including name, manager, and employee list.
+        /// </summary>
+        /// <param name="request">The request containing updated group details.</param>
+        /// <returns>A success message or a NotFound result if the group does not exist.</returns>
         [HttpPost]
         public async Task<IActionResult> EditGroup([FromBody] EditGroupRequest request)
         {
@@ -104,6 +132,13 @@ namespace Ticketmaster.Controllers
             return Ok(new { message = "Group updated successfully!" });
         }
 
+        /// <summary>
+        /// Deletes a group by ID, unless the group is currently used in a project.
+        /// </summary>
+        /// <param name="request">The deletion request containing the group ID.</param>
+        /// <returns>
+        /// A success message if the group is deleted, or a BadRequest if the group is in use by a project.
+        /// </returns>
         [HttpPost]
         public async Task<IActionResult> DeleteGroup([FromBody] DeleteGroupRequest request)
         {

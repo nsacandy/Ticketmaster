@@ -11,17 +11,33 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Ticketmaster.Controllers
 {
+    /// <summary>
+    /// Controller responsible for managing projects within the application,
+    /// including creating, editing, and deleting projects.
+    /// </summary>
+    /// <remarks>
+    /// Only users with the "admin" or "standard" roles are authorized to access these endpoints.
+    /// </remarks>
+    /// <author>Nicolas Sacandy</author>
+    /// <email>nsacand2@my.westga.edu</email>
     [Authorize(Roles = "admin,standard")]
-
     public class ProjectManagementController : Controller
     {
         private readonly TicketmasterContext _context;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ProjectManagementController"/> class.
+        /// </summary>
+        /// <param name="context">The database context used for project operations.</param>
         public ProjectManagementController(TicketmasterContext context)
         {
             _context = context;
         }
 
+        /// <summary>
+        /// Loads the project management view with all current groups and projects.
+        /// </summary>
+        /// <returns>The view displaying projects and their associated groups.</returns>
         public async Task<IActionResult> Index()
         {
             var groups = await _context.Groups.Include(g => g.Manager).ThenInclude(m => m.Employee).ToListAsync();
@@ -36,6 +52,14 @@ namespace Ticketmaster.Controllers
             return View(viewModel);
         }
 
+        /// <summary>
+        /// Creates a new project with the specified details.
+        /// </summary>
+        /// <param name="request">The project creation request containing name, description, lead, and groups.</param>
+        /// <returns>
+        /// A success response if the project is created, or a <see cref="BadRequestResult"/> if validation fails.
+        /// Returns a 500 status code if an unexpected error occurs.
+        /// </returns>
         [HttpPost]
         public async Task<IActionResult> CreateProject([FromBody] CreateProjectRequest request)
         {
@@ -85,6 +109,15 @@ namespace Ticketmaster.Controllers
             }
         }
 
+
+        /// <summary>
+        /// Edits the details of an existing project.
+        /// </summary>
+        /// <param name="request">The project update request including project ID and new values.</param>
+        /// <returns>
+        /// A success response if the update is applied, or a <see cref="NotFoundResult"/> if the project does not exist.
+        /// Returns a 500 status code if an unexpected error occurs.
+        /// </returns>
         [HttpPost]
         public async Task<IActionResult> EditProject([FromBody] EditProjectRequest request)
         {
@@ -131,6 +164,13 @@ namespace Ticketmaster.Controllers
             }
         }
 
+        /// <summary>
+        /// Deletes the specified project.
+        /// </summary>
+        /// <param name="request">The deletion request containing the project ID.</param>
+        /// <returns>
+        /// A success message if deleted, or a <see cref="NotFoundResult"/> if the project does not exist.
+        /// </returns>
         [HttpPost]
         public async Task<IActionResult> DeleteProject([FromBody] DeleteProjectRequest request)
         {
