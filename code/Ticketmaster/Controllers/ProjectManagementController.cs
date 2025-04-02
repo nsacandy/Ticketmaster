@@ -49,6 +49,9 @@ namespace Ticketmaster.Controllers
                 Project = projects
             };
 
+            ViewBag.LoggedInUserId = User.FindFirst("Id")?.Value;
+            ViewBag.IsAdmin = User.IsInRole("admin");
+
             return View(viewModel);
         }
 

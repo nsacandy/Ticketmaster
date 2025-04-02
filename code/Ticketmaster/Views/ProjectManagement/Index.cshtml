@@ -158,11 +158,12 @@
                         </div>
                     </div>
 
-                    <div class="modal-footer">
+                    <div class="modal-footer" id="editProjectModalFooter">
                         <button type="button" class="btn btn-danger" id="deleteProjectBtn">Delete</button>
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                         <button type="submit" class="btn btn-primary">Edit Project</button>
                     </div>
+
                 </form>
             </div>
         </div>
@@ -170,6 +171,7 @@
 </div>
 
 <script>
+
         document.addEventListener("DOMContentLoaded", function () {
         let availableGroupsList = document.getElementById("availableGroupsList");
         let projectGroupsList = document.getElementById("projectGroupsList");
@@ -336,6 +338,9 @@
             });
         });
 
+        const loggedInUserId = '@ViewBag.LoggedInUserId';
+        const isAdmin = '@ViewBag.IsAdmin'.toLowerCase() === 'true';
+
         document.querySelectorAll(".project-item").forEach(projectItem => {
             projectItem.addEventListener("dblclick", function () {
                 selectedProjectId = this.getAttribute("data-projectid");
@@ -343,6 +348,14 @@
                 document.getElementById("editProjectDescription").value = this.getAttribute("data-projectdescription");
 
                 let projectLeadId = this.getAttribute("data-projectlead");
+
+                const modalFooter = document.getElementById("editProjectModalFooter");
+                modalFooter.style.display = "none";
+
+                if (isAdmin || projectLeadId === loggedInUserId) {
+                    modalFooter.style.display = "flex";
+                }
+
                 editProjectLeadBox.value = document.querySelector(`.group-item[data-managerid='${projectLeadId}']`)?.getAttribute("data-managername") || "No Lead";
                 editProjectLeadBox.setAttribute("data-employeeid", projectLeadId);
 
