@@ -29,7 +29,7 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
+                    <ul class="navbar-nav me-auto">
                         @if (!isLoginPage && !isAccessDenied && !isFailedLogin)
                         {
                             <li class="nav-item">
@@ -38,29 +38,35 @@
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="GroupManagement" asp-action="Index">Groups</a>
                             </li>
-                           <li class="nav-item">
+                            <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="ProjectManagement" asp-action="Index">Projects</a>
-                                </li>
-                            @if(User.IsInRole("admin"))
+                            </li>
+                            @if (User.IsInRole("admin"))
                             {
                                 <li class="nav-item">
                                     <a class="nav-link text-dark" asp-area="" asp-controller="EmployeeManagement" asp-action="Index">Employees</a>
                                 </li>
                             }
                         }
-                        <li class="nav-item">
+                    </ul>
 
-                            @if (!isLoginPage && !isFailedLogin)
-                            {
+                    @* Right-aligned: Email then Sign Out *@
+                    <ul class="navbar-nav ms-auto align-items-center">
+                        @if (!isLoginPage && !isFailedLogin)
+                        {
+                            <li class="nav-item me-3">
+                                <span class="navbar-text text-muted">
+                                    @User.FindFirst("Email")?.Value
+                                </span>
+                            </li>
+                            <li class="nav-item">
                                 <form method="post" asp-controller="Login" asp-action="Logout">
                                     <button type="submit" class="btn btn-danger">Sign Out</button>
                                 </form>
-                            }
-                        </li>
-
+                            </li>
+                        }
                     </ul>
                 </div>
-
             </div>
         </nav>
     </header>
@@ -86,16 +92,6 @@
     </div>
 </div>
 
-<footer class="border-top footer text-muted">
-        <div class="container">
-            <div class="container">
-                @if (!isLoginPage)
-                {
-                 <a asp-area="" asp-controller="Login" asp-action="Logout">Sign out</a>
-                }
-            </div>
-        </div>
-    </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation/1.19.5/jquery.validate.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
