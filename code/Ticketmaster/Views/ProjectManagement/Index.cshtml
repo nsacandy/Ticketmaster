@@ -153,7 +153,7 @@
                             <ul class="list-group" id="editAvailableGroupsList"></ul>
                         </div>
 
-                        <div class="col-md-2 text-center mt-4">
+                        <div class="col-md-2 text-center mt-4" id="editProjectActionButtons">
                             <button type="button" class="btn btn-secondary mb-2" id="editSetProjectLeadBtn">L</button><br>
                             <button type="button" class="btn btn-primary mb-2" id="editAddGroupBtn">→</button><br>
                             <button type="button" class="btn btn-primary" id="editRemoveGroupBtn">←</button>
@@ -370,16 +370,27 @@
         document.querySelectorAll(".project-item").forEach(projectItem => {
             projectItem.addEventListener("dblclick", function () {
                 selectedProjectId = this.getAttribute("data-projectid");
-                document.getElementById("editProjectName").value = this.getAttribute("data-projectname");
-                document.getElementById("editProjectDescription").value = this.getAttribute("data-projectdescription");
+                const projectLeadId = this.getAttribute("data-projectlead");
 
-                let projectLeadId = this.getAttribute("data-projectlead");
-
+                const editNameInput = document.getElementById("editProjectName");
+                const editDescInput = document.getElementById("editProjectDescription");
                 const modalFooter = document.getElementById("editProjectModalFooter");
+                const actionButtonsDiv = document.getElementById("editProjectActionButtons");
+
+                editNameInput.value = this.getAttribute("data-projectname");
+                editDescInput.value = this.getAttribute("data-projectdescription");
+
+                editNameInput.readOnly = true;
+                editDescInput.readOnly = true;
+
                 modalFooter.style.display = "none";
+                actionButtonsDiv.style.display = "none";
 
                 if (isAdmin || projectLeadId === loggedInUserId) {
+                    editNameInput.readOnly = false;
+                    editDescInput.readOnly = false;
                     modalFooter.style.display = "flex";
+                    actionButtonsDiv.style.display = "block";
                 }
 
                 editProjectLeadBox.value = document.querySelector(`.group-item[data-managerid='${projectLeadId}']`)?.getAttribute("data-managername") || "No Lead";
@@ -393,7 +404,6 @@
 
                 document.querySelectorAll("#availableGroupsList .list-group-item").forEach(groupItem => {
                     let groupId = groupItem.getAttribute("data-groupid");
-                    let groupName = groupItem.getAttribute("data-groupname");
                     let managerId = groupItem.getAttribute("data-managerid");
                     let managerName = groupItem.getAttribute("data-managername");
 
