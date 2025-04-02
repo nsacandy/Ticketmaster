@@ -140,7 +140,7 @@
                             <ul class="list-group" id="editAvailableEmployeesList"></ul>
                         </div>
 
-                        <div class="col-md-2 text-center mt-4">
+                        <div class="col-md-2 text-center mt-4" id="editGroupActionButtons">
                             <button type="button" class="btn btn-secondary mb-2" id="editSetManagerBtn">M</button><br>
                             <button type="button" class="btn btn-primary mb-2" id="editAddEmployeeBtn">→</button><br>
                             <button type="button" class="btn btn-primary" id="editRemoveEmployeeBtn">←</button>
@@ -163,7 +163,6 @@
         </div>
     </div>
 </div>
-
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
@@ -283,45 +282,59 @@
 
         document.querySelectorAll(".group-item").forEach(groupItem => {
             groupItem.addEventListener("dblclick", function () {
-            selectedGroupId = this.getAttribute("data-groupid");
-            document.getElementById("editGroupName").value = this.getAttribute("data-groupname");
-            editManagerBox.value = this.getAttribute("data-managername");
+                selectedGroupId = this.getAttribute("data-groupid");
+                const selectedManagerId = this.getAttribute("data-managerid"); // ← Moved up here
 
-            const selectedManagerId = this.getAttribute("data-managerid");
-            const modalFooter = document.getElementById("editGroupModalFooter");
+                document.getElementById("editGroupName").value = this.getAttribute("data-groupname");
 
-            modalFooter.style.display = "none";
+                const groupNameInput = document.getElementById("editGroupName");
+                groupNameInput.readOnly = true;
 
-            if (isAdmin || selectedManagerId === loggedInUserId) {
-                modalFooter.style.display = "flex";
-            }
-
-            let managerId = this.getAttribute("data-managerid");
-            let employeeIds = this.getAttribute("data-employeeids").split(",");
-
-            editGroupMembersList.innerHTML = "";
-            editAvailableEmployeesList.innerHTML = "";
-
-            document.querySelectorAll("#availableEmployeesList .list-group-item").forEach(emp => {
-                let empId = emp.getAttribute("data-employeeid");
-                let empName = emp.getAttribute("data-employeename");
-
-                let newItem = emp.cloneNode(true);
-                newItem.classList.remove("selected");
-
-                if (empId === managerId) {
-                    editManagerBox.value = empName;
-                    previousEditManager = newItem;
-                } else if (employeeIds.includes(empId)) {
-                    editGroupMembersList.appendChild(newItem);
-                } else {
-                    editAvailableEmployeesList.appendChild(newItem);
+                if (isAdmin || selectedManagerId === loggedInUserId) {
+                    groupNameInput.readOnly = false;
                 }
-            });
 
-            attachEventListenersToEditModal();
-            new bootstrap.Modal(document.getElementById("editGroupModal")).show();
+                editManagerBox.value = this.getAttribute("data-managername");
 
+                const modalFooter = document.getElementById("editGroupModalFooter");
+                modalFooter.style.display = "none";
+
+                if (isAdmin || selectedManagerId === loggedInUserId) {
+                    modalFooter.style.display = "flex";
+                }
+
+                const actionButtonsDiv = document.getElementById("editGroupActionButtons");
+                actionButtonsDiv.style.display = "none";
+
+                if (isAdmin || selectedManagerId === loggedInUserId) {
+                    actionButtonsDiv.style.display = "block";
+                }
+
+                let managerId = selectedManagerId;
+                let employeeIds = this.getAttribute("data-employeeids").split(",");
+
+                editGroupMembersList.innerHTML = "";
+                editAvailableEmployeesList.innerHTML = "";
+
+                document.querySelectorAll("#availableEmployeesList .list-group-item").forEach(emp => {
+                    let empId = emp.getAttribute("data-employeeid");
+                    let empName = emp.getAttribute("data-employeename");
+
+                    let newItem = emp.cloneNode(true);
+                    newItem.classList.remove("selected");
+
+                    if (empId === managerId) {
+                        editManagerBox.value = empName;
+                        previousEditManager = newItem;
+                    } else if (employeeIds.includes(empId)) {
+                        editGroupMembersList.appendChild(newItem);
+                    } else {
+                        editAvailableEmployeesList.appendChild(newItem);
+                    }
+                });
+
+                attachEventListenersToEditModal();
+                new bootstrap.Modal(document.getElementById("editGroupModal")).show();
             });
         });
 
