@@ -220,19 +220,19 @@ var assemblies = [
       { "name": "AspNetCoreGeneratedDocument.Views_Home_Index", "rp": "Ticketmaster_Views_Home_Index.html", "cl": 0, "ucl": 4, "cal": 4, "tl": 19, "cb": 0, "tb": 10, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "AspNetCoreGeneratedDocument.Views_Home_Privacy", "rp": "Ticketmaster_Views_Home_Privacy.html", "cl": 0, "ucl": 1, "cal": 1, "tl": 6, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "AspNetCoreGeneratedDocument.Views_Login_Index", "rp": "Ticketmaster_Views_Login_Index.html", "cl": 0, "ucl": 4, "cal": 4, "tl": 23, "cb": 0, "tb": 4, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "AspNetCoreGeneratedDocument.Views_ProjectManagement_Index", "rp": "Ticketmaster_Views_ProjectManagement_Index.html", "cl": 0, "ucl": 15, "cal": 15, "tl": 550, "cb": 0, "tb": 22, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "AspNetCoreGeneratedDocument.Views_ProjectManagement_Index", "rp": "Ticketmaster_Views_ProjectManagement_Index.html", "cl": 0, "ucl": 11, "cal": 11, "tl": 550, "cb": 0, "tb": 18, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "AspNetCoreGeneratedDocument.Views_Shared__Layout", "rp": "Ticketmaster_Views_Shared__Layout.html", "cl": 0, "ucl": 17, "cal": 17, "tl": 107, "cb": 0, "tb": 58, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "AspNetCoreGeneratedDocument.Views_Shared_Error", "rp": "Ticketmaster_Views_Shared_Error.html", "cl": 0, "ucl": 4, "cal": 4, "tl": 25, "cb": 0, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Program", "rp": "Ticketmaster_Program.html", "cl": 0, "ucl": 39, "cal": 39, "tl": 58, "cb": 0, "tb": 4, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Ticketmaster.Controllers.CreateGroupRequest", "rp": "Ticketmaster_CreateGroupRequest.html", "cl": 0, "ucl": 6, "cal": 6, "tl": 141, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Ticketmaster.Controllers.CreateProjectRequest", "rp": "Ticketmaster_CreateProjectRequest.html", "cl": 0, "ucl": 8, "cal": 8, "tl": 173, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Ticketmaster.Controllers.CreateGroupRequest", "rp": "Ticketmaster_CreateGroupRequest.html", "cl": 0, "ucl": 3, "cal": 3, "tl": 141, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Ticketmaster.Controllers.CreateProjectRequest", "rp": "Ticketmaster_CreateProjectRequest.html", "cl": 0, "ucl": 4, "cal": 4, "tl": 173, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Ticketmaster.Controllers.DeleteGroupRequest", "rp": "Ticketmaster_DeleteGroupRequest.html", "cl": 0, "ucl": 1, "cal": 1, "tl": 141, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Ticketmaster.Controllers.DeleteProjectRequest", "rp": "Ticketmaster_DeleteProjectRequest.html", "cl": 0, "ucl": 1, "cal": 1, "tl": 173, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Ticketmaster.Controllers.EditGroupRequest", "rp": "Ticketmaster_EditGroupRequest.html", "cl": 0, "ucl": 8, "cal": 8, "tl": 141, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Ticketmaster.Controllers.EditProjectRequest", "rp": "Ticketmaster_EditProjectRequest.html", "cl": 0, "ucl": 10, "cal": 10, "tl": 173, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Ticketmaster.Controllers.EmployeeManagementController", "rp": "Ticketmaster_EmployeeManagementController.html", "cl": 0, "ucl": 147, "cal": 147, "tl": 262, "cb": 0, "tb": 38, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Ticketmaster.Controllers.EditGroupRequest", "rp": "Ticketmaster_EditGroupRequest.html", "cl": 0, "ucl": 4, "cal": 4, "tl": 141, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Ticketmaster.Controllers.EditProjectRequest", "rp": "Ticketmaster_EditProjectRequest.html", "cl": 0, "ucl": 5, "cal": 5, "tl": 173, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Ticketmaster.Controllers.EmployeeManagementController", "rp": "Ticketmaster_EmployeeManagementController.html", "cl": 98, "ucl": 50, "cal": 148, "tl": 264, "cb": 16, "tb": 38, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Ticketmaster.Controllers.GroupManagementController", "rp": "Ticketmaster_GroupManagementController.html", "cl": 0, "ucl": 74, "cal": 74, "tl": 141, "cb": 0, "tb": 28, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Ticketmaster.Controllers.HomeController", "rp": "Ticketmaster_HomeController.html", "cl": 0, "ucl": 16, "cal": 16, "tl": 42, "cb": 0, "tb": 4, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Ticketmaster.Controllers.HomeController", "rp": "Ticketmaster_HomeController.html", "cl": 13, "ucl": 3, "cal": 16, "tl": 42, "cb": 0, "tb": 4, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Ticketmaster.Controllers.LoginController", "rp": "Ticketmaster_LoginController.html", "cl": 31, "ucl": 0, "cal": 31, "tl": 67, "cb": 3, "tb": 4, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Ticketmaster.Controllers.ProjectManagementController", "rp": "Ticketmaster_ProjectManagementController.html", "cl": 0, "ucl": 88, "cal": 88, "tl": 173, "cb": 0, "tb": 56, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Ticketmaster.Data.TicketmasterContext", "rp": "Ticketmaster_TicketmasterContext.html", "cl": 23, "ucl": 0, "cal": 23, "tl": 48, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
@@ -245,11 +245,11 @@ var assemblies = [
       { "name": "Ticketmaster.Models.Group", "rp": "Ticketmaster_Group.html", "cl": 0, "ucl": 5, "cal": 5, "tl": 24, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Ticketmaster.Models.Manager", "rp": "Ticketmaster_Manager.html", "cl": 0, "ucl": 2, "cal": 2, "tl": 14, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Ticketmaster.Models.Project", "rp": "Ticketmaster_Project.html", "cl": 0, "ucl": 5, "cal": 5, "tl": 23, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Ticketmaster.Utilities.EmployeeManagementViewModel", "rp": "Ticketmaster_EmployeeManagementViewModel.html", "cl": 0, "ucl": 2, "cal": 2, "tl": 11, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Ticketmaster.Utilities.EmployeeManagementViewModel", "rp": "Ticketmaster_EmployeeManagementViewModel.html", "cl": 2, "ucl": 0, "cal": 2, "tl": 11, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Ticketmaster.Utilities.EmployeePasswordHasher", "rp": "Ticketmaster_EmployeePasswordHasher.html", "cl": 7, "ucl": 0, "cal": 7, "tl": 21, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Ticketmaster.Utilities.GroupManagementViewModel", "rp": "Ticketmaster_GroupManagementViewModel.html", "cl": 0, "ucl": 2, "cal": 2, "tl": 10, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Ticketmaster.Utilities.ProjectManagementViewModel", "rp": "Ticketmaster_ProjectManagementViewModel.html", "cl": 0, "ucl": 3, "cal": 3, "tl": 14, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Ticketmaster.Utilities.SessionExtensions", "rp": "Ticketmaster_SessionExtensions.html", "cl": 0, "ucl": 7, "cal": 7, "tl": 20, "cb": 0, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Ticketmaster.Utilities.SessionExtensions", "rp": "Ticketmaster_SessionExtensions.html", "cl": 7, "ucl": 0, "cal": 7, "tl": 20, "cb": 2, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
     ]},
 ];
 
@@ -288,16 +288,16 @@ var riskHotspots = [
       { "value": 16, "exceeded": true },
     ]},
   {
-    "assembly": "Ticketmaster", "class": "Ticketmaster.Controllers.EmployeeManagementController", "reportPath": "Ticketmaster_EmployeeManagementController.html", "methodName": "StageEmployeeAdd()", "methodShortName": "StageEmployeeAdd()", "fileIndex": 0, "line": 87,
+    "assembly": "Ticketmaster", "class": "Ticketmaster.Controllers.GroupManagementController", "reportPath": "Ticketmaster_GroupManagementController.html", "methodName": "EditGroup()", "methodShortName": "EditGroup()", "fileIndex": 0, "line": 73,
     "metrics": [
       { "value": 272, "exceeded": true },
       { "value": 16, "exceeded": true },
     ]},
   {
-    "assembly": "Ticketmaster", "class": "Ticketmaster.Controllers.GroupManagementController", "reportPath": "Ticketmaster_GroupManagementController.html", "methodName": "EditGroup()", "methodShortName": "EditGroup()", "fileIndex": 0, "line": 73,
+    "assembly": "Ticketmaster", "class": "AspNetCoreGeneratedDocument.Views_ProjectManagement_Index", "reportPath": "Ticketmaster_Views_ProjectManagement_Index.html", "methodName": "ExecuteAsync()", "methodShortName": "ExecuteAsync()", "fileIndex": 0, "line": 5,
     "metrics": [
-      { "value": 272, "exceeded": true },
-      { "value": 16, "exceeded": true },
+      { "value": 210, "exceeded": true },
+      { "value": 14, "exceeded": false },
     ]},
   {
     "assembly": "Ticketmaster", "class": "AspNetCoreGeneratedDocument.Views_Shared__Layout", "reportPath": "Ticketmaster_Views_Shared__Layout.html", "methodName": "ExecuteAsync()", "methodShortName": "ExecuteAsync()", "fileIndex": 0, "line": 2,
@@ -330,16 +330,10 @@ var riskHotspots = [
       { "value": 10, "exceeded": false },
     ]},
   {
-    "assembly": "Ticketmaster", "class": "AspNetCoreGeneratedDocument.Views_ProjectManagement_Index", "reportPath": "Ticketmaster_Views_ProjectManagement_Index.html", "methodName": "ExecuteAsync()", "methodShortName": "ExecuteAsync()", "fileIndex": 0, "line": 5,
+    "assembly": "Ticketmaster", "class": "Ticketmaster.Controllers.EmployeeManagementController", "reportPath": "Ticketmaster_EmployeeManagementController.html", "methodName": "StageEmployeeAdd()", "methodShortName": "StageEmployeeAdd()", "fileIndex": 0, "line": 87,
     "metrics": [
-      { "value": 42, "exceeded": true },
-      { "value": 6, "exceeded": false },
-    ]},
-  {
-    "assembly": "Ticketmaster", "class": "Ticketmaster.Controllers.EmployeeManagementController", "reportPath": "Ticketmaster_EmployeeManagementController.html", "methodName": "StageEmployeeEdit()", "methodShortName": "StageEmployeeEdit()", "fileIndex": 0, "line": 135,
-    "metrics": [
-      { "value": 42, "exceeded": true },
-      { "value": 6, "exceeded": false },
+      { "value": 16, "exceeded": false },
+      { "value": 16, "exceeded": true },
     ]},
 ];
 

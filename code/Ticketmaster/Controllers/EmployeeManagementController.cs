@@ -11,9 +11,12 @@ namespace Ticketmaster.Controllers;
 
 
 /// <summary>
-/// Controls the employeeManagement  page.
+/// Manages employee records, including staging adds, edits, and deletes
+/// before committing changes to the database. Provides administrative access
+/// to employee data for editing and auditing.
 /// </summary>
-/// <seealso cref="Microsoft.AspNetCore.Mvc.Controller" />
+/// <author>Nicolas Sacandy</author>
+/// <email>nsacand2@my.westga.edu</email>
 [Authorize(Roles = "admin")]
 public class EmployeeManagementController : Controller
 {
@@ -32,8 +35,10 @@ public class EmployeeManagementController : Controller
     }
 
 
-    // GET: EmployeeManagement
-
+    /// <summary>
+    /// Displays the Employee Management page with the current employees and any staged changes.
+    /// </summary>
+    /// <returns>The employee management view populated with employee data and staged changes.</returns>
     public async Task<IActionResult> Index()
     {
         var employees = await _context.Employee.ToListAsync();
@@ -51,11 +56,11 @@ public class EmployeeManagementController : Controller
 
 
     /// <summary>
-    /// Stages the employee delete.
+    /// Stages the deletion of an employee by storing it in session state.
+    /// Prevents deletion if the employee is part of a group or is a manager.
     /// </summary>
-    /// <param name="employee">The employee to delete</param>
-    /// <returns>Page with employee removed</returns>
-
+    /// <param name="employee">The employee to be marked for deletion.</param>
+    /// <returns>A redirection to the index page with updated session state.</returns>
     public async Task<IActionResult> StageEmployeeDelete(Employee employee)
     {
         var stagedChanges = HttpContext.Session.GetObjectFromJson<List<EmployeeChange>>("StagedChanges") ??
@@ -91,10 +96,17 @@ public class EmployeeManagementController : Controller
 
 
     /// <summary>
-    /// Stages the employee add.
+    /// Stages the addition of a new employee based on provided form inputs.
+    /// The employee is stored temporarily in session until committed.
     /// </summary>
-    /// <param name="employee">The employee.</param>
-    /// <returns></returns>
+    /// <param name="id">The unique employee ID.</param>
+    /// <param name="firstName">Employee's first name.</param>
+    /// <param name="lastName">Employee's last name.</param>
+    /// <param name="email">Employee's email address.</param>
+    /// <param name="pword">Employee's plaintext password.</param>
+    /// <param name="phoneNum">Employee's phone number.</param>
+    /// <param name="eRole">Employee's role (e.g., "admin", "standard").</param>
+    /// <returns>A redirection to the index view with session-staged data.</returns>
     public async Task<IActionResult> StageEmployeeAdd(int id, string firstName, string lastName, string email,
         string pword, string phoneNum, string eRole)
     {
@@ -139,10 +151,11 @@ public class EmployeeManagementController : Controller
 
 
     /// <summary>
-    /// Stages the employee edit.
+    /// Stages an edit for the provided employee object. If a new password is given,
+    /// it is hashed before staging.
     /// </summary>
-    /// <param name="employee">The employee.</param>
-    /// <returns></returns>
+    /// <param name="employee">The employee to stage for editing.</param>
+    /// <returns>Redirection to the index view after staging the change.</returns>
     [HttpPost]
     public async Task<IActionResult> StageEmployeeEdit(Employee employee)
     {
@@ -176,11 +189,11 @@ public class EmployeeManagementController : Controller
     }
 
 
-    // Apply changes to the database in a transaction
     /// <summary>
-    /// Commits the changes.
+    /// Commits all staged changes (adds, edits, and deletes) in a database transaction.
+    /// All actions are removed from session state after a successful commit.
     /// </summary>
-    /// <returns></returns>
+    /// <returns>Redirects to index view with success or error feedback via TempData.</returns>
     [HttpPost]
     public IActionResult CommitChanges()
     {
@@ -228,7 +241,11 @@ public class EmployeeManagementController : Controller
         return RedirectToAction(nameof(Index));
     }
 
-
+    /// <summary>
+    /// Removes a staged employee change based on the employee ID.
+    /// </summary>
+    /// <param name="id">The employee ID of the change to remove.</param>
+    /// <returns>Redirects to the index page.</returns>
     [HttpPost]
     public IActionResult RevertEmployeeChange(int id)
     {
@@ -246,11 +263,14 @@ public class EmployeeManagementController : Controller
             Console.WriteLine(n.StackTrace);
         }
 
-
-
         return RedirectToAction(nameof(Index));
     }
 
+
+    /// <summary>
+    /// Discards all staged changes by clearing them from session state.
+    /// </summary>
+    /// <returns>Redirects to the index view with a message that changes were discarded.</returns>
     [HttpPost]
     public IActionResult DiscardChanges()
     {
@@ -259,16 +279,31 @@ public class EmployeeManagementController : Controller
         return RedirectToAction(nameof(Index));
     }
 
+    /// <summary>
+    /// Gets the current view model for employee management.
+    /// </summary>
     public EmployeeManagementViewModel GetEmployeeManagementViewModel => this.viewModel;
-    /*
-     *
-     */
+
+    /// <summary>
+    /// Represents a pending employee change staged for commit.
+    /// </summary>
     public class EmployeeChange
     {
-        public string Action { get; set; } // "Add", "Edit", "Delete"
+        /// <summary>
+        /// Type of action: "Add", "Edit", or "Delete".
+        /// </summary>
+        public string Action { get; set; }
+        /// <summary>
+        /// The employee data associated with the change.
+        /// </summary>
         public Employee Employee { get; set; }
     }
 
+    /// <summary>
+    /// Checks if an employee exists in the database by ID.
+    /// </summary>
+    /// <param name="id">The employee ID to check.</param>
+    /// <returns>True if the employee exists, false otherwise.</returns>
     private bool EmployeeExists(int id)
     {
         return _context.Employee.Any(e => e.Id == id);
