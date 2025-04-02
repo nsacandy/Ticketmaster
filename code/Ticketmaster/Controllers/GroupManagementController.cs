@@ -93,7 +93,7 @@ namespace Ticketmaster.Controllers
                 group.ManagerId = request.ManagerId;
             }
 
-            if (request.EmployeeIds != null && request.EmployeeIds.Count > 0)
+            if (request.EmployeeIds != null)
             {
                 request.EmployeeIds.Remove(request.ManagerId);
                 group.EmployeeIds = string.Join(",", request.EmployeeIds);
@@ -115,7 +115,6 @@ namespace Ticketmaster.Controllers
 
             var groupIdStr = request.GroupId.ToString();
 
-            // Load all projects into memory first so we can use .Split
             var projects = await _context.Project.ToListAsync();
 
             bool isUsedInProject = projects.Any(p =>

@@ -347,11 +347,6 @@
                 managerId = document.querySelector(".group-item[data-groupid='" + selectedGroupId + "']").getAttribute("data-managerid");
             }
 
-            if (employeeIds.length === 0) {
-                let existingEmployeeIds = document.querySelector(".group-item[data-groupid='" + selectedGroupId + "']").getAttribute("data-employeeids");
-                employeeIds = existingEmployeeIds ? existingEmployeeIds.split(",") : [];
-            }
-
             fetch("/GroupManagement/EditGroup", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
