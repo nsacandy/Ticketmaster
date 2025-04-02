@@ -1,6 +1,12 @@
 ﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
 @model Ticketmaster.Utilities.GroupManagementViewModel
 
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+<script>
+    const currentUserId = @HttpContextAccessor.HttpContext.User.FindFirst("Id").Value;
+</script>
+
 @{
     ViewData["Title"] = "Group Management";
 }
@@ -134,11 +140,12 @@
                         </div>
                     </div>
 
-                    <div class="modal-footer">
+                    <div class="modal-footer" id="editGroupModalFooter">
                         <button type="button" class="btn btn-danger" id="deleteGroupBtn">Delete</button>
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                         <button type="submit" class="btn btn-primary">Edit Group</button>
                     </div>
+
                 </form>
             </div>
         </div>
@@ -249,11 +256,23 @@
             .catch(error => console.error("Error:", error));
         });
 
+        const loggedInUserId = '@ViewBag.LoggedInUserId';
+        const isAdmin = '@ViewBag.IsAdmin'.toLowerCase() === 'true';
+
         document.querySelectorAll(".group-item").forEach(groupItem => {
             groupItem.addEventListener("dblclick", function () {
             selectedGroupId = this.getAttribute("data-groupid");
             document.getElementById("editGroupName").value = this.getAttribute("data-groupname");
             editManagerBox.value = this.getAttribute("data-managername");
+
+            const selectedManagerId = this.getAttribute("data-managerid");
+            const modalFooter = document.getElementById("editGroupModalFooter");
+
+            modalFooter.style.display = "none";
+
+            if (isAdmin || selectedManagerId === loggedInUserId) {
+                modalFooter.style.display = "flex";
+            }
 
             let managerId = this.getAttribute("data-managerid");
             let employeeIds = this.getAttribute("data-employeeids").split(",");

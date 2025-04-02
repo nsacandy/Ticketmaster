@@ -69,6 +69,7 @@ namespace Ticketmaster.Controllers
             {
                 new Claim(ClaimTypes.Name, employee.Email),
                 new Claim("Email", employee.Email),
+                new Claim("Id", employee.Id.ToString()),
                 new Claim(ClaimTypes.Role, employee.ERole)
             };
 

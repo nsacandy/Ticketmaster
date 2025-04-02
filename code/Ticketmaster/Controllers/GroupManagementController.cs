@@ -47,6 +47,10 @@ namespace Ticketmaster.Controllers
                 .ThenInclude(m => m.Employee)
                 .ToListAsync();
 
+            // Pass logged-in user's ID and role to the view
+            ViewBag.LoggedInUserId = User.FindFirst("Id")?.Value;
+            ViewBag.IsAdmin = User.IsInRole("admin");
+
             var viewModel = new GroupManagementViewModel
             {
                 Employees = employees,
