@@ -103,6 +103,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
+                <div id="deleteGroupError" class="alert alert-danger d-none" role="alert"></div>
                 <form id="editGroupForm">
                     <div class="mb-3">
                         <label for="editGroupName" class="form-label">Group Name</label>
@@ -384,17 +385,22 @@
             })
             .then(response => response.json().then(data => ({ status: response.status, body: data })))
             .then(result => {
+                const errorDiv = document.getElementById("deleteGroupError");
+
                 if (result.status === 200) {
                     alert(result.body.message);
                     location.reload();
                 } else {
                     console.error("Request failed:", result.body);
-                    alert("Error deleting group: " + (result.body.message || "Unknown error"));
+                    errorDiv.textContent = result.body.message || "Error deleting group.";
+                    errorDiv.classList.remove("d-none");
                 }
             })
             .catch(error => {
                 console.error("Error:", error);
-                alert("Error deleting group: " + error.message);
+                const errorDiv = document.getElementById("deleteGroupError");
+                errorDiv.textContent = "Error deleting group: " + error.message;
+                errorDiv.classList.remove("d-none");
             });
         });
     });

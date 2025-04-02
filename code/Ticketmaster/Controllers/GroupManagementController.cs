@@ -113,6 +113,20 @@ namespace Ticketmaster.Controllers
                 return NotFound(new { message = "Group not found." });
             }
 
+            var groupIdStr = request.GroupId.ToString();
+
+            // Load all projects into memory first so we can use .Split
+            var projects = await _context.Project.ToListAsync();
+
+            bool isUsedInProject = projects.Any(p =>
+                !string.IsNullOrEmpty(p.InvolvedGroups) &&
+                p.InvolvedGroups.Split(',').Contains(groupIdStr));
+
+            if (isUsedInProject)
+            {
+                return BadRequest(new { message = "This group cannot be deleted because it is associated with a project." });
+            }
+
             _context.Groups.Remove(group);
             await _context.SaveChangesAsync();
 
