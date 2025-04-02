@@ -140,7 +140,7 @@
                             <ul class="list-group" id="editAvailableEmployeesList"></ul>
                         </div>
 
-                        <div class="col-md-2 text-center mt-4">
+                        <div class="col-md-2 text-center mt-4" id="editGroupActionButtons">
                             <button type="button" class="btn btn-secondary mb-2" id="editSetManagerBtn">M</button><br>
                             <button type="button" class="btn btn-primary mb-2" id="editAddEmployeeBtn">→</button><br>
                             <button type="button" class="btn btn-primary" id="editRemoveEmployeeBtn">←</button>
@@ -163,7 +163,6 @@
         </div>
     </div>
 </div>
-
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
@@ -294,6 +293,13 @@
 
             if (isAdmin || selectedManagerId === loggedInUserId) {
                 modalFooter.style.display = "flex";
+            }
+
+            const actionButtonsDiv = document.getElementById("editGroupActionButtons");
+            actionButtonsDiv.style.display = "none";
+
+            if (isAdmin || selectedManagerId === loggedInUserId) {
+                actionButtonsDiv.style.display = "block";
             }
 
             let managerId = this.getAttribute("data-managerid");
