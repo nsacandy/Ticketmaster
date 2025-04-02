@@ -13,9 +13,21 @@
 
 <div class="container text-center">
     <h3 class="d-inline">Groups</h3>
+
     <button type="button" class="btn btn-success float-end" id="openCreateGroupModal">
         +
     </button>
+
+    <div id="createGroupError" class="alert alert-danger mt-3 d-none" role="alert">
+        Access denied. You must have admin privileges to access this feature.
+    </div>
+
+    <style>
+        .selected {
+            background-color: #007bff;
+            color: white;
+        }
+    </style>
 
     <style>
         .selected {
@@ -79,8 +91,8 @@
 
                         <div class="col-md-2 text-center mt-4">
                             <button type="button" class="btn btn-secondary mb-2" id="setManagerBtn">M</button><br>
-                            <button type="button" class="btn btn-primary mb-2" id="addEmployeeBtn">></button><br>
-                            <button type="button" class="btn btn-primary" id="removeEmployeeBtn"><</button>
+                            <button type="button" class="btn btn-primary mb-2" id="addEmployeeBtn">→</button><br>
+                            <button type="button" class="btn btn-primary" id="removeEmployeeBtn">←</button>
                         </div>
 
                         <div class="col-md-5">
@@ -130,8 +142,8 @@
 
                         <div class="col-md-2 text-center mt-4">
                             <button type="button" class="btn btn-secondary mb-2" id="editSetManagerBtn">M</button><br>
-                            <button type="button" class="btn btn-primary mb-2" id="editAddEmployeeBtn">></button><br>
-                            <button type="button" class="btn btn-primary" id="editRemoveEmployeeBtn"><</button>
+                            <button type="button" class="btn btn-primary mb-2" id="editAddEmployeeBtn">→</button><br>
+                            <button type="button" class="btn btn-primary" id="editRemoveEmployeeBtn">←</button>
                         </div>
 
                         <div class="col-md-5">
@@ -169,6 +181,16 @@
         let selectedGroupId = null;
 
         document.getElementById("openCreateGroupModal").addEventListener("click", function () {
+            const createErrorDiv = document.getElementById("createGroupError");
+
+            if (!isAdmin) {
+                createErrorDiv.classList.remove("d-none");
+                setTimeout(() => {
+                    createErrorDiv.classList.add("d-none");
+                }, 3000);
+                return;
+            }
+
             new bootstrap.Modal(document.getElementById("createGroupModal")).show();
         });
 
