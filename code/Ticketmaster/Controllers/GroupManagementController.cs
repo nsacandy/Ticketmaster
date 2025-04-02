@@ -92,7 +92,7 @@ namespace Ticketmaster.Controllers
             _context.Groups.Add(newGroup);
             await _context.SaveChangesAsync();
 
-            return Ok(new { message = "Group created successfully!" });
+            return Ok(new Dictionary<String, String>() { {"message", "Group created successfully!" }});
         }
 
         /// <summary>
@@ -149,7 +149,7 @@ namespace Ticketmaster.Controllers
             var group = await _context.Groups.FindAsync(request.GroupId);
             if (group == null)
             {
-                return NotFound(new { message = "Group not found." });
+                return NotFound(new Dictionary<String, String>(){{ "message" , "Group not found." }});
             }
 
             var groupIdStr = request.GroupId.ToString();
@@ -162,13 +162,13 @@ namespace Ticketmaster.Controllers
 
             if (isUsedInProject)
             {
-                return BadRequest(new { message = "This group cannot be deleted because it is associated with a project." });
+                return BadRequest(new Dictionary<String, String>(){{ "message", "This group cannot be deleted because it is associated with a project." }});
             }
 
             _context.Groups.Remove(group);
             await _context.SaveChangesAsync();
 
-            return Ok(new { message = "Group deleted successfully!" });
+            return Ok(new Dictionary<String, String>(){ {"message" , "Group deleted successfully!" }});
         }
     }
 
