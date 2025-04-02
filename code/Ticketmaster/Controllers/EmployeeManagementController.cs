@@ -62,6 +62,18 @@ public class EmployeeManagementController : Controller
                             new List<EmployeeChange>();
 
         var selectedEmployee = await _context.Employee.FindAsync(employee.Id);
+
+        var groupUsage = await _context.Groups.ToListAsync();
+        bool isInGroup = groupUsage.Any(g =>
+            (g.EmployeeIds?.Split(',') ?? Array.Empty<string>()).Contains(employee.Id.ToString()) ||
+            g.ManagerId == employee.Id);
+
+        if (isInGroup)
+        {
+            TempData["Error"] = "This employee cannot be deleted because they are part of a group.";
+            return RedirectToAction(nameof(Index));
+        }
+
         if (!stagedChanges.Any(employeeChange => employeeChange.Employee.Id == employee.Id))
         {
             var change = new EmployeeChange
@@ -75,6 +87,7 @@ public class EmployeeManagementController : Controller
 
         return RedirectToAction(nameof(Index));
     }
+
 
 
     /// <summary>
