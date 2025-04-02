@@ -14,7 +14,7 @@ namespace Ticketmaster.Controllers;
 /// Controls the employeeManagement  page.
 /// </summary>
 /// <seealso cref="Microsoft.AspNetCore.Mvc.Controller" />
- [Authorize(Roles = "admin")]
+[Authorize(Roles = "admin")]
 public class EmployeeManagementController : Controller
 {
     private readonly TicketmasterContext _context;
@@ -246,6 +246,7 @@ public class EmployeeManagementController : Controller
         return RedirectToAction(nameof(Index));
     }
 
+    public EmployeeManagementViewModel GetEmployeeManagementViewModel => this.viewModel;
     /*
      *
      */
@@ -259,4 +260,5 @@ public class EmployeeManagementController : Controller
     {
         return _context.Employee.Any(e => e.Id == id);
     }
+
 }
