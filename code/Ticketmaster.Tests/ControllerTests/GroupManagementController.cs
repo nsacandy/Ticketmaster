@@ -47,10 +47,11 @@ namespace Ticketmaster.Tests.ControllerTests
         [Fact]
         public async Task Index_ReturnsViewWithEmployeesAndGroups()
         {
-            _context.Employee.RemoveRange(_context.Employee);
+             _context.Groups.RemoveRange(_context.Groups);
+             _context.Employee.RemoveRange(_context.Employee);
             await _context.SaveChangesAsync();            // Arrange
             _context.Employee.Add(new Employee { Id = 22, FirstName = "Test", LastName = "User", Pword = "test", ERole = "standard", Email = "test@ticketmaster.com", PhoneNum = "5555555"});
-            _context.Groups.Add(new Group { GroupId = 1, GroupName = "Test Group" });
+            _context.Groups.Add(new Group { GroupId = 25, GroupName = "Test Group" });
             await _context.SaveChangesAsync();
 
             // Act
