@@ -1,6 +1,13 @@
 ﻿﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
 @model Ticketmaster.Utilities.ProjectManagementViewModel
 
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+<script>
+    const loggedInUserId = @HttpContextAccessor.HttpContext.User.FindFirst("Id").Value;
+    const isAdmin = '@ViewBag.IsAdmin'.toLowerCase() === 'true';
+</script>
+
 @{
     ViewData["Title"] = "Project Management";
 }
@@ -10,6 +17,11 @@
     <button type="button" class="btn btn-success float-end" id="openCreateProjectModal">
         +
     </button>
+
+    <div id="createProjectError" class="alert alert-danger mt-3 d-none" role="alert">
+        Access denied. You must have admin or group manager privileges to access this feature.
+    </div>
+
 
     <style>
         .selected {
@@ -191,8 +203,22 @@
         let selectedProjectId = null;
 
         document.getElementById("openCreateProjectModal").addEventListener("click", function () {
+            const errorDiv = document.getElementById("createProjectError");
+
+            const isGroupManager = Array.from(document.querySelectorAll("#availableGroupsList .group-item"))
+                .some(group => group.getAttribute("data-managerid") === loggedInUserId);
+
+            if (!isAdmin && !isGroupManager) {
+                errorDiv.classList.remove("d-none");
+                setTimeout(() => {
+                    errorDiv.classList.add("d-none");
+                }, 4000);
+                return;
+            }
+
             new bootstrap.Modal(document.getElementById("createProjectModal")).show();
         });
+
 
         function selectGroup(list, item) {
             list.querySelectorAll(".list-group-item").forEach(g => g.classList.remove("selected"));
