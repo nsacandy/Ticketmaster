@@ -188,7 +188,6 @@ namespace Ticketmaster.Controllers
 
             return Ok(new { message = "Project deleted successfully!" });
         }
-
     }
 
     public class CreateProjectRequest
