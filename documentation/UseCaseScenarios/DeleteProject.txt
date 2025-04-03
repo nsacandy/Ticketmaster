@@ -1,0 +1,8 @@
+Delete Project
+
+Context - An admin or manager is logged in and wishes to delete a project
+1. User navigate to project page
+2. User selects project
+3. User selects to delete project
+4. User confirms
+5. Project is deleted from database

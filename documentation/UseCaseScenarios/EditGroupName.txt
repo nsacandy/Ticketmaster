@@ -1,0 +1,10 @@
+Edit Group Name
+Context - A manager or admin wishes to change the name of a group
+1. User navigates to the Groups page
+2. User selects a group
+3. User enters a new name
+4. User confirms
+5. Updates are made
+
+3A. No new name is entered
+4A. User is prompted to enter a new name

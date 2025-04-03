@@ -1,0 +1,11 @@
+Edit an employee's data in the database
+Context - An admin or manager is logged in and wishes to change an existing employee's information
+
+1. User navigates to the employeeManagement page
+2. User enters edits
+3. User stages edits
+4. User confirms Edits
+5. Edits are made
+
+2. Edits are blank
+3. Existing data remains in database

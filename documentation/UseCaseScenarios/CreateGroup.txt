@@ -1,7 +1,9 @@
 Create Group
 Context: An Admin has logged in and wishes to create a group. 
 1.	The user navigates to the group page
-3.	The user selects to add a group
+2.	The user selects to add a group
+3.	The user selects a manager for that group
+4.	The user selects an employee for that group
 4.	The creation is staged
 5.	The user confirms
 6.	The user is brought back to the Groups page with the new group present.
@@ -11,11 +13,17 @@ Context: An Admin has logged in and wishes to create a group.
 3A. An error is displayed
 4A. The user stays on the Dashboard.
 
-
 4B. The user clicks cancel.
 5B. The user is back at the Groups page
-
 
 4C. The user enters the name of a group that already exists
 5C. An error is displayed
 6C. User is still on groups page
+
+3D. There are no employees available to be manager
+4D. User is notified a manager must be selected
+5D. No changes are made
+
+4E. There are no employees availabe to be non-managers
+5E. User is notified an employee must be added
+6E. No changes are made.

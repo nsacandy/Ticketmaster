@@ -1,0 +1,11 @@
+Remove an Employee from a group
+Context - A manager or Admin is logged in and wishes to remove an employee from a group
+
+1. User navigates to Groups page
+2. User selects the employee they wish to remove
+3. User confirms remove employee
+4. Employee is removed from the group.
+
+3A. Employee is the last member of the group
+4A. User is notified the last employee cannot be removed
+5A. No changes are made.

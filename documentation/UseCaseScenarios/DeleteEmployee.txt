@@ -18,3 +18,6 @@ Context: An Administrator has logged in and is on the dashboard. They wish to De
 6C. The database fails to delete the employee
 7C. An error message is displayed
 8C. The user is returned to the EmployeeManagement page with no changes made
+
+4D. The employee is a manager of a group, and cannot be deleted
+5D. A warning is displayed and no changes are made.

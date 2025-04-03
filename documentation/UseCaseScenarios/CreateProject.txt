@@ -1,0 +1,13 @@
+Create a Project
+Context - User is an admin or manager of a group and wants to create a group
+
+1. User goes to project page
+2. User selects to add a project
+3. User is prompted for a name and description of the project
+4. User is prompted to add a group to the project
+5. User is prompted to add a lead to the project
+6. Project is created
+
+5A. No groups are available to be on the project
+6A. User is notified a group must be assigned
+7A. No changes are made

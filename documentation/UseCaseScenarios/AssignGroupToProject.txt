@@ -1,0 +1,10 @@
+Assign a Group to a Project
+Context - An Admin or Manager is logged in and wants to assign a group to a project
+1. User navigates to project page
+2. User selects a project
+3. User adds one or more groups to the project
+4. User confirms
+5. Group(s) has been added to the project
+
+3B. No groups are available
+4B. A message is displayed indicating no groups are available

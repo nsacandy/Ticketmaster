@@ -1,0 +1,8 @@
+Assign an Employee to a Group
+Context - A manager or Admin is logged in and wants to add an employee to a group
+
+1. User navigates to group page
+2. User selects an existing group
+3. User navigates to employee
+4. User adds to group
+5. User confirms

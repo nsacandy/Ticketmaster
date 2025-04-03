@@ -1,0 +1,12 @@
+Remove a group from a project
+Context - A an admin or manager is logged in and wishes to remove a group from a project
+
+1. User navigates to Project page
+2. User selects a project.
+3. User selects group from view and selects to remove them
+4. User confirms
+5. Group is removed
+
+4A. Group is the last remaining group and cannot be removed
+5A. User is notified
+6A. Group remains on project
