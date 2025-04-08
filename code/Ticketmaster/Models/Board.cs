@@ -1,5 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.Build.Framework;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Ticketmaster.Models
 {
@@ -12,33 +12,29 @@ namespace Ticketmaster.Models
     /// <email>nsacand2@my.westga.edu</email>
     public class Board
     {
-        [ForeignKey("ProjectId")]
-        private int _parentProjectId;
+        /// <summary>
+        /// Title of the board, eg("To Do", "In Progress", "Done").
+        /// </summary>
+        [Required]
+        public string Title { get; set; }
+
+        /// <summary>
+        /// Project the board is associated with.
+        /// </summary>
+        public Project ParentProject { get; set; }  // navigation property
 
         [Required]
-        private string _title { get; set; }
+        public int ParentProjectId { get; set; }
 
-        private BoardTask[] _tasks;
-        private int _position;
-        public int Position
-        {
-            get => _position;
-            set => _position = value;
-        }
-        public BoardTask[] Tasks
-        {
-            get => _tasks;
-            set => _tasks = value;
-        }
-        public string Title
-        {
-            get => _title;
-            set => _title = value;
-        }
-
-        public int ParentProjectId
-        {
-            get => _parentProjectId;
-        }
+        /// <summary>
+        /// The tasks on the board, see BoardTask.cs for details.
+        /// </summary>
+        public ICollection<BoardTask> Tasks { get; set; }
+        
+        /// <summary>
+        /// The position the board is in the kanban-style layout.
+        /// </summary>
+        [Required]
+        public int Position { get; set; }
     }
 }

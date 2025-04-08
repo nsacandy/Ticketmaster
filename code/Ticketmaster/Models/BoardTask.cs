@@ -1,4 +1,7 @@
-﻿namespace Ticketmaster.Models
+﻿using Microsoft.Build.Framework;
+using System.ComponentModel.DataAnnotations;
+
+namespace Ticketmaster.Models
 {
     /// <summary>
     /// Represents tasks to be placed on Board(s) in the Ticketmaster system. 
@@ -8,26 +11,30 @@
     /// <email>nsacand2@my.westga.edu</email>
     public class BoardTask
     {
-        private string _taskTitle { get; set; }
-        private string _taskDescription { get; set; }
-        private Board _parentBoard { get; set; }
+        /// <summary>
+        /// Gets or sets the task title.
+        /// </summary>
+        /// <precondition>
+        /// Every task on a board must have a unique title
+        /// </precondition>
+        /// <value>
+        /// The task title.
+        /// </value>
+        [System.ComponentModel.DataAnnotations.Required]
+        [StringLength(100)]
+        public string TaskTitle { get; set; }
 
-        public string TaskTitle
-        {
-            get => _taskTitle;
-            set => _taskTitle = value;
-        }
+        /// <summary>
+        /// What the task entails
+        /// </summary>
+        public string TaskDescription { get; set; }
 
-        public string TaskDescription
-        {
-            get => _taskDescription;
-            set => _taskDescription = value;
-        }
-
-        public Board ParentBoard
-        {
-            get => _parentBoard;
-            set => _parentBoard = value;
-        }
+        /// <summary>
+        /// The Board the task is associated with.
+        /// </summary>
+        public Board ParentBoard { get; set; }  // navigation property
+        
+        [System.ComponentModel.DataAnnotations.Required]
+        public int ParentBoardId { get; set; }  // foreign key
     }
 }
