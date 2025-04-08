@@ -26,7 +26,10 @@ namespace Ticketmaster.Data
             modelBuilder.Entity<Employee>().ToTable("Employee");
             modelBuilder.Entity<Group>().ToTable("Groups");
             modelBuilder.Entity<Project>().ToTable("Project");
-
+            modelBuilder.Entity<Board>()
+                .HasKey(b => new {b.Title, b.ParentProjectId});
+            modelBuilder.Entity<BoardTask>()
+                .HasKey(bt => new{bt.ParentBoard,bt.TaskTitle});
 
             var admin = new Employee
             {
