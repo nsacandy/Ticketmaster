@@ -29,7 +29,7 @@ namespace Ticketmaster.Data
             modelBuilder.Entity<Board>()
                 .HasKey(b => new {b.Title, b.ParentProjectId});
             modelBuilder.Entity<BoardTask>()
-                .HasKey(bt => new{bt.ParentBoard,bt.TaskTitle});
+                .HasKey(bt => new{bt.ParentBoardId,bt.TaskTitle});
 
             var admin = new Employee
             {
@@ -45,6 +45,7 @@ namespace Ticketmaster.Data
 
 
         }
+        public DbSet<Ticketmaster.Models.Board> Board { get; set; } = default!;
 
 
     }

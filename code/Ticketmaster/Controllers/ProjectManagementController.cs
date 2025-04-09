@@ -103,6 +103,16 @@ namespace Ticketmaster.Controllers
                 _context.Project.Add(newProject);
                 await _context.SaveChangesAsync();
 
+                var defaultBoards = new[]
+                {
+                    new Board { Title = "To Do", Position = 0, ParentProjectId = newProject.ProjectId },
+                    new Board { Title = "In Progress", Position = 1, ParentProjectId = newProject.ProjectId },
+                    new Board { Title = "Done", Position = 2, ParentProjectId = newProject.ProjectId },
+                };
+
+                _context.Board.AddRange(defaultBoards);
+                await _context.SaveChangesAsync();
+
                 return Ok(new { message = "Project created successfully!" });
             }
             catch (Exception ex)
@@ -132,30 +142,11 @@ namespace Ticketmaster.Controllers
                     return NotFound(new { message = "Project not found." });
                 }
 
-                if (!string.IsNullOrEmpty(request.ProjectName) && request.ProjectName != project.ProjectName)
-                {
-                    project.ProjectName = request.ProjectName;
-                }
-
-                if (!string.IsNullOrEmpty(request.ProjectDescription) && request.ProjectDescription != project.ProjectDescription)
-                {
-                    project.ProjectDescription = request.ProjectDescription;
-                }
-
-                if (request.ProjectLeadId != 0 && request.ProjectLeadId != project.ProjectLeadId)
-                {
-                    var leadExists = await _context.Employee.AnyAsync(e => e.Id == request.ProjectLeadId);
-                    if (!leadExists)
-                    {
-                        return BadRequest(new { message = "Invalid Project Lead." });
-                    }
-                    project.ProjectLeadId = request.ProjectLeadId;
-                }
-
-                if (request.InvolvedGroups != null && request.InvolvedGroups.Count > 0)
-                {
-                    project.InvolvedGroups = string.Join(",", request.InvolvedGroups);
-                }
+                // Update logic...
+                if (!string.IsNullOrEmpty(request.ProjectName)) project.ProjectName = request.ProjectName;
+                if (!string.IsNullOrEmpty(request.ProjectDescription)) project.ProjectDescription = request.ProjectDescription;
+                if (request.ProjectLeadId != 0) project.ProjectLeadId = request.ProjectLeadId;
+                if (request.InvolvedGroups?.Count > 0) project.InvolvedGroups = string.Join(",", request.InvolvedGroups);
 
                 await _context.SaveChangesAsync();
 

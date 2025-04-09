@@ -1,0 +1,53 @@
+﻿@model IEnumerable<Ticketmaster.Models.Board>
+
+@{
+    var todo = Model.FirstOrDefault(b => b.Title == "To Do");
+    var inProgress = Model.FirstOrDefault(b => b.Title == "In Progress");
+    var done = Model.FirstOrDefault(b => b.Title == "Done");
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<div style="display: flex; gap: 20px;">
+    <div style="flex: 1; background-color: #f8f9fa; padding: 15px; border-radius: 8px;">
+        <h3>To Do</h3>
+        @if (todo?.Tasks != null)
+        {
+            foreach (var task in todo.Tasks)
+            {
+                <div style="padding: 10px; margin-bottom: 10px; background-color: #fff; border: 1px solid #ccc; border-radius: 4px;">
+                    <strong>@task.TaskTitle</strong><br />
+                    <small>@task.TaskDescription</small>
+                </div>
+            }
+        }
+    </div>
+
+    <div style="flex: 1; background-color: #f8f9fa; padding: 15px; border-radius: 8px;">
+        <h3>In Progress</h3>
+        @if (inProgress?.Tasks != null)
+        {
+            foreach (var task in inProgress.Tasks)
+            {
+                <div style="padding: 10px; margin-bottom: 10px; background-color: #fff; border: 1px solid #ccc; border-radius: 4px;">
+                    <strong>@task.TaskTitle</strong><br />
+                    <small>@task.TaskDescription</small>
+                </div>
+            }
+        }
+    </div>
+
+    <div style="flex: 1; background-color: #f8f9fa; padding: 15px; border-radius: 8px;">
+        <h3>Done</h3>
+        @if (done?.Tasks != null)
+        {
+            foreach (var task in done.Tasks)
+            {
+                <div style="padding: 10px; margin-bottom: 10px; background-color: #fff; border: 1px solid #ccc; border-radius: 4px;">
+                    <strong>@task.TaskTitle</strong><br />
+                    <small>@task.TaskDescription</small>
+                </div>
+            }
+        }
+    </div>
+</div>
