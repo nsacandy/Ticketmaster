@@ -22,28 +22,25 @@ namespace Ticketmaster.Controllers
         // GET: Boards
         public async Task<IActionResult> Index()
         {
-            var boards = await _context.Board
+            var board = await _context.Board
                 .Include(b => b.Stages)
+                .ThenInclude(s => s.Tasks)
                 .Include(b => b.ParentProject)
-                .ToListAsync();
-
+                .FirstOrDefaultAsync();
             ViewData["Title"] = "All Boards";
-            return View(boards);
+            return View(board);
         }
 
         [HttpGet("Board/Project/{projectId}")]
         public async Task<IActionResult> ProjectBoard(int projectId)
         {
-            var boards = await _context.Board
-                .Where(b => b.ParentProjectId == projectId)
-                .Include(b => b.Stages)
+            var board = await _context.Board
+                .Include(b => b.Stages).ThenInclude(s => s.Tasks)
                 .Include(b => b.ParentProject)
-                .ToListAsync();
+                .FirstOrDefaultAsync(b => b.ParentProjectId == projectId);
 
-            var projectName = boards.FirstOrDefault()?.ParentProject?.ProjectName ?? "Project";
-            ViewData["Title"] = $"Board - {projectName}";
-
-            return View("Index", boards);
+            ViewData["Title"] = $"Board - {board?.ParentProject?.ProjectName ?? "Project"}";
+            return View("Index", board);
         }
 
 
