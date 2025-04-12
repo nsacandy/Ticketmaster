@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using System;
 using Microsoft.AspNetCore.Authorization;
+using NuGet.Packaging;
 
 namespace Ticketmaster.Controllers
 {
@@ -74,8 +75,6 @@ namespace Ticketmaster.Controllers
                     $"LeadId={request?.ProjectLeadId}, " +
                     $"Groups={(request?.InvolvedGroups != null ? string.Join(",", request.InvolvedGroups) : "NULL")}");
 
-                Console.WriteLine($"Received request - Name: {request?.ProjectName}, Desc: {request?.ProjectDescription}, LeadId: {request?.ProjectLeadId}, Groups: {string.Join(",", request?.InvolvedGroups ?? new List<int>())}");
-
                 if (request == null)
                 {
                     return BadRequest(new { message = "Request data is null." });
@@ -103,14 +102,24 @@ namespace Ticketmaster.Controllers
                 _context.Project.Add(newProject);
                 await _context.SaveChangesAsync();
 
-                var defaultBoards = new[]
+                var newBoard = new Board
                 {
-                    new Board { Title = "To Do", Position = 0, ParentProjectId = newProject.ProjectId },
-                    new Board { Title = "In Progress", Position = 1, ParentProjectId = newProject.ProjectId },
-                    new Board { Title = "Done", Position = 2, ParentProjectId = newProject.ProjectId },
+                    ParentProjectId = newProject.ProjectId,
+                    ParentProject = newProject,
+                    Stages = new List<Stage>()
                 };
 
-                _context.Board.AddRange(defaultBoards);
+                _context.Board.Add(newBoard);
+                await _context.SaveChangesAsync();
+
+                newBoard.Stages.AddRange(
+                [
+                    new Stage { StageTitle = "To Do", Position = 0, ParentBoardId = newBoard.BoardId },
+                    new Stage { StageTitle = "In Progress", Position = 1, ParentBoardId = newBoard.BoardId },
+                    new Stage { StageTitle = "Done", Position = 2, ParentBoardId = newBoard.BoardId },
+                ]
+                );
+
                 await _context.SaveChangesAsync();
 
                 return Ok(new { message = "Project created successfully!" });

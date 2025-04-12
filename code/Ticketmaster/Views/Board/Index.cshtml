@@ -1,53 +1,70 @@
-﻿@model IEnumerable<Ticketmaster.Models.Board>
+﻿@model Ticketmaster.Models.Board
 
 @{
-    var todo = Model.FirstOrDefault(b => b.Title == "To Do");
-    var inProgress = Model.FirstOrDefault(b => b.Title == "In Progress");
-    var done = Model.FirstOrDefault(b => b.Title == "Done");
+    ViewData["Title"] = $"{Model.ParentProject?.ProjectName} Board";
+
+    var todo = Model.Stages?.FirstOrDefault(s => s.StageTitle == "To Do");
+    var inProgress = Model.Stages?.FirstOrDefault(s => s.StageTitle == "In Progress");
+    var done = Model.Stages?.FirstOrDefault(s => s.StageTitle == "Done");
 }
 
 <h2>@ViewData["Title"]</h2>
 
 <div style="display: flex; gap: 20px;">
+    @* To Do *@
     <div style="flex: 1; background-color: #f8f9fa; padding: 15px; border-radius: 8px;">
         <h3>To Do</h3>
-        @if (todo?.Tasks != null)
+        @if (todo?.Tasks?.Any() == true)
         {
             foreach (var task in todo.Tasks)
             {
                 <div style="padding: 10px; margin-bottom: 10px; background-color: #fff; border: 1px solid #ccc; border-radius: 4px;">
-                    <strong>@task.TaskTitle</strong><br />
-                    <small>@task.TaskDescription</small>
+                    <strong>@task.Title</strong><br />
+                    <small>@task.Description</small>
                 </div>
             }
         }
+        else
+        {
+            <p><em>No tasks yet.</em></p>
+        }
     </div>
 
+    @* In Progress *@
     <div style="flex: 1; background-color: #f8f9fa; padding: 15px; border-radius: 8px;">
         <h3>In Progress</h3>
-        @if (inProgress?.Tasks != null)
+        @if (inProgress?.Tasks?.Any() == true)
         {
             foreach (var task in inProgress.Tasks)
             {
                 <div style="padding: 10px; margin-bottom: 10px; background-color: #fff; border: 1px solid #ccc; border-radius: 4px;">
-                    <strong>@task.TaskTitle</strong><br />
-                    <small>@task.TaskDescription</small>
+                    <strong>@task.Title</strong><br />
+                    <small>@task.Description</small>
                 </div>
             }
         }
+        else
+        {
+            <p><em>No tasks yet.</em></p>
+        }
     </div>
 
+    @* Done *@
     <div style="flex: 1; background-color: #f8f9fa; padding: 15px; border-radius: 8px;">
         <h3>Done</h3>
-        @if (done?.Tasks != null)
+        @if (done?.Tasks?.Any() == true)
         {
             foreach (var task in done.Tasks)
             {
                 <div style="padding: 10px; margin-bottom: 10px; background-color: #fff; border: 1px solid #ccc; border-radius: 4px;">
-                    <strong>@task.TaskTitle</strong><br />
-                    <small>@task.TaskDescription</small>
+                    <strong>@task.Title</strong><br />
+                    <small>@task.Description</small>
                 </div>
             }
+        }
+        else
+        {
+            <p><em>No tasks yet.</em></p>
         }
     </div>
 </div>

@@ -6,35 +6,26 @@ namespace Ticketmaster.Models
     /// <summary>
     /// A kanban-style board in the Ticketmaster system. 
     /// This class maps to the "Board" table in the database.
-    /// Holds Tasks and their details.
+    /// Holds Stages and their tasks.
     /// </summary>
     /// <author>Nicolas Sacandy</author>
     /// <email>nsacand2@my.westga.edu</email>
+    [Table("Board")]
     public class Board
     {
-        /// <summary>
-        /// Title of the board, eg("To Do", "In Progress", "Done").
-        /// </summary>
-        [Required]
-        public string Title { get; set; }
-
-        /// <summary>
-        /// Project the board is associated with.
-        /// </summary>
+        [ForeignKey("ParentProjectId")]
         public Project ParentProject { get; set; }  // navigation property
 
-        [Required]
         public int ParentProjectId { get; set; }
 
-        /// <summary>
-        /// The tasks on the board, see BoardTask.cs for details.
-        /// </summary>
-        public ICollection<BoardTask> Tasks { get; set; }
+        [Key]
+        public int BoardId { get; set; }
         
+
         /// <summary>
-        /// The position the board is in the kanban-style layout.
+        /// The Stages on the board, see Stage.cs for details.
         /// </summary>
-        [Required]
-        public int Position { get; set; }
+        public ICollection<Stage> Stages { get; set; }
+
     }
 }

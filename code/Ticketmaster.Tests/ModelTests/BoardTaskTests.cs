@@ -14,7 +14,7 @@ public class BoardTaskTests
     [Fact]
     public void Can_Create_BoardTask_With_Valid_Data()
     {
-        var task = new BoardTask
+        var task = new Stage
         {
             TaskTitle = "Fix login bug",
             TaskDescription = "Error occurs when user enters wrong password.",
@@ -31,7 +31,7 @@ public class BoardTaskTests
     [Fact]
     public void Task_Title_Can_Be_Changed()
     {
-        var task = new BoardTask
+        var task = new Stage
         {
             TaskTitle = "Initial Title"
         };
@@ -44,7 +44,7 @@ public class BoardTaskTests
     [Fact]
     public void Task_Description_Defaults_To_Null()
     {
-        var task = new BoardTask
+        var task = new Stage
         {
             TaskTitle = "Test Task"
         };
@@ -55,7 +55,7 @@ public class BoardTaskTests
     [Fact]
     public void Can_Associate_Task_With_Board()
     {
-        var task = new BoardTask
+        var task = new Stage
         {
             TaskTitle = "Sync API",
             ParentBoard = _board,
@@ -69,7 +69,7 @@ public class BoardTaskTests
     [Fact]
     public void Can_Set_ParentBoardId_Without_Board_Object()
     {
-        var task = new BoardTask
+        var task = new Stage
         {
             TaskTitle = "Deploy to production",
             ParentBoardId = 2
