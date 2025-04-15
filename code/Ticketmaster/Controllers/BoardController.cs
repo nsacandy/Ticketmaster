@@ -48,5 +48,63 @@ namespace Ticketmaster.Controllers
         {
             return _context.Board.Any(e => e.BoardId == id);
         }
+
+        [HttpGet]
+        public IActionResult Create(int projectId)
+        {
+            var stage = new Stage { ParentBoardId = projectId };
+            return View(stage);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(Stage stage)
+        {
+            foreach (var error in ModelState)
+            {
+                Console.WriteLine($"Key: {error.Key}");
+                foreach (var subError in error.Value.Errors)
+                {
+                    Console.WriteLine($"  Error: {subError.ErrorMessage}");
+                }
+            }
+            if (ModelState.IsValid)
+            {
+                _context.Stage.Add(stage);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("ProjectBoard", "Board", new { projectId = stage.ParentBoardId });
+            }
+            return View(stage);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            var stage = await _context.Stage.FindAsync(id);
+            return stage == null ? NotFound() : View(stage);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(Stage stage)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Stage.Update(stage);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("ProjectBoard", "Board",new { projectId = stage.ParentBoardId});
+            }
+            return View(stage);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var stage = await _context.Stage.FindAsync(id);
+            if (stage != null)
+            {
+                _context.Stage.Remove(stage);
+                await _context.SaveChangesAsync();
+            }
+            return RedirectToAction("Board", new { projectId = stage?.ParentBoardId });
+        }
     }
 }

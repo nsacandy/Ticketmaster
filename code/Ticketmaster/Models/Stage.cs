@@ -1,5 +1,7 @@
-﻿using Microsoft.Build.Framework;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.Build.Framework;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Ticketmaster.Models
 {
@@ -28,7 +30,8 @@ namespace Ticketmaster.Models
         /// <summary>
         /// The Board the stage is associated with.
         /// </summary>
-        public Board ParentBoard { get; set; }  // navigation property
+        [BindNever]
+        public Board? ParentBoard { get; set; }  // navigation property
 
         /// <summary>
         /// Gets or sets the parent board identifier.

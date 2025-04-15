@@ -1,0 +1,19 @@
+﻿@model Stage
+
+<h2>Edit Stage</h2>
+<form asp-action="Edit">
+	<input type="hidden" asp-for="StageId" />
+	<input type="hidden" asp-for="ParentBoardId" />
+
+	<div class="form-group">
+		<label asp-for="StageTitle"></label>
+		<input asp-for="StageTitle" class="form-control" />
+	</div>
+
+	<div class="form-group">
+		<label asp-for="Position"></label>
+		<input asp-for="Position" class="form-control" type="number" />
+	</div>
+
+	<button type="submit" class="btn btn-success">Save Changes</button>
+</form>

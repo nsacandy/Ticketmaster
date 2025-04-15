@@ -1,0 +1,22 @@
+﻿@model Ticketmaster.Models.Stage
+<form asp-action="Create" method="post">
+	<input type="hidden" asp-for="ParentBoardId" />
+
+	<div class="form-group">
+		<label asp-for="StageTitle"></label>
+		<input asp-for="StageTitle" class="form-control" />
+		<span asp-validation-for="StageTitle" class="text-danger"></span>
+	</div>
+
+	<div class="form-group">
+		<label asp-for="Position"></label>
+		<input asp-for="Position" class="form-control" type="number" />
+		<span asp-validation-for="Position" class="text-danger"></span>
+	</div>
+
+	<button type="submit" class="btn btn-primary">Create</button>
+</form>
+
+@section Scripts {
+	@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
