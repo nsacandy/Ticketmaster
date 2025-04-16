@@ -39,51 +39,14 @@
 
 			var leadFullName = lead != null ? $"{lead.FirstName} {lead.LastName}" : "";
 
-            <li class="list-group-item project-item d-flex justify-content-between align-items-center"
-                data-projectid="@project.ProjectId"
-                data-projectname="@project.ProjectName"
-                data-projectdescription="@project.ProjectDescription"
-                data-involvedgroups="@project.InvolvedGroups"
-                data-projectlead="@project.ProjectLeadId">
-    
-                <span>
-                    @project.ProjectName @(string.IsNullOrEmpty(leadFullName) ? "" : $"({leadFullName})")
-                </span>
-
-                <span class="btn-group">
-                    @if (ViewBag.IsAdmin == true || HttpContextAccessor.HttpContext.User.FindFirst("Id")?.Value == project.ProjectLeadId.ToString())
-                    {
-                        <button type="button" class="btn btn-sm btn-warning me-1"
-                                onclick="openEditProjectModal('@project.ProjectId', '@project.ProjectName', '@project.ProjectDescription')">
-                            Edit
-                        </button>
-                    }
-
-                    @* Board View button if user is in any of the involved groups *@
-                    @{
-                        var userId = HttpContextAccessor.HttpContext.User.FindFirst("Id")?.Value;
-
-                        var userGroups = Model.Groups
-                            .Where(g =>
-                                !string.IsNullOrEmpty(g.EmployeeIds) &&
-                                g.EmployeeIds.Split(',', System.StringSplitOptions.RemoveEmptyEntries)
-                                    .Any(eid => eid.Trim() == userId)
-                            )
-                            .Select(g => g.GroupId.ToString());
-
-                        var projectGroupIds = (project.InvolvedGroups ?? "")
-                            .Split(',', System.StringSplitOptions.RemoveEmptyEntries)
-                            .Select(id => id.Trim());
-
-                        var isInvolved = userGroups.Intersect(projectGroupIds).Any();
-                    }
-
-                    @if (isInvolved)
-                    {
-                        <a href="/Board/Project/@project.ProjectId" class="btn btn-sm btn-outline-primary">Board View</a>
-                    }
-                </span>
-            </li>
+			<li class="list-group-item project-item"
+				data-projectid="@project.ProjectId"
+				data-projectname="@project.ProjectName"
+				data-projectdescription="@project.ProjectDescription"
+				data-involvedgroups="@project.InvolvedGroups"
+				data-projectlead="@project.ProjectLeadId">
+				@project.ProjectName @(string.IsNullOrEmpty(leadFullName) ? "" : $"({leadFullName})")
+			</li>
 		}
 	</ul>
 </div>
@@ -208,6 +171,7 @@
 					</div>
 
 					<div class="modal-footer" id="editProjectModalFooter">
+						<a id="viewKanbanLink" class="btn btn-outline-primary" target="_blank">View Kanban Board</a>
 						<button type="button" class="btn btn-danger" id="deleteProjectBtn">Delete</button>
 						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
 						<button type="submit" class="btn btn-primary">Edit Project</button>
@@ -657,4 +621,4 @@
 
 		});
 
-	</script>
+</script>
