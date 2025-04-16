@@ -104,7 +104,49 @@ namespace Ticketmaster.Controllers
                 _context.Stage.Remove(stage);
                 await _context.SaveChangesAsync();
             }
-            return RedirectToAction("Board", new { projectId = stage?.ParentBoardId });
+            return RedirectToAction("ProjectBoard", new { projectId = stage?.ParentBoardId });
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> AddTask(int stageId, string title, string? description)
+        {
+            var stage = await _context.Stage.Include(s => s.Tasks).FirstOrDefaultAsync(s => s.StageId == stageId);
+            if (stage == null || string.IsNullOrWhiteSpace(title))
+            {
+                return BadRequest("Invalid stage or task title.");
+            }
+
+            var task = new TaskItem
+            {
+                Title = title,
+                Description = description,
+                StageId = stageId,
+                CreatedAt = DateTime.UtcNow,
+                IsComplete = false
+            };
+
+            _context.TaskItem.Add(task);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("ProjectBoard", new { projectId = stage.ParentBoardId });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteTask(int taskId)
+        {
+            var task = await _context.TaskItem.Include(t => t.Stage).FirstOrDefaultAsync(t => t.TaskItemId == taskId);
+            if (task == null)
+            {
+                return NotFound();
+            }
+
+            int? projectId = task.Stage?.ParentBoardId;
+
+            _context.TaskItem.Remove(task);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("ProjectBoard", new { projectId });
         }
     }
 }
