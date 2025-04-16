@@ -55,8 +55,14 @@ else
 										<button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
 									</form>
 
-									<!-- Move Task button (stubbed) -->
-									<button class="btn btn-sm btn-outline-secondary ms-2">Move</button>
+									<!-- Move Task button (functional) -->
+									<button class="btn btn-sm btn-outline-secondary ms-2"
+											data-bs-toggle="modal"
+											data-bs-target="#moveTaskModal"
+											data-task-id="@task.TaskItemId"
+											data-current-stage="@stage.StageId">
+										Move
+									</button>
 
 									<!-- Assign Task button -->
 									<button type="button" class="btn btn-sm btn-outline-primary ms-2"
