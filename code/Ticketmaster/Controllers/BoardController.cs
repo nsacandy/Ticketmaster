@@ -149,5 +149,27 @@ namespace Ticketmaster.Controllers
 
             return RedirectToAction("ProjectBoard", new { projectId });
         }
+
+        [HttpPost]
+        public async Task<IActionResult> MoveTask(int taskId, int targetStageId)
+        {
+            var task = await _context.TaskItem.Include(t => t.Stage).FirstOrDefaultAsync(t => t.TaskItemId == taskId);
+            if (task == null)
+            {
+                return NotFound();
+            }
+
+            var targetStage = await _context.Stage.Include(s => s.ParentBoard).FirstOrDefaultAsync(s => s.StageId == targetStageId);
+            if (targetStage == null)
+            {
+                return BadRequest("Target stage not found.");
+            }
+
+            task.StageId = targetStageId;
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("ProjectBoard", new { projectId = targetStage.ParentBoardId });
+        }
+
     }
 }

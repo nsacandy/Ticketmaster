@@ -43,6 +43,16 @@ else
                                 <input type="hidden" name="taskId" value="@task.TaskItemId" />
                                 <button type="submit" class="btn btn-sm btn-outline-danger">Delete Task</button>
                             </form>
+
+							<!-- Move Task Button (Triggers Modal) -->
+							<button class="btn btn-sm btn-outline-secondary"
+									data-task-id="@task.TaskItemId"
+									data-current-stage="@stage.StageId"
+									data-bs-toggle="modal"
+									data-bs-target="#moveTaskModal">
+								Move Task
+							</button>
+
                         </div>
                     }
                 }
@@ -65,7 +75,56 @@ else
             </div>
         }
     </div>
+
+    <!-- Move Task Modal -->
+    <div class="modal fade" id="moveTaskModal" tabindex="-1" aria-labelledby="moveTaskModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form method="post" asp-action="MoveTask">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="moveTaskModalLabel">Move Task to Another Stage</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" name="taskId" id="moveTaskId" />
+                        <div class="mb-3">
+                            <label for="targetStageId" class="form-label">Select Target Stage</label>
+                            <select class="form-select" id="targetStageId" name="targetStageId" required>
+                                @foreach (var s in Model.Stages)
+                                {
+                                    <option value="@s.StageId">@s.StageTitle</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Move</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var moveModal = document.getElementById('moveTaskModal');
+        moveModal.addEventListener('show.bs.modal', function (event) {
+          var button = event.relatedTarget;
+          var taskId = button.getAttribute('data-task-id');
+          var currentStageId = button.getAttribute('data-current-stage');
+
+          var input = document.getElementById('moveTaskId');
+          input.value = taskId;
+
+          var dropdown = document.getElementById('targetStageId');
+          Array.from(dropdown.options).forEach(opt => {
+            opt.hidden = opt.value === currentStageId;
+          });
+          dropdown.selectedIndex = Array.from(dropdown.options).findIndex(opt => !opt.hidden);
+        });
+    </script>
 }
+
 
 
 @*
