@@ -1,12 +1,12 @@
 ﻿@model Ticketmaster.Models.Board
 
 @{
-	ViewData["Title"] = $"{Model.ParentProject?.ProjectName} Board";
+    ViewData["Title"] = $"{Model.ParentProject?.ProjectName} Board";
 
 
-	// var inProgress = Model.Stages?.FirstOrDefault(s => s.Position == 1);
-	// var todo = Model.Stages?.FirstOrDefault(s => s.Position == 0);
-	// var done = Model.Stages?.FirstOrDefault(s => s.Position == 2);
+    // var inProgress = Model.Stages?.FirstOrDefault(s => s.Position == 1);
+    // var todo = Model.Stages?.FirstOrDefault(s => s.Position == 0);
+    // var done = Model.Stages?.FirstOrDefault(s => s.Position == 2);
 }
 
 <h2>@ViewData["Title"]</h2>
@@ -19,64 +19,80 @@
 else
 {
     <div style="display: flex; gap: 20px;">
+		@{
+			var assignedEmployees = ViewBag.AssignedEmployees as List<Ticketmaster.Models.Employee>;
+		}
+
         @foreach (var stage in Model.Stages.OrderBy(s => s.Position))
         {
-            <div style="flex: 1; background-color: #f8f9fa; padding: 15px; border-radius: 8px;">
-                <div class="d-flex justify-content-between align-items-center mb-2">
-                    <h3>@stage.StageTitle</h3>
-                    <div>
-                        <a asp-action="Edit" asp-route-id="@stage.StageId" class="btn btn-sm btn-warning">Edit</a>
-                        <a asp-action="Delete" asp-route-id="@stage.StageId" class="btn btn-sm btn-danger">Delete</a>
-                    </div>
-                </div>
+			<div style="display: flex; gap: 20px;">
+					<div style="flex: 1; background-color: #f8f9fa; padding: 15px; border-radius: 8px;">
+						<div class="d-flex justify-content-between align-items-center mb-2">
+							<h3>@stage.StageTitle</h3>
+							<div>
+								<a asp-action="Edit" asp-route-id="@stage.StageId" class="btn btn-sm btn-warning">Edit</a>
+								<a asp-action="Delete" asp-route-id="@stage.StageId" class="btn btn-sm btn-danger">Delete</a>
+							</div>
+						</div>
 
-                <!-- Task List -->
-                @if (stage?.Tasks?.Any() == true)
-                {
-                    foreach (var task in stage.Tasks)
-                    {
-                        <div style="padding: 10px; margin-bottom: 10px; background-color: #fff; border: 1px solid #ccc; border-radius: 4px;">
-                            <strong>@task.Title</strong><br />
-                            <small>@task.Description</small>
+						@if (stage?.Tasks?.Any() == true)
+						{
+							foreach (var task in stage.Tasks)
+							{
+								var assignedEmail = assignedEmployees?.FirstOrDefault(e => e.Id == task.AssignedTo)?.Email ?? "";
+								<div style="padding: 10px; margin-bottom: 10px; background-color: #fff; border: 1px solid #ccc; border-radius: 4px;">
+									<div class="d-flex justify-content-between">
+										<strong>@task.Title</strong>
+										@if (!string.IsNullOrEmpty(assignedEmail))
+										{
+											<small class="text-muted">@assignedEmail</small>
+										}
+									</div>
+									<small>@task.Description</small>
 
-                            <form asp-action="DeleteTask" method="post" class="mt-2">
-                                <input type="hidden" name="taskId" value="@task.TaskItemId" />
-                                <button type="submit" class="btn btn-sm btn-outline-danger">Delete Task</button>
-                            </form>
+									<form asp-action="DeleteTask" method="post" class="mt-2 d-inline">
+										<input type="hidden" name="taskId" value="@task.TaskItemId" />
+										<button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+									</form>
 
-							<!-- Move Task Button (Triggers Modal) -->
-							<button class="btn btn-sm btn-outline-secondary"
-									data-task-id="@task.TaskItemId"
-									data-current-stage="@stage.StageId"
-									data-bs-toggle="modal"
-									data-bs-target="#moveTaskModal">
-								Move Task
-							</button>
+									<!-- Move Task button (stubbed) -->
+									<button class="btn btn-sm btn-outline-secondary ms-2">Move</button>
 
-                        </div>
-                    }
-                }
-                else
-                {
-                    <p><em>No tasks yet.</em></p>
-                }
+									<!-- Assign Task button -->
+									<button type="button" class="btn btn-sm btn-outline-primary ms-2"
+											data-bs-toggle="modal"
+											data-bs-target="#assignTaskModal"
+											data-task-id="@task.TaskItemId"
+											data-stage-id="@stage.StageId">
+										Assign
+									</button>
 
-                <!-- Add Task Form -->
-                <form asp-action="AddTask" method="post" class="mt-3">
-                    <input type="hidden" name="stageId" value="@stage.StageId" />
-                    <div class="mb-2">
-                        <input name="title" class="form-control" placeholder="Task title" required />
-                    </div>
-                    <div class="mb-2">
-                        <input name="description" class="form-control" placeholder="Description (optional)" />
-                    </div>
-                    <button type="submit" class="btn btn-sm btn-success">+ Add Task</button>
-                </form>
-            </div>
+								</div>
+							}
+						}
+						else
+						{
+							<p><em>No tasks yet.</em></p>
+						}
+
+						<!-- Add Task Form -->
+						<form asp-action="AddTask" method="post" class="mt-3">
+							<input type="hidden" name="stageId" value="@stage.StageId" />
+							<div class="mb-2">
+								<input name="title" class="form-control" placeholder="Task title" required />
+							</div>
+							<div class="mb-2">
+								<input name="description" class="form-control" placeholder="Description (optional)" />
+							</div>
+							<button type="submit" class="btn btn-sm btn-success">+ Add Task</button>
+						</form>
+					</div>
+				
+			</div>
         }
     </div>
 
-    <!-- Move Task Modal -->
+    <!-- Move Task -->
     <div class="modal fade" id="moveTaskModal" tabindex="-1" aria-labelledby="moveTaskModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -106,7 +122,101 @@ else
         </div>
     </div>
 
+    <!-- Assigning Task -->
+    <div class="modal fade" id="assignTaskModal" tabindex="-1" aria-labelledby="assignTaskLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="assignTaskLabel">Assign Task</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="assignTaskForm">
+                        <input type="hidden" id="assignTaskId" name="taskId" />
+
+                        <div class="mb-3">
+                            <label for="assignedEmployee" class="form-label">Select Employee</label>
+                            <select class="form-select" id="assignedEmployee" name="employeeId" required>
+                                <option value="" disabled selected>Select employee...</option>
+                                @foreach (var emp in ViewBag.AssignedEmployees)
+                                {
+                                    <option value="@emp.Id">@emp.FirstName @emp.LastName (@emp.Email)</option>
+                                }
+                            </select>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Assign Task</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
+
+		let selectedTaskId = null;
+		let selectedEmployeeId = null;
+
+		document.addEventListener("DOMContentLoaded", function () {
+			const assignModal = document.getElementById("assignTaskModal");
+			assignModal.addEventListener("show.bs.modal", function (event) {
+				const button = event.relatedTarget;
+				const taskId = button.getAttribute("data-task-id");
+				document.getElementById("assignTaskId").value = taskId;
+			});
+
+			document.getElementById("assignTaskForm").addEventListener("submit", function (event) {
+				event.preventDefault();
+
+				const selectedEmployeeId = document.getElementById("assignedEmployee").value;
+
+				if (!selectedTaskId || selectedEmployeeId === "" || selectedEmployeeId === null) {
+					alert("Please select an employee.");
+					return;
+				}
+
+				console.log("Assigning Task:", selectedTaskId, "to", selectedEmployeeId);
+
+				fetch("/Board/AssignTask", {
+					method: "POST",
+					headers: { "Content-Type": "application/json" },
+					body: JSON.stringify({ taskId: selectedTaskId, employeeId: selectedEmployeeId })
+				})
+				.then(response => response.json().then(data => ({ status: response.status, body: data })))
+				.then(result => {
+					if (result.status === 200) {
+						alert(result.body.message);
+						const modal = bootstrap.Modal.getInstance(document.getElementById("assignTaskModal"));
+						modal.hide();
+						location.reload();
+					} else {
+						alert(result.body.message || "Error assigning task.");
+					}
+				})
+				.catch(error => {
+					console.error("Error:", error);
+					alert("Error assigning task.");
+				});
+			});
+
+			document.getElementById('assignTaskModal').addEventListener('show.bs.modal', function (event) {
+				const button = event.relatedTarget;
+				selectedTaskId = button.getAttribute('data-task-id');
+			});
+
+			document.querySelectorAll(".assign-employee-item").forEach(item => {
+				item.addEventListener("click", function () {
+					document.querySelectorAll(".assign-employee-item").forEach(i => i.classList.remove("selected"));
+					this.classList.add("selected");
+					selectedEmployeeId = this.getAttribute("data-employeeid");
+				});
+			});
+
+		});
+
         var moveModal = document.getElementById('moveTaskModal');
         moveModal.addEventListener('show.bs.modal', function (event) {
           var button = event.relatedTarget;
@@ -124,62 +234,3 @@ else
         });
     </script>
 }
-
-
-
-@*
-			<div style="flex: 1; background-color: #f8f9fa; padding: 15px; border-radius: 8px;">
-				<h3>@inProgress?.StageTitle </h3>
-				@if (todo?.Tasks?.Any() == true)
-				{
-					foreach (var task in todo.Tasks)
-					{
-						<div style="padding: 10px; margin-bottom: 10px; background-color: #fff; border: 1px solid #ccc; border-radius: 4px;">
-							<strong>@task.Title</strong><br />
-							<small>@task.Description</small>
-						</div>
-					}
-				}
-				else
-				{
-					<p><em>No tasks yet.</em></p>
-				}
-			</div> *@
-
-@* In Progress *@
-@* 			<div style="flex: 1; background-color: #f8f9fa; padding: 15px; border-radius: 8px;">
-				<h3>In Progress</h3>
-				@if (inProgress?.Tasks?.Any() == true)
-				{
-					foreach (var task in inProgress.Tasks)
-					{
-						<div style="padding: 10px; margin-bottom: 10px; background-color: #fff; border: 1px solid #ccc; border-radius: 4px;">
-							<strong>@task.Title</strong><br />
-							<small>@task.Description</small>
-						</div>
-					}
-				}
-				else
-				{
-					<p><em>No tasks yet.</em></p>
-				}
-			</div> *@
-
-@* Done *@
-@* 			<div style="flex: 1; background-color: #f8f9fa; padding: 15px; border-radius: 8px;">
-				<h3>Done</h3>
-				@if (done?.Tasks?.Any() == true)
-				{
-					foreach (var task in done.Tasks)
-					{
-						<div style="padding: 10px; margin-bottom: 10px; background-color: #fff; border: 1px solid #ccc; border-radius: 4px;">
-							<strong>@task.Title</strong><br />
-							<small>@task.Description</small>
-						</div>
-					}
-				}
-				else
-				{
-					<p><em>No tasks yet.</em></p>
-				}
-    </div> *@

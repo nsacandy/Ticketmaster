@@ -19,7 +19,6 @@ namespace Ticketmaster.Controllers
             _context = context;
         }
 
-        // GET: Boards
         public async Task<IActionResult> Index()
         {
             var board = await _context.Board
@@ -40,6 +39,37 @@ namespace Ticketmaster.Controllers
                 .FirstOrDefaultAsync(b => b.ParentProjectId == projectId);
 
             ViewData["Title"] = $"Board - {board?.ParentProject?.ProjectName ?? "Project"}";
+
+            var project = await _context.Project.FindAsync(projectId);
+            var employeeList = new List<Employee>();
+
+            if (project != null && !string.IsNullOrEmpty(project.InvolvedGroups))
+            {
+                var groupIds = project.InvolvedGroups.Split(',').Select(int.Parse).ToList();
+
+                var groups = await _context.Groups.ToListAsync();
+
+                foreach (var groupId in groupIds)
+                {
+                    var group = groups.FirstOrDefault(g => g.GroupId == groupId);
+                    if (group != null && !string.IsNullOrWhiteSpace(group.EmployeeIds))
+                    {
+                        var ids = group.EmployeeIds.Split(',').Select(int.Parse).ToList();
+                        var employees = await _context.Employee.Where(e => ids.Contains(e.Id)).ToListAsync();
+                        employeeList.AddRange(employees);
+                    }
+
+                    if (group?.ManagerId != null && !employeeList.Any(e => e.Id == group.ManagerId))
+                    {
+                        var manager = await _context.Employee.FindAsync(group.ManagerId);
+                        if (manager != null)
+                            employeeList.Add(manager);
+                    }
+                }
+            }
+
+            ViewBag.AssignedEmployees = employeeList.Distinct().ToList();
+
             return View("Index", board);
         }
 
@@ -90,7 +120,7 @@ namespace Ticketmaster.Controllers
             {
                 _context.Stage.Update(stage);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("ProjectBoard", "Board",new { projectId = stage.ParentBoardId});
+                return RedirectToAction("ProjectBoard", "Board", new { projectId = stage.ParentBoardId });
             }
             return View(stage);
         }
@@ -107,7 +137,6 @@ namespace Ticketmaster.Controllers
             return RedirectToAction("ProjectBoard", new { projectId = stage?.ParentBoardId });
         }
 
-        // Add Task 
         [HttpPost]
         public async Task<IActionResult> AddTask(int stageId, string title, string? description)
         {
@@ -171,5 +200,26 @@ namespace Ticketmaster.Controllers
             return RedirectToAction("ProjectBoard", new { projectId = targetStage.ParentBoardId });
         }
 
+        [HttpPost]
+        public async Task<IActionResult> AssignTask([FromBody] AssignTaskRequest request)
+        {
+            if (request == null || request.TaskId == 0 || request.EmployeeId == 0)
+                return BadRequest(new { message = "Invalid data" });
+
+            var task = await _context.TaskItem.FindAsync(request.TaskId);
+            if (task == null)
+                return NotFound(new { message = "Task not found" });
+
+            task.AssignedTo = request.EmployeeId;
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "Task assigned successfully!" });
+        }
+    }
+
+    public class AssignTaskRequest
+    {
+        public int TaskId { get; set; }
+        public int EmployeeId { get; set; }
     }
 }
