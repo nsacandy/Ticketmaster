@@ -107,7 +107,7 @@ namespace Ticketmaster.Controllers
             return RedirectToAction("ProjectBoard", new { projectId = stage?.ParentBoardId });
         }
 
-
+        // Add Task 
         [HttpPost]
         public async Task<IActionResult> AddTask(int stageId, string title, string? description)
         {
@@ -117,6 +117,7 @@ namespace Ticketmaster.Controllers
                 return BadRequest("Invalid stage or task title.");
             }
 
+            var something = "fakeVar";
             var task = new TaskItem
             {
                 Title = title,
