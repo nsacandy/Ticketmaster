@@ -215,7 +215,7 @@ var assemblies = [
     "classes": [
       { "name": "AspNetCoreGeneratedDocument.Views__ViewStart", "rp": "Ticketmaster_Views__ViewStart.html", "cl": 0, "ucl": 1, "cal": 1, "tl": 3, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "AspNetCoreGeneratedDocument.Views_Board_Create", "rp": "Ticketmaster_Views_Board_Create.html", "cl": 0, "ucl": 1, "cal": 1, "tl": 22, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "AspNetCoreGeneratedDocument.Views_Board_Index", "rp": "Ticketmaster_Views_Board_Index.html", "cl": 0, "ucl": 28, "cal": 28, "tl": 242, "cb": 0, "tb": 52, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "AspNetCoreGeneratedDocument.Views_Board_Index", "rp": "Ticketmaster_Views_Board_Index.html", "cl": 0, "ucl": 28, "cal": 28, "tl": 237, "cb": 0, "tb": 52, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "AspNetCoreGeneratedDocument.Views_EmployeeManagement_Index", "rp": "Ticketmaster_Views_EmployeeManagement_Index.html", "cl": 0, "ucl": 10, "cal": 10, "tl": 171, "cb": 0, "tb": 18, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "AspNetCoreGeneratedDocument.Views_GroupManagement_Index", "rp": "Ticketmaster_Views_GroupManagement_Index.html", "cl": 0, "ucl": 8, "cal": 8, "tl": 464, "cb": 0, "tb": 20, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "AspNetCoreGeneratedDocument.Views_Home_AccessDenied", "rp": "Ticketmaster_Views_Home_AccessDenied.html", "cl": 0, "ucl": 1, "cal": 1, "tl": 15, "cb": 0, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
@@ -244,11 +244,11 @@ var assemblies = [
       { "name": "Ticketmaster.Migrations.BoardStageSetup", "rp": "Ticketmaster_BoardStageSetup.html", "cl": 0, "ucl": 419, "cal": 419, "tl": 491, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Ticketmaster.Migrations.InitialCreate", "rp": "Ticketmaster_InitialCreate.html", "cl": 0, "ucl": 269, "cal": 269, "tl": 323, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Ticketmaster.Migrations.TicketmasterContextModelSnapshot", "rp": "Ticketmaster_TicketmasterContextModelSnapshot.html", "cl": 0, "ucl": 253, "cal": 253, "tl": 288, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Ticketmaster.Models.Board", "rp": "Ticketmaster_Board.html", "cl": 4, "ucl": 0, "cal": 4, "tl": 31, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Ticketmaster.Models.Employee", "rp": "Ticketmaster_Employee.html", "cl": 7, "ucl": 0, "cal": 7, "tl": 30, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Ticketmaster.Models.Board", "rp": "Ticketmaster_Board.html", "cl": 4, "ucl": 0, "cal": 4, "tl": 49, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Ticketmaster.Models.Employee", "rp": "Ticketmaster_Employee.html", "cl": 7, "ucl": 0, "cal": 7, "tl": 78, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Ticketmaster.Models.ErrorViewModel", "rp": "Ticketmaster_ErrorViewModel.html", "cl": 0, "ucl": 2, "cal": 2, "tl": 11, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Ticketmaster.Models.Group", "rp": "Ticketmaster_Group.html", "cl": 5, "ucl": 0, "cal": 5, "tl": 53, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Ticketmaster.Models.Manager", "rp": "Ticketmaster_Manager.html", "cl": 2, "ucl": 0, "cal": 2, "tl": 14, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Ticketmaster.Models.Manager", "rp": "Ticketmaster_Manager.html", "cl": 2, "ucl": 0, "cal": 2, "tl": 31, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Ticketmaster.Models.Project", "rp": "Ticketmaster_Project.html", "cl": 5, "ucl": 0, "cal": 5, "tl": 43, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Ticketmaster.Models.Stage", "rp": "Ticketmaster_Stage.html", "cl": 5, "ucl": 1, "cal": 6, "tl": 71, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Ticketmaster.Utilities.EmployeeManagementViewModel", "rp": "Ticketmaster_EmployeeManagementViewModel.html", "cl": 2, "ucl": 0, "cal": 2, "tl": 16, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
@@ -306,7 +306,7 @@ var riskHotspots = [
       { "value": 26, "exceeded": true },
     ]},
   {
-    "assembly": "Ticketmaster", "class": "AspNetCoreGeneratedDocument.Views_Board_Index", "reportPath": "Ticketmaster_Views_Board_Index.html", "methodName": "<ExecuteAsync()", "methodShortName": "<ExecuteAsync()", "fileIndex": 0, "line": 147,
+    "assembly": "Ticketmaster", "class": "AspNetCoreGeneratedDocument.Views_Board_Index", "reportPath": "Ticketmaster_Views_Board_Index.html", "methodName": "<ExecuteAsync()", "methodShortName": "<ExecuteAsync()", "fileIndex": 0, "line": 142,
     "metrics": [
       { "value": 210, "exceeded": true },
       { "value": 14, "exceeded": false },
