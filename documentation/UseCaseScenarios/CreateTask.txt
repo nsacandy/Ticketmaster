@@ -1,0 +1,10 @@
+Create a new task on a stage
+
+Context - An employee of a project is logged in and wishes to create a new task
+
+1. User navigates to Project page
+2. User selects a project.
+3. User selects a stage to add a task on
+4. User adds details to the task
+5. User confirms
+6. A new stage is added to that stage

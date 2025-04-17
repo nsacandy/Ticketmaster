@@ -1,0 +1,10 @@
+Edit a stage on a board
+
+Context - A manager of a project is logged in and wishes to create a new stage
+
+1. User navigates to Project page
+2. User selects a project.
+3. User selects to edit a stage
+4. User adds details to the stage
+5. User confirms
+6. The stage is edited

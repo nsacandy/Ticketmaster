@@ -1,0 +1,9 @@
+Delete a task on a stage
+
+Context - An employee of a project is logged in and wishes to delete a task
+
+1. User navigates to Project page
+2. User selects a project.
+3. User selects a task to delete
+4. User confirms
+5. Task is removed

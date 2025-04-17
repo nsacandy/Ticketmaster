@@ -1,0 +1,7 @@
+View the board for a project
+Context - Any user is logged in, is the member of a project or an admin and wishes to view the project board
+
+1. User navigates to Project page
+2. User selects a project.
+3. User selects to view board
+4. User is taken to the board with stages on it

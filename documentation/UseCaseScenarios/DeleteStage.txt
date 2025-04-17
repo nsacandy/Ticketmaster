@@ -1,0 +1,9 @@
+Delete a stage on a board
+
+Context - A manager of a project is logged in and wishes to delete a stage
+
+1. User navigates to Project page
+2. User selects a project.
+3. User selects to delete an existing stage
+4. User confirms
+5. The stage and all its tasks are removed

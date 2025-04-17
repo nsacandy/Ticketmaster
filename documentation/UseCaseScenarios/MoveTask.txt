@@ -1,0 +1,10 @@
+Move a task from one stage to another
+
+Context - An employee of a project is logged in and wishes to move a task from one stage to another
+
+1. User navigates to Project page
+2. User selects a project.
+3. User selects a task to move
+4. User selects the new stage for the task
+5. User confirms
+6. Task is moved
