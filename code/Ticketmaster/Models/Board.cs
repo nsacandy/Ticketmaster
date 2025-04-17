@@ -13,11 +13,29 @@ namespace Ticketmaster.Models
     [Table("Board")]
     public class Board
     {
+        /// <summary>
+        /// Gets or sets the parent project.
+        /// </summary>
+        /// <value>
+        /// The parent project.
+        /// </value>
         [ForeignKey("ParentProjectId")]
         public Project ParentProject { get; set; }  // navigation property
 
+        /// <summary>
+        /// Gets or sets the parent project identifier.
+        /// </summary>
+        /// <value>
+        /// The parent project identifier.
+        /// </value>
         public int ParentProjectId { get; set; }
 
+        /// <summary>
+        /// Gets or sets the board identifier.
+        /// </summary>
+        /// <value>
+        /// The board identifier.
+        /// </value>
         [Key]
         public int BoardId { get; set; }
         
