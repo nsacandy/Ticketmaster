@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Mvc.Controllers;
 
 namespace Ticketmaster.Tests.ControllerTests
 {
@@ -182,4 +183,5 @@ namespace Ticketmaster.Tests.ControllerTests
             Assert.Contains("Project not found", notFound.Value.ToString());
         }
     }
-}
+    
+    }

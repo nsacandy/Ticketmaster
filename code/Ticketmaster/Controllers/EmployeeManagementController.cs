@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Ticketmaster.Data;
@@ -22,7 +23,7 @@ public class EmployeeManagementController : Controller
 {
     private readonly TicketmasterContext _context;
     private EmployeeManagementViewModel viewModel;
-
+    public bool DisableTransactionsForTesting { get; set; } = false;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="EmployeeManagementController"/> class.
@@ -205,11 +206,49 @@ public class EmployeeManagementController : Controller
             return RedirectToAction(nameof(Index));
         }
 
-        using (var transaction = _context.Database.BeginTransaction())
+        if (!DisableTransactionsForTesting)
         {
+            using (var transaction = _context.Database.BeginTransaction())
+            {
+                try
+                {
+                    foreach (var change in stagedChanges)
+                        if (change.Action == "Add")
+                        {
+                            change.Employee.Pword = EmployeePasswordHasher.HashPassword(change.Employee.Pword);
+                            _context.Employee.Add(change.Employee);
+                        }
+                        else if (change.Action == "Edit")
+                        {
+                            _context.Employee.Update(change.Employee);
+                        }
+                        else if (change.Action == "Delete")
+                        {
+                            var employee = _context.Employee.Find(change.Employee.Id);
+                            if (employee != null) _context.Employee.Remove(employee);
+                        }
+
+                    _context.SaveChanges();
+                    transaction.Commit();
+                    HttpContext.Session.Remove("StagedChanges");
+
+                    TempData["Message"] = "All changes committed successfully!";
+                }
+                catch
+                {
+                    transaction.Rollback();
+                    TempData["Error"] = "Error committing changes. Transaction rolled back.";
+                }
+            }
+        }
+        else
+        {
+
+
             try
             {
                 foreach (var change in stagedChanges)
+                {
                     if (change.Action == "Add")
                     {
                         change.Employee.Pword = EmployeePasswordHasher.HashPassword(change.Employee.Pword);
@@ -224,22 +263,25 @@ public class EmployeeManagementController : Controller
                         var employee = _context.Employee.Find(change.Employee.Id);
                         if (employee != null) _context.Employee.Remove(employee);
                     }
+                }
 
                 _context.SaveChanges();
-                transaction.Commit();
                 HttpContext.Session.Remove("StagedChanges");
 
                 TempData["Message"] = "All changes committed successfully!";
+
             }
             catch
             {
-                transaction.Rollback();
-                TempData["Error"] = "Error committing changes. Transaction rolled back.";
+                TempData["Error"] = "Error committing changes.";
             }
+
+
         }
 
         return RedirectToAction(nameof(Index));
     }
+
 
     /// <summary>
     /// Removes a staged employee change based on the employee ID.

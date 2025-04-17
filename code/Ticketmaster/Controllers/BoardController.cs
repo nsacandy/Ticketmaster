@@ -10,15 +10,26 @@ using Ticketmaster.Models;
 
 namespace Ticketmaster.Controllers
 {
+    /// <summary>
+    /// Controller for managing boards, stages, and tasks in the Ticketmaster application.
+    /// </summary>
     public class BoardController : Controller
     {
         private readonly TicketmasterContext _context;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BoardController"/> class.
+        /// </summary>
+        /// <param name="context">Database context for accessing board-related data.</param>
         public BoardController(TicketmasterContext context)
         {
             _context = context;
         }
 
+        /// <summary>
+        /// Displays the default board view with all related stages and tasks.
+        /// </summary>
+        /// <returns>The board view with loaded data.</returns>
         public async Task<IActionResult> Index()
         {
             var board = await _context.Board
@@ -30,6 +41,11 @@ namespace Ticketmaster.Controllers
             return View(board);
         }
 
+        /// <summary>
+        /// Displays the board associated with a specific project, including related stages, tasks, and assigned employees.
+        /// </summary>
+        /// <param name="projectId">The ID of the project whose board should be displayed.</param>
+        /// <returns>The board view filtered by project.</returns>
         [HttpGet("Board/Project/{projectId}")]
         public async Task<IActionResult> ProjectBoard(int projectId)
         {
@@ -46,7 +62,6 @@ namespace Ticketmaster.Controllers
             if (project != null && !string.IsNullOrEmpty(project.InvolvedGroups))
             {
                 var groupIds = project.InvolvedGroups.Split(',').Select(int.Parse).ToList();
-
                 var groups = await _context.Groups.ToListAsync();
 
                 foreach (var groupId in groupIds)
@@ -73,12 +88,21 @@ namespace Ticketmaster.Controllers
             return View("Index", board);
         }
 
-
+        /// <summary>
+        /// Checks if a board with the given ID exists.
+        /// </summary>
+        /// <param name="id">Board ID to check.</param>
+        /// <returns>True if the board exists; otherwise, false.</returns>
         private bool BoardExists(int id)
         {
             return _context.Board.Any(e => e.BoardId == id);
         }
 
+        /// <summary>
+        /// Displays the form to create a new stage for a given project.
+        /// </summary>
+        /// <param name="projectId">The ID of the parent project.</param>
+        /// <returns>The stage creation view.</returns>
         [HttpGet]
         public IActionResult Create(int projectId)
         {
@@ -86,6 +110,11 @@ namespace Ticketmaster.Controllers
             return View(stage);
         }
 
+        /// <summary>
+        /// Handles the submission of a new stage.
+        /// </summary>
+        /// <param name="stage">The stage to add.</param>
+        /// <returns>Redirects to the project board view if successful; otherwise, returns the form with validation errors.</returns>
         [HttpPost]
         public async Task<IActionResult> Create(Stage stage)
         {
@@ -106,6 +135,11 @@ namespace Ticketmaster.Controllers
             return View(stage);
         }
 
+        /// <summary>
+        /// Displays the form to edit a stage.
+        /// </summary>
+        /// <param name="id">The ID of the stage to edit.</param>
+        /// <returns>The edit form for the selected stage, or a 404 if not found.</returns>
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
@@ -113,6 +147,11 @@ namespace Ticketmaster.Controllers
             return stage == null ? NotFound() : View(stage);
         }
 
+        /// <summary>
+        /// Handles the submission of edited stage details.
+        /// </summary>
+        /// <param name="stage">The updated stage object.</param>
+        /// <returns>Redirects to the board view if successful; otherwise, redisplays the form.</returns>
         [HttpPost]
         public async Task<IActionResult> Edit(Stage stage)
         {
@@ -125,6 +164,11 @@ namespace Ticketmaster.Controllers
             return View(stage);
         }
 
+        /// <summary>
+        /// Deletes a stage by ID.
+        /// </summary>
+        /// <param name="id">The ID of the stage to delete.</param>
+        /// <returns>Redirects to the associated project board.</returns>
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
@@ -137,6 +181,13 @@ namespace Ticketmaster.Controllers
             return RedirectToAction("ProjectBoard", new { projectId = stage?.ParentBoardId });
         }
 
+        /// <summary>
+        /// Adds a new task to the specified stage.
+        /// </summary>
+        /// <param name="stageId">The ID of the stage to add the task to.</param>
+        /// <param name="title">The title of the task.</param>
+        /// <param name="description">The optional description of the task.</param>
+        /// <returns>Redirects to the project board view.</returns>
         [HttpPost]
         public async Task<IActionResult> AddTask(int stageId, string title, string? description)
         {
@@ -146,7 +197,6 @@ namespace Ticketmaster.Controllers
                 return BadRequest("Invalid stage or task title.");
             }
 
-            var something = "fakeVar";
             var task = new TaskItem
             {
                 Title = title,
@@ -162,6 +212,11 @@ namespace Ticketmaster.Controllers
             return RedirectToAction("ProjectBoard", new { projectId = stage.ParentBoardId });
         }
 
+        /// <summary>
+        /// Deletes a task by its ID.
+        /// </summary>
+        /// <param name="taskId">The ID of the task to delete.</param>
+        /// <returns>Redirects to the associated project board.</returns>
         [HttpPost]
         public async Task<IActionResult> DeleteTask(int taskId)
         {
@@ -179,6 +234,12 @@ namespace Ticketmaster.Controllers
             return RedirectToAction("ProjectBoard", new { projectId });
         }
 
+        /// <summary>
+        /// Moves a task to a new stage.
+        /// </summary>
+        /// <param name="taskId">The ID of the task to move.</param>
+        /// <param name="targetStageId">The ID of the new stage.</param>
+        /// <returns>Redirects to the updated project board.</returns>
         [HttpPost]
         public async Task<IActionResult> MoveTask(int taskId, int targetStageId)
         {
@@ -200,6 +261,11 @@ namespace Ticketmaster.Controllers
             return RedirectToAction("ProjectBoard", new { projectId = targetStage.ParentBoardId });
         }
 
+        /// <summary>
+        /// Assigns a task to an employee using a JSON request payload.
+        /// </summary>
+        /// <param name="request">Contains the task ID and the employee ID to assign.</param>
+        /// <returns>A success message if the assignment is valid.</returns>
         [HttpPost]
         public async Task<IActionResult> AssignTask([FromBody] AssignTaskRequest request)
         {
@@ -217,9 +283,19 @@ namespace Ticketmaster.Controllers
         }
     }
 
+    /// <summary>
+    /// Represents a request to assign a task to an employee.
+    /// </summary>
     public class AssignTaskRequest
     {
+        /// <summary>
+        /// The ID of the task to assign.
+        /// </summary>
         public int TaskId { get; set; }
+
+        /// <summary>
+        /// The ID of the employee to assign the task to.
+        /// </summary>
         public int EmployeeId { get; set; }
     }
 }

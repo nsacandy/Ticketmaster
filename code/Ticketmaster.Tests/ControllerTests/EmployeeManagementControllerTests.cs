@@ -10,6 +10,7 @@ using Ticketmaster.Data;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Ticketmaster.Models;
 using Ticketmaster.Utilities;
+using static Ticketmaster.Controllers.EmployeeManagementController;
 
 namespace Ticketmaster.Tests.ControllerTests;
 public class EmployeeManagementControllerTests
@@ -48,7 +49,7 @@ public class EmployeeManagementControllerTests
 
         var urlHelperMock = new Mock<IUrlHelper>();
         urlHelperMock.Setup(u => u.Action(It.IsAny<UrlActionContext>()))
-                     .Returns("/EmployeeManagement/Index");
+            .Returns("/EmployeeManagement/Index");
 
         _controller = new EmployeeManagementController(_context)
         {
@@ -60,6 +61,8 @@ public class EmployeeManagementControllerTests
             TempData = tempData,
             Url = urlHelperMock.Object
         };
+        _controller.DisableTransactionsForTesting = true;
+
     }
 
     [Fact]
@@ -155,7 +158,103 @@ public class EmployeeManagementControllerTests
         var result = await _controller.Index();
 
         Assert.NotNull(_controller.GetEmployeeManagementViewModel);
-    } 
+    }
+    [Fact]
+    public void CommitChanges_CommitsStagedAddChange_ReturnsRedirectWithSuccessMessage()
+    {
+        // Arrange
+        var newEmployee = new Employee
+        {
+            Id = 0,
+            FirstName = "Test",
+            LastName = "User",
+            Email = "test@example.com",
+            PhoneNum = "1234567890",
+            Pword = "plaintext",  // Should get hashed
+            ERole = "standard"
+        };
+
+        var change = new EmployeeChange
+        {
+            Action = "Add",
+            Employee = newEmployee
+        };
+
+        var changesList = new List<EmployeeChange> { change };
+        _httpContext.Session.SetObjectAsJson("StagedChanges", changesList);
+
+        // Act
+        var result = _controller.CommitChanges();
+
+        // Assert
+        var redirect = Assert.IsType<RedirectToActionResult>(result);
+        Assert.Equal("Index", redirect.ActionName);
+        Assert.Equal("All changes committed successfully!", _controller.TempData["Message"]);
+
+        var addedEmployee = _context.Employee.FirstOrDefault(e => e.Email == "test@example.com");
+        Assert.NotNull(addedEmployee);
+        Assert.NotEqual("plaintext", addedEmployee!.Pword); // Ensure password was hashed
+
+        // Session should be cleared
+        bool stillHasKey = _httpContext.Session.TryGetValue("StagedChanges", out var _);
+        Assert.False(stillHasKey);
+    }
+
+    [Fact]
+    public async Task StageEmployeeDelete_EmployeeInGroup_ReturnsRedirectWithError()
+    {
+
+        var _controller = CreateController();
+        // Arrange
+        var employee = new Employee
+        {
+            Id = 10,
+            FirstName = "Groupie",
+            LastName = "McTest",
+            Email = "groupie@test.com",
+            Pword = "pass",
+            PhoneNum = "1234567890",
+            ERole = "standard"
+        };
+
+        var group = new Group
+        {
+            GroupId = 1,
+            GroupName = "TestGroup",
+            EmployeeIds = "10,11",
+            ManagerId = 42 // not the same employee
+        };
+
+        _context.Employee.Add(employee);
+        _context.Groups.Add(group);
+        await _context.SaveChangesAsync();
+
+
+        // Act
+        var result = await _controller.StageEmployeeDelete(employee);
+
+        // Assert
+        var redirect = Assert.IsType<RedirectToActionResult>(result);
+        Assert.Equal("Index", redirect.ActionName);
+        Assert.Equal("This employee cannot be deleted because they are part of a group.", _controller.TempData["Error"]);
+    }
+
+    private EmployeeManagementController CreateController()
+    {
+        var controller = new EmployeeManagementController(_context)
+        {
+            ControllerContext = new ControllerContext
+            {
+                HttpContext = _httpContext,
+                ActionDescriptor = new ControllerActionDescriptor()
+            },
+            TempData = _controller.TempData,
+            Url = _controller.Url,
+            DisableTransactionsForTesting = true
+        };
+
+        return controller;
+    }
 
 
     private class DummySession : ISession
