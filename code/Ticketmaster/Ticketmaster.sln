@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ticketmaster", "Ticketmaste
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ticketmaster.Tests", "..\Ticketmaster.Tests\Ticketmaster.Tests.csproj", "{145A77A4-C638-4D13-806C-C0C47CD0A4F8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicketmasterDesktop", "..\TicketmasterDesktop\TicketmasterDesktop.csproj", "{EA0B40E9-6F39-4B1E-9752-FCF294C94CEA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{145A77A4-C638-4D13-806C-C0C47CD0A4F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{145A77A4-C638-4D13-806C-C0C47CD0A4F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{145A77A4-C638-4D13-806C-C0C47CD0A4F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA0B40E9-6F39-4B1E-9752-FCF294C94CEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA0B40E9-6F39-4B1E-9752-FCF294C94CEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA0B40E9-6F39-4B1E-9752-FCF294C94CEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA0B40E9-6F39-4B1E-9752-FCF294C94CEA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

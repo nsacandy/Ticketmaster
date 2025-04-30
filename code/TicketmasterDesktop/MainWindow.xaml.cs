@@ -1,0 +1,42 @@
+﻿using System.Text;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
+
+namespace TicketmasterDesktop
+{
+    public partial class MainWindow : Window
+    {
+        public MainWindow()
+        {
+            InitializeComponent();
+        }
+
+        private void LoginButton_Click(object sender, RoutedEventArgs e)
+        {
+            string username = UsernameBox.Text;
+            string password = PasswordBox.Password;
+
+            // Fake example: Normally you would check against your database
+            if (username == "admin" && password == "password")
+            {
+                MessageBox.Show("Login successful!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                // Open the Project List Window (next step) and close login
+                var projectListWindow = new ProjectListWindow(username);
+                projectListWindow.Show();
+                this.Close();
+            }
+            else
+            {
+                MessageBox.Show("Invalid credentials.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+    }
+}
