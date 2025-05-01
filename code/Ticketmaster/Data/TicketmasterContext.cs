@@ -50,5 +50,4 @@ namespace Ticketmaster.Data
             modelBuilder.Entity<Employee>().HasData(admin);
         }
     }
-
 }
