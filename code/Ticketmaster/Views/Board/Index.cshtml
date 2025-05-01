@@ -1,75 +1,81 @@
 ﻿@model Ticketmaster.Models.Board
 
 @{
+    bool isAdmin = ViewBag.IsAdmin ?? false;
+    bool isProjectLead = ViewBag.IsProjectLead ?? false;
+}
+
+@{
     ViewData["Title"] = $"{Model.ParentProject?.ProjectName} Board";
     var assignedEmployees = ViewBag.AssignedEmployees as List<Ticketmaster.Models.Employee>;
 }
 
 <style>
     .stage-column {
-        background-color: #f8f9fa;
-        border-radius: 8px;
-        padding: 15px;
-        min-width: 300px;
-        max-width: 350px;
-        flex-shrink: 0;
-        height: 100%;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 15px;
+    min-width: 300px;
+    max-width: 350px;
+    flex-shrink: 0;
+    height: 100%;
     }
 
     .task-card {
-        background-color: #ffffff;
-        border: 1px solid #dee2e6;
-        border-radius: 5px;
-        padding: 15px;
-        margin-bottom: 15px;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    background-color: #ffffff;
+    border: 1px solid #dee2e6;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 15px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
     }
 
     .task-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     }
 
     .kanban-wrapper {
-        display: flex;
-        overflow-x: auto;
-        gap: 20px;
-        padding-bottom: 20px;
+    display: flex;
+    overflow-x: auto;
+    gap: 20px;
+    padding-bottom: 20px;
     }
 
     .task-description {
-        margin-top: 8px;
-        font-size: 0.9rem;
+    margin-top: 8px;
+    font-size: 0.9rem;
     }
 
     .task-buttons {
-        margin-top: 10px;
-        display: flex;
-        gap: 10px;
-        flex-wrap: wrap;
+    margin-top: 10px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
     }
 
     .stage-column,
     .stage-column * {
-        color: #000000 !important;
+    color: #000000 !important;
     }
 
     .task-card,
     .task-card * {
-        color: #000000 !important;
+    color: #000000 !important;
     }
 
-        .task-card .text-muted {
-            color: #6c757d !important;
-        }
+    .task-card .text-muted {
+    color: #6c757d !important;
+    }
 </style>
-
-
 
 <h2 class="mb-4">@ViewData["Title"]</h2>
 
-<a asp-action="Create" asp-route-projectId="@Model.ParentProjectId" class="btn btn-primary mb-4">+ Add Stage</a>
+@if (isAdmin || isProjectLead)
+{
+    <a asp-action="Create" asp-route-projectId="@Model.ParentProjectId" class="btn btn-primary mb-4">+ Add Stage</a>
+}
 
 @if (Model.Stages == null || !Model.Stages.Any())
 {
@@ -84,8 +90,11 @@ else
                 <div class="d-flex justify-content-between align-items-center mb-2">
                     <h5>@stage.StageTitle</h5>
                     <div>
-                        <a asp-action="Edit" asp-route-id="@stage.StageId" class="btn btn-sm btn-outline-warning">Edit</a>
-                        <a asp-action="Delete" asp-route-id="@stage.StageId" class="btn btn-sm btn-outline-danger">Delete</a>
+                        @if (isAdmin || isProjectLead)
+                        {
+                            <a asp-action="Edit" asp-route-id="@stage.StageId" class="btn btn-sm btn-outline-warning">Edit</a>
+                            <a asp-action="Delete" asp-route-id="@stage.StageId" class="btn btn-sm btn-outline-danger">Delete</a>
+                        }
                     </div>
                 </div>
 
@@ -239,26 +248,30 @@ else
 
 				console.log("Assigning Task:", selectedTaskId, "to", selectedEmployeeId);
 
-				fetch("/Board/AssignTask", {
-					method: "POST",
-					headers: { "Content-Type": "application/json" },
-					body: JSON.stringify({ taskId: selectedTaskId, employeeId: selectedEmployeeId })
-				})
-				.then(response => response.json().then(data => ({ status: response.status, body: data })))
-				.then(result => {
-					if (result.status === 200) {
-						alert(result.body.message);
-						const modal = bootstrap.Modal.getInstance(document.getElementById("assignTaskModal"));
-						modal.hide();
-						location.reload();
-					} else {
-						alert(result.body.message || "Error assigning task.");
-					}
-				})
-				.catch(error => {
-					console.error("Error:", error);
-					alert("Error assigning task.");
-				});
+                fetch("/Board/AssignTask", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ taskId: selectedTaskId, employeeId: selectedEmployeeId })
+                })
+                .then(response =>
+                    response.json().then(data => ({ status: response.status, body: data }))
+                )
+                .then(result => {
+                    if (result.status === 200) {
+                        alert(result.body.message);
+                        const modal = bootstrap.Modal.getInstance(document.getElementById("assignTaskModal"));
+                        modal.hide();
+                        location.reload();
+                    } else if (result.status === 403) {
+                        alert(result.body.message || "Access denied.");
+                    } else {
+                        alert(result.body.message || "Error assigning task.");
+                    }
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                    alert("Unexpected error occurred while assigning task.");
+                });
 			});
 
 			document.getElementById('assignTaskModal').addEventListener('show.bs.modal', function (event) {
@@ -277,6 +290,7 @@ else
 		});
 
         var moveModal = document.getElementById('moveTaskModal');
+
         moveModal.addEventListener('show.bs.modal', function (event) {
           var button = event.relatedTarget;
           var taskId = button.getAttribute('data-task-id');

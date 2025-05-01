@@ -85,6 +85,13 @@ namespace Ticketmaster.Controllers
 
             ViewBag.AssignedEmployees = employeeList.Distinct().ToList();
 
+            var userId = User.FindFirst("Id")?.Value;
+            bool isAdmin = User.IsInRole("admin");
+            bool isProjectLead = userId != null && project?.ProjectLeadId.ToString() == userId;
+
+            ViewBag.IsAdmin = isAdmin;
+            ViewBag.IsProjectLead = isProjectLead;
+
             return View("Index", board);
         }
 
@@ -272,15 +279,31 @@ namespace Ticketmaster.Controllers
             if (request == null || request.TaskId == 0 || request.EmployeeId == 0)
                 return BadRequest(new { message = "Invalid data" });
 
-            var task = await _context.TaskItem.FindAsync(request.TaskId);
+            var task = await _context.TaskItem
+                .Include(t => t.Stage)
+                .ThenInclude(s => s.ParentBoard)
+                .ThenInclude(b => b.ParentProject)
+                .FirstOrDefaultAsync(t => t.TaskItemId == request.TaskId);
+
             if (task == null)
                 return NotFound(new { message = "Task not found" });
+
+            var userId = User.FindFirst("Id")?.Value;
+            var isAdmin = User.IsInRole("admin");
+            var isProjectLead = userId != null && task.Stage.ParentBoard.ParentProject.ProjectLeadId.ToString() == userId;
+
+            // ⛔ Restriction: Non-admin, non-leads can only assign to themselves
+            if (!isAdmin && !isProjectLead && request.EmployeeId.ToString() != userId)
+            {
+                return StatusCode(403, new { message = "Access denied. You can only assign tasks to yourself." });
+            }
 
             task.AssignedTo = request.EmployeeId;
             await _context.SaveChangesAsync();
 
             return Ok(new { message = "Task assigned successfully!" });
         }
+
     }
 
     /// <summary>
