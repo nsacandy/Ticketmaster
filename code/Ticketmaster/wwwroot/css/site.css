@@ -17,6 +17,129 @@ html {
   min-height: 100%;
 }
 
-body {
-  margin-bottom: 60px;
+body.custom-theme {
+    background: linear-gradient(135deg, #0d1b2a, #1b263b, #415a77, #778da9);
+    background-size: 400% 400%;
+    animation: gradientShift 30s ease infinite;
+    color: #f8f9fa;
+    min-height: 100vh;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
+
+.navbar,
+.modal-content {
+    background-color: rgba(0, 0, 0, 0.85) !important;
+    color: #f8f9fa;
+}
+
+    .navbar .nav-link {
+        color: #9ecfff !important;
+    }
+
+        .navbar .nav-link:hover {
+            color: #ffffff !important;
+        }
+
+.btn-primary {
+    background-color: #1b6ec2;
+    border-color: #155ab6;
+}
+
+    .btn-primary:hover {
+        background-color: #155ab6;
+        border-color: #0b4c9c;
+    }
+
+.btn-secondary {
+    background-color: #6c757d;
+    border-color: #6c757d;
+}
+
+.list-group-item {
+    background-color: rgba(255, 255, 255, 0.03);
+    color: #f8f9fa;
+}
+
+    .list-group-item:hover,
+    .list-group-item.selected {
+        background-color: #1b6ec2 !important;
+        color: white !important;
+    }
+
+.modal-content {
+    border-radius: 12px;
+}
+
+@keyframes gradientShift {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* === Text Color Overrides === */
+
+/* Default all text to white for non-white backgrounds */
+body, html {
+    color: #ffffff;
+}
+
+/* White/light backgrounds should use black text */
+.bg-white,
+.bg-light,
+.bg-body,
+.bg-body-tertiary,
+.bg-secondary-subtle,
+.modal-content.bg-white,
+.navbar-light,
+input.form-control,
+textarea.form-control,
+.form-control:disabled,
+.form-control[readonly] {
+    color: #000000 !important;
+}
+
+    /* Placeholder text inside inputs */
+    input.form-control::placeholder,
+    textarea.form-control::placeholder {
+        color: #555555 !important;
+    }
+
+/* Ensure list group items still have readable text */
+.list-group-item {
+    background-color: rgba(255, 255, 255, 0.03);
+    color: #ffffff;
+}
+
+/* Table cells (if used) should default to black text on white */
+.table th,
+.table td {
+    background-color: #ffffff;
+    color: #000000;
+}
+
+/* Force buttons to use readable text colors */
+.btn,
+.btn-primary,
+.btn-secondary,
+.btn-danger,
+.btn-success,
+.btn-outline-primary,
+.btn-outline-secondary {
+    color: #ffffff;
+}
+
+.btn-light,
+.btn-outline-light,
+.btn-white {
+    color: #000000 !important;
+}
+
+
