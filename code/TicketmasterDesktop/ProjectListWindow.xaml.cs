@@ -22,12 +22,12 @@ namespace TicketmasterDesktop
     /// </summary>
     public partial class ProjectListWindow : Window
     {
-        private readonly string _username;
+        private readonly int _userId;
 
-        public ProjectListWindow(string username)
+        public ProjectListWindow(int id)
         {
             InitializeComponent();
-            _username = username;
+            _userId = id;
 
             LoadProjects();
         }

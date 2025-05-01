@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Ticketmaster.Data;
 
@@ -11,9 +12,11 @@ using Ticketmaster.Data;
 namespace Ticketmaster.Migrations
 {
     [DbContext(typeof(TicketmasterContext))]
-    partial class TicketmasterContextModelSnapshot : ModelSnapshot
+    [Migration("20250501200323_UpdatedTasks")]
+    partial class UpdatedTasks
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
