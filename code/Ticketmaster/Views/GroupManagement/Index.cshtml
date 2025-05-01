@@ -39,14 +39,25 @@
     <ul class="list-group mx-auto mt-3" style="max-width: 600px;" id="groupList">
         @foreach (var group in Model.Groups)
         {
-            <li class="list-group-item group-item"
+            <li class="list-group-item d-flex justify-content-between align-items-center group-item"
                 data-groupid="@group.GroupId"
                 data-groupname="@group.GroupName"
                 data-managerid="@group.ManagerId"
                 data-managername="@(group.Manager != null ? group.Manager.Employee.FirstName + " " + group.Manager.Employee.LastName : "No Manager")"
                 data-employeeids="@group.EmployeeIds"
                 data-employeenames="@(string.Join(", ", Model.Employees.Where(e => group.EmployeeIds.Split(',').Contains(e.Id.ToString())).Select(e => e.FirstName + " " + e.LastName)))">
-                @group.GroupName @(group.Manager != null ? $"({group.Manager.Employee.FirstName} {group.Manager.Employee.LastName})" : "")
+
+                <span>
+                    @group.GroupName @(group.Manager != null ? $"({group.Manager.Employee.FirstName} {group.Manager.Employee.LastName})" : "")
+                </span>
+
+                <span>
+					<button class="btn btn-outline-primary btn-sm me-2"
+							data-action="edit"
+							title="Edit Group">
+						✏️
+					</button>
+                </span>
             </li>
         }
     </ul>
@@ -165,300 +176,256 @@
 </div>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        let availableEmployeesList = document.getElementById("availableEmployeesList");
-        let groupMembersList = document.getElementById("groupMembersList");
-        let managerBox = document.getElementById("managerBox");
-        let selectedEmployee = null;
-        let previousManager = null;
+	// ========= GLOBAL VARIABLES =========
+	let availableEmployeesList, groupMembersList, managerBox;
+	let editAvailableEmployeesList, editGroupMembersList, editManagerBox;
+	let selectedEmployee = null, previousManager = null;
+	let selectedEditEmployee = null, previousEditManager = null;
+	let selectedGroupId = null;
 
-        let editAvailableEmployeesList = document.getElementById("editAvailableEmployeesList");
-        let editGroupMembersList = document.getElementById("editGroupMembersList");
-        let editManagerBox = document.getElementById("editManagerBox");
-        let selectedEditEmployee = null;
-        let previousEditManager = null;
-        let selectedGroupId = null;
+	const loggedInUserId = '@ViewBag.LoggedInUserId';
+	const isAdmin = '@ViewBag.IsAdmin'.toLowerCase() === 'true';
 
-        document.getElementById("openCreateGroupModal").addEventListener("click", function () {
-            const createErrorDiv = document.getElementById("createGroupError");
+	// ========= MAIN EVENT BINDINGS =========
+	document.addEventListener("DOMContentLoaded", function () {
+		// Element initialization
+		availableEmployeesList = document.getElementById("availableEmployeesList");
+		groupMembersList = document.getElementById("groupMembersList");
+		managerBox = document.getElementById("managerBox");
 
-            if (!isAdmin) {
-                createErrorDiv.classList.remove("d-none");
-                setTimeout(() => {
-                    createErrorDiv.classList.add("d-none");
-                }, 4000);
-                return;
-            }
+		editAvailableEmployeesList = document.getElementById("editAvailableEmployeesList");
+		editGroupMembersList = document.getElementById("editGroupMembersList");
+		editManagerBox = document.getElementById("editManagerBox");
 
-            new bootstrap.Modal(document.getElementById("createGroupModal")).show();
-        });
+		// Button actions
+		document.getElementById("openCreateGroupModal").addEventListener("click", handleCreateModalOpen);
+		document.getElementById("addEmployeeBtn").addEventListener("click", addEmployeeToGroup);
+		document.getElementById("removeEmployeeBtn").addEventListener("click", removeEmployeeFromGroup);
+		document.getElementById("setManagerBtn").addEventListener("click", setGroupManager);
+		document.getElementById("groupCreationForm").addEventListener("submit", handleGroupCreate);
+		document.getElementById("editGroupForm").addEventListener("submit", handleGroupEdit);
+		document.getElementById("deleteGroupBtn").addEventListener("click", handleGroupDelete);
 
-        function selectEmployee(list, item) {
-            list.querySelectorAll(".list-group-item").forEach(emp => emp.classList.remove("selected"));
-            item.classList.add("selected");
-            selectedEmployee = item;
-        }
+		document.getElementById("searchEmployee").addEventListener("input", handleEmployeeSearch);
 
-        document.querySelectorAll("#availableEmployeesList .list-group-item, #groupMembersList .list-group-item").forEach(item => {
-            item.addEventListener("click", function () {
-                selectEmployee(this.parentElement, this);
-            });
-        });
+		// Edit button triggers
+		document.querySelectorAll(".group-item button[data-action='edit']").forEach(btn => {
+			btn.addEventListener("click", function () {
+				const groupItem = this.closest(".group-item");
+				openEditGroupModal(groupItem);
+			});
+		});
 
-        document.getElementById("addEmployeeBtn").addEventListener("click", function () {
-            if (selectedEmployee && selectedEmployee.parentElement === availableEmployeesList) {
-                groupMembersList.appendChild(selectedEmployee);
-                selectedEmployee.classList.remove("selected");
-                selectedEmployee = null;
-            }
-        });
+		// List selection styling
+		document.querySelectorAll(".list-group").forEach(list => {
+			list.addEventListener("click", e => {
+				if (e.target.classList.contains("list-group-item")) {
+					list.querySelectorAll(".list-group-item").forEach(i => i.classList.remove("selected"));
+					e.target.classList.add("selected");
+					selectedEmployee = e.target;
+				}
+			});
+		});
+	});
 
-        document.getElementById("removeEmployeeBtn").addEventListener("click", function () {
-            if (selectedEmployee && selectedEmployee.parentElement === groupMembersList) {
-                availableEmployeesList.appendChild(selectedEmployee);
-                selectedEmployee.classList.remove("selected");
-                selectedEmployee = null;
-            }
-        });
+	// ========= MODAL OPENERS =========
+	function handleCreateModalOpen() {
+		const errorDiv = document.getElementById("createGroupError");
+		if (!isAdmin) {
+			errorDiv.classList.remove("d-none");
+			setTimeout(() => errorDiv.classList.add("d-none"), 4000);
+			return;
+		}
+		new bootstrap.Modal(document.getElementById("createGroupModal")).show();
+	}
 
-        document.getElementById("setManagerBtn").addEventListener("click", function () {
-            if (selectedEmployee && selectedEmployee.parentElement === groupMembersList) {
-                if (previousManager) {
-                    groupMembersList.appendChild(previousManager);
-                }
+	function openEditGroupModal(groupItem) {
+		selectedGroupId = groupItem.getAttribute("data-groupid");
+		const selectedManagerId = groupItem.getAttribute("data-managerid");
 
-                managerBox.value = selectedEmployee.getAttribute("data-employeename");
-                previousManager = selectedEmployee;
-                selectedEmployee.remove();
-                selectedEmployee = null;
-            }
-        });
+		// Setup modal fields
+		const groupNameInput = document.getElementById("editGroupName");
+		groupNameInput.value = groupItem.getAttribute("data-groupname");
+		groupNameInput.readOnly = !(isAdmin || selectedManagerId === loggedInUserId);
 
-        document.getElementById("searchEmployee").addEventListener("input", function () {
-            let query = this.value.toLowerCase();
-            document.querySelectorAll("#availableEmployeesList .list-group-item").forEach(item => {
-                item.style.display = item.getAttribute("data-employeename").toLowerCase().includes(query) ? "" : "none";
-            });
-        });
+		editManagerBox.value = groupItem.getAttribute("data-managername");
 
-        document.querySelectorAll(".list-group").forEach(list => {
-            list.addEventListener("click", function (event) {
-                if (event.target.classList.contains("list-group-item")) {
-                    list.querySelectorAll(".list-group-item").forEach(item => item.classList.remove("selected"));
-                    event.target.classList.add("selected");
-                }
-            });
-        });
+		const modalFooter = document.getElementById("editGroupModalFooter");
+		const actionButtonsDiv = document.getElementById("editGroupActionButtons");
 
-        document.getElementById("groupCreationForm").addEventListener("submit", function (event) {
-            event.preventDefault();
-            let groupName = document.getElementById("groupName").value;
-            let managerId = previousManager ? previousManager.getAttribute("data-employeeid") : null;
-            let employeeIds = [...groupMembersList.children].map(emp => emp.getAttribute("data-employeeid"));
+		const canEdit = isAdmin || selectedManagerId === loggedInUserId;
+		modalFooter.style.display = canEdit ? "flex" : "none";
+		actionButtonsDiv.style.display = canEdit ? "block" : "none";
 
-            if (!groupName || !managerId || employeeIds.length === 0) {
-                alert("Please enter a group name, select a manager, and add at least one employee.");
-                return;
-            }
+		const managerId = selectedManagerId;
+		const employeeIds = groupItem.getAttribute("data-employeeids").split(",");
 
-            fetch("/GroupManagement/CreateGroup", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ groupName, managerId, employeeIds })
-            })
-            .then(response => {
-                if (response.ok) {
-                    alert("Group created successfully!");
-                    location.reload();
-                } else {
-                    alert("Error creating group.");
-                }
-            })
-            .catch(error => console.error("Error:", error));
-        });
+		// Refresh lists
+		editGroupMembersList.innerHTML = "";
+		editAvailableEmployeesList.innerHTML = "";
 
-        const loggedInUserId = '@ViewBag.LoggedInUserId';
-        const isAdmin = '@ViewBag.IsAdmin'.toLowerCase() === 'true';
+		document.querySelectorAll("#availableEmployeesList .list-group-item").forEach(emp => {
+			const empId = emp.getAttribute("data-employeeid");
+			const empName = emp.getAttribute("data-employeename");
+			const newItem = emp.cloneNode(true);
+			newItem.classList.remove("selected");
 
-        document.querySelectorAll(".group-item").forEach(groupItem => {
-            groupItem.addEventListener("dblclick", function () {
-                selectedGroupId = this.getAttribute("data-groupid");
-                const selectedManagerId = this.getAttribute("data-managerid"); // ← Moved up here
+			if (empId === managerId) {
+				editManagerBox.value = empName;
+				previousEditManager = newItem;
+			} else if (employeeIds.includes(empId)) {
+				editGroupMembersList.appendChild(newItem);
+			} else {
+				editAvailableEmployeesList.appendChild(newItem);
+			}
+		});
 
-                document.getElementById("editGroupName").value = this.getAttribute("data-groupname");
+		attachEventListenersToEditModal();
+		new bootstrap.Modal(document.getElementById("editGroupModal")).show();
+	}
 
-                const groupNameInput = document.getElementById("editGroupName");
-                groupNameInput.readOnly = true;
+	// ========= CREATE GROUP LOGIC =========
+	function addEmployeeToGroup() {
+		if (selectedEmployee && selectedEmployee.parentElement === availableEmployeesList) {
+			groupMembersList.appendChild(selectedEmployee);
+			selectedEmployee.classList.remove("selected");
+			selectedEmployee = null;
+		}
+	}
 
-                if (isAdmin || selectedManagerId === loggedInUserId) {
-                    groupNameInput.readOnly = false;
-                }
+	function removeEmployeeFromGroup() {
+		if (selectedEmployee && selectedEmployee.parentElement === groupMembersList) {
+			availableEmployeesList.appendChild(selectedEmployee);
+			selectedEmployee.classList.remove("selected");
+			selectedEmployee = null;
+		}
+	}
 
-                editManagerBox.value = this.getAttribute("data-managername");
+	function setGroupManager() {
+		if (selectedEmployee && selectedEmployee.parentElement === groupMembersList) {
+			if (previousManager) {
+				groupMembersList.appendChild(previousManager);
+			}
+			managerBox.value = selectedEmployee.getAttribute("data-employeename");
+			previousManager = selectedEmployee;
+			selectedEmployee.remove();
+			selectedEmployee = null;
+		}
+	}
 
-                const modalFooter = document.getElementById("editGroupModalFooter");
-                modalFooter.style.display = "none";
+	function handleGroupCreate(event) {
+		event.preventDefault();
 
-                if (isAdmin || selectedManagerId === loggedInUserId) {
-                    modalFooter.style.display = "flex";
-                }
+		const groupName = document.getElementById("groupName").value;
+		const managerId = previousManager ? previousManager.getAttribute("data-employeeid") : null;
+		const employeeIds = [...groupMembersList.children].map(emp => emp.getAttribute("data-employeeid"));
 
-                const actionButtonsDiv = document.getElementById("editGroupActionButtons");
-                actionButtonsDiv.style.display = "none";
+		if (!groupName || !managerId || employeeIds.length === 0) {
+			alert("Please enter a group name, select a manager, and add at least one employee.");
+			return;
+		}
 
-                if (isAdmin || selectedManagerId === loggedInUserId) {
-                    actionButtonsDiv.style.display = "block";
-                }
+		fetch("/GroupManagement/CreateGroup", {
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify({ groupName, managerId, employeeIds })
+		})
+			.then(res => res.ok ? location.reload() : alert("Error creating group."))
+			.catch(error => console.error("Error:", error));
+	}
 
-                let managerId = selectedManagerId;
-                let employeeIds = this.getAttribute("data-employeeids").split(",");
+	function handleEmployeeSearch() {
+		const query = this.value.toLowerCase();
+		document.querySelectorAll("#availableEmployeesList .list-group-item").forEach(item => {
+			item.style.display = item.getAttribute("data-employeename").toLowerCase().includes(query) ? "" : "none";
+		});
+	}
 
-                editGroupMembersList.innerHTML = "";
-                editAvailableEmployeesList.innerHTML = "";
+	// ========= EDIT GROUP LOGIC =========
+	function attachEventListenersToEditModal() {
+		document.querySelectorAll("#editAvailableEmployeesList .list-group-item, #editGroupMembersList .list-group-item").forEach(item => {
+			item.addEventListener("click", () => {
+				item.parentElement.querySelectorAll(".list-group-item").forEach(i => i.classList.remove("selected"));
+				item.classList.add("selected");
+				selectedEditEmployee = item;
+			});
+		});
 
-                document.querySelectorAll("#availableEmployeesList .list-group-item").forEach(emp => {
-                    let empId = emp.getAttribute("data-employeeid");
-                    let empName = emp.getAttribute("data-employeename");
+		document.getElementById("editAddEmployeeBtn").addEventListener("click", () => {
+			if (selectedEditEmployee && selectedEditEmployee.parentElement === editAvailableEmployeesList) {
+				editGroupMembersList.appendChild(selectedEditEmployee);
+				selectedEditEmployee.classList.remove("selected");
+				selectedEditEmployee = null;
+			}
+		});
 
-                    let newItem = emp.cloneNode(true);
-                    newItem.classList.remove("selected");
+		document.getElementById("editRemoveEmployeeBtn").addEventListener("click", () => {
+			if (selectedEditEmployee && selectedEditEmployee.parentElement === editGroupMembersList) {
+				editAvailableEmployeesList.appendChild(selectedEditEmployee);
+				selectedEditEmployee.classList.remove("selected");
+				selectedEditEmployee = null;
+			}
+		});
 
-                    if (empId === managerId) {
-                        editManagerBox.value = empName;
-                        previousEditManager = newItem;
-                    } else if (employeeIds.includes(empId)) {
-                        editGroupMembersList.appendChild(newItem);
-                    } else {
-                        editAvailableEmployeesList.appendChild(newItem);
-                    }
-                });
+		document.getElementById("editSetManagerBtn").addEventListener("click", () => {
+			if (selectedEditEmployee && selectedEditEmployee.parentElement === editGroupMembersList) {
+				if (previousEditManager) {
+					let previousItem = previousEditManager.cloneNode(true);
+					previousItem.classList.remove("selected");
+					previousItem.addEventListener("click", () => selectEditEmployee(editGroupMembersList, previousItem));
+					editGroupMembersList.appendChild(previousItem);
+				}
+				editManagerBox.value = selectedEditEmployee.getAttribute("data-employeename");
+				previousEditManager = selectedEditEmployee;
+				selectedEditEmployee.remove();
+				selectedEditEmployee = null;
+			}
+		});
+	}
 
-                attachEventListenersToEditModal();
-                new bootstrap.Modal(document.getElementById("editGroupModal")).show();
-            });
-        });
+	function handleGroupEdit(event) {
+		event.preventDefault();
 
-        function attachEventListenersToEditModal() {
-            document.querySelectorAll("#editAvailableEmployeesList .list-group-item, #editGroupMembersList .list-group-item").forEach(item => {
-                item.addEventListener("click", function () {
-                    selectEditEmployee(this.parentElement, this);
-                });
-            });
+		const groupName = document.getElementById("editGroupName").value;
+		let managerId = previousEditManager?.getAttribute("data-employeeid")
+			?? document.querySelector(`.group-item[data-groupid='${selectedGroupId}']`)?.getAttribute("data-managerid");
 
-            document.getElementById("editAddEmployeeBtn").addEventListener("click", function () {
-                if (selectedEditEmployee && selectedEditEmployee.parentElement === editAvailableEmployeesList) {
-                    editGroupMembersList.appendChild(selectedEditEmployee);
-                    selectedEditEmployee.classList.remove("selected");
-                    selectedEditEmployee = null;
-                }
-            });
+		const employeeIds = [...editGroupMembersList.children].map(emp => emp.getAttribute("data-employeeid"));
 
-            document.getElementById("editRemoveEmployeeBtn").addEventListener("click", function () {
-                if (selectedEditEmployee && selectedEditEmployee.parentElement === editGroupMembersList) {
-                    editAvailableEmployeesList.appendChild(selectedEditEmployee);
-                    selectedEditEmployee.classList.remove("selected");
-                    selectedEditEmployee = null;
-                }
-            });
+		fetch("/GroupManagement/EditGroup", {
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify({ groupId: selectedGroupId, groupName, managerId, employeeIds })
+		})
+			.then(res => res.ok ? location.reload() : alert("Error updating group."))
+			.catch(error => console.error("Error:", error));
+	}
 
-            document.getElementById("editSetManagerBtn").addEventListener("click", function () {
-                if (selectedEditEmployee && selectedEditEmployee.parentElement === editGroupMembersList) {
-                    if (previousEditManager) {
-                        let previousManagerItem = previousEditManager.cloneNode(true);
-                        previousManagerItem.classList.remove("selected");
+	function handleGroupDelete() {
+		if (!selectedGroupId || !confirm("Are you sure you want to delete this group? This action cannot be undone.")) return;
 
-                        previousManagerItem.addEventListener("click", function () {
-                            selectEditEmployee(editGroupMembersList, this);
-                        });
-
-                        editGroupMembersList.appendChild(previousManagerItem);
-                    }
-
-                    editManagerBox.value = selectedEditEmployee.getAttribute("data-employeename");
-                    previousEditManager = selectedEditEmployee;
-
-                    selectedEditEmployee.remove();
-                    selectedEditEmployee = null;
-                }
-            });
-
-        }
-
-        function selectEditEmployee(list, item) {
-            list.querySelectorAll(".list-group-item").forEach(emp => emp.classList.remove("selected"));
-            item.classList.add("selected");
-            selectedEditEmployee = item;
-        }
-
-        document.getElementById("editGroupForm").addEventListener("submit", function (event) {
-            event.preventDefault();
-
-            let groupName = document.getElementById("editGroupName").value;
-            let managerId = previousEditManager ? previousEditManager.getAttribute("data-employeeid") : null;
-            let employeeIds = [...editGroupMembersList.children].map(emp => emp.getAttribute("data-employeeid"));
-
-            if (!managerId) {
-                managerId = document.querySelector(".group-item[data-groupid='" + selectedGroupId + "']").getAttribute("data-managerid");
-            }
-
-            fetch("/GroupManagement/EditGroup", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ groupId: selectedGroupId, groupName, managerId, employeeIds })
-            })
-            .then(response => {
-                if (response.ok) {
-                    alert("Group updated successfully!");
-                    location.reload();
-                } else {
-                    alert("Error updating group.");
-                }
-            })
-            .catch(error => console.error("Error:", error));
-        });
-
-        document.getElementById("deleteGroupBtn").addEventListener("click", function () {
-            if (!selectedGroupId) {
-                alert("No group selected.");
-                return;
-            }
-
-            if (!confirm("Are you sure you want to delete this group? This action cannot be undone.")) {
-                return;
-            }
-
-            fetch("/GroupManagement/DeleteGroup", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ groupId: selectedGroupId })
-            })
-            .then(response => response.json().then(data => ({ status: response.status, body: data })))
-            .then(result => {
-                const errorDiv = document.getElementById("deleteGroupError");
-
-                if (result.status === 200) {
-                    alert(result.body.message);
-                    location.reload();
-                } else {
-                    console.error("Request failed:", result.body);
-                    errorDiv.textContent = result.body.message || "Error deleting group.";
-                    errorDiv.classList.remove("d-none");
-
-                    setTimeout(() => {
-                        errorDiv.classList.add("d-none");
-                    }, 3000);
-                }
-            })
-            .catch(error => {
-                console.error("Error:", error);
-                const errorDiv = document.getElementById("deleteGroupError");
-                errorDiv.textContent = "Error deleting group: " + error.message;
-                errorDiv.classList.remove("d-none");
-
-                setTimeout(() => {
-                    errorDiv.classList.add("d-none");
-                }, 3000);
-            });
-        });
-    });
+		fetch("/GroupManagement/DeleteGroup", {
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify({ groupId: selectedGroupId })
+		})
+			.then(res => res.json().then(data => ({ status: res.status, body: data })))
+			.then(result => {
+				const errorDiv = document.getElementById("deleteGroupError");
+				if (result.status === 200) {
+					alert(result.body.message);
+					location.reload();
+				} else {
+					errorDiv.textContent = result.body.message || "Error deleting group.";
+					errorDiv.classList.remove("d-none");
+					setTimeout(() => errorDiv.classList.add("d-none"), 3000);
+				}
+			})
+			.catch(error => {
+				const errorDiv = document.getElementById("deleteGroupError");
+				errorDiv.textContent = "Error deleting group: " + error.message;
+				errorDiv.classList.remove("d-none");
+				setTimeout(() => errorDiv.classList.add("d-none"), 3000);
+			});
+	}
 </script>
