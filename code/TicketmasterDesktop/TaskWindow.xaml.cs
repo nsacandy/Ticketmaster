@@ -59,7 +59,7 @@ namespace TicketmasterDesktop
                     taskRow.Children.Add(new TextBlock
                     {
                         Text = $"{task.Title}: {task.Description} (Assigned to: {assignedName})",
-                        Width = 400,
+                        Width = 300,
                         VerticalAlignment = VerticalAlignment.Center
                     });
 
@@ -71,6 +71,23 @@ namespace TicketmasterDesktop
                     };
                     assignButton.Click += AssignOrUnassign_Click;
                     taskRow.Children.Add(assignButton);
+
+                    if (task.AssignedTo == Session.CurrentUser?.Id)
+                    {
+                        var moveComboBox = new ComboBox
+                        {
+                            Width = 150,
+                            Margin = new Thickness(10, 0, 0, 0),
+                            Tag = task,
+                            ItemsSource = _board.Stages,
+                            DisplayMemberPath = "StageTitle",
+                            SelectedValuePath = "StageId",
+                            SelectedValue = stage.StageId
+                        };
+
+                        moveComboBox.SelectionChanged += MoveTask_SelectionChanged;
+                        taskRow.Children.Add(moveComboBox);
+                    }
 
                     taskPanel.Children.Add(taskRow);
                 }
@@ -111,6 +128,21 @@ namespace TicketmasterDesktop
             }
         }
 
+        private void MoveTask_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (sender is ComboBox comboBox && comboBox.Tag is TaskItem task && comboBox.SelectedValue is int newStageId)
+            {
+                using var context = new TicketmasterContext(App.DbOptions);
+                var dbTask = context.TaskItem.FirstOrDefault(t => t.TaskItemId == task.TaskItemId);
+                if (dbTask != null && dbTask.AssignedTo == Session.CurrentUser?.Id && dbTask.StageId != newStageId)
+                {
+                    dbTask.StageId = newStageId;
+                    context.SaveChanges();
+                    LoadBoardData();
+                }
+            }
+        }
+
         private void LogoutButton_Click(object sender, RoutedEventArgs e)
         {
             Session.CurrentUser = null;
@@ -126,6 +158,7 @@ namespace TicketmasterDesktop
             this.Close();
         }
     }
+
 }
 
 
