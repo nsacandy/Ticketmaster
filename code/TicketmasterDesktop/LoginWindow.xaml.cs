@@ -15,9 +15,9 @@ using Ticketmaster.Utilities;
 
 namespace TicketmasterDesktop
 {
-    public partial class MainWindow : Window
+    public partial class LoginWindow : Window
     {
-        public MainWindow()
+        public LoginWindow()
         {
             InitializeComponent();
         }
@@ -54,6 +54,7 @@ namespace TicketmasterDesktop
                 var result = EmployeePasswordHasher.VerifyPassword( employee.Pword, password);
                 if (result)
                 {
+                    Session.CurrentUser = employee; // Store the logged-in user in session
                     MessageBox.Show($"✅ Welcome, {employee.FirstName}!", "Login Successful");
                     var projectList = new ProjectListWindow(employee.Id);
                     projectList.Show();
