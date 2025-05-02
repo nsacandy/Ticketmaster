@@ -54,34 +54,34 @@ namespace TicketmasterDesktop
 
             int employeeId = employee.Id;
 
-            // Step 1: Get group IDs this employee belongs to
+            // Get all groups from DB
             var allGroups = await App.DbContext.Groups
-                .Where(g => !string.IsNullOrWhiteSpace(g.EmployeeIds))
-                .ToListAsync(); // ✅ force DB fetch, now we can use C# code
+                .Where(g => !string.IsNullOrWhiteSpace(g.EmployeeIds) || g.ManagerId != null)
+                .ToListAsync();
 
+            // Identify groups where user is either a member or a manager
             var matchingGroupIds = allGroups
-                .Where(g => g.EmployeeIds
-                    .Split(',')
-                    .Select(id => id.Trim())
-                    .Any(id => int.TryParse(id, out int parsed) && parsed == employeeId))
+                .Where(g =>
+                    (g.EmployeeIds?.Split(',').Any(id => int.TryParse(id.Trim(), out var parsedId) && parsedId == employeeId) ?? false)
+                    || g.ManagerId == employeeId)
                 .Select(g => g.GroupId)
                 .ToList();
 
+            // Get all projects with involved groups
             var allProjects = await App.DbContext.Project
                 .Where(p => !string.IsNullOrWhiteSpace(p.InvolvedGroups))
                 .ToListAsync();
 
-            var matchingProjects = App.DbContext.Project
-                .Where(p => !string.IsNullOrWhiteSpace(p.InvolvedGroups))
-                .ToList()
-                .Where(p => p.InvolvedGroups
-                    .Split(',')
-                    .Select(id => id.Trim())
-                    .Any(id => int.TryParse(id, out int parsed) && matchingGroupIds.Contains(parsed)))
+            // Filter projects where any involved group matches one of the matching groups
+            var matchingProjects = allProjects
+                .Where(p =>
+                    p.InvolvedGroups.Split(',')
+                    .Any(id => int.TryParse(id.Trim(), out var parsed) && matchingGroupIds.Contains(parsed)))
                 .ToList();
 
             ProjectsListView.ItemsSource = matchingProjects;
         }
+
 
         private void OpenProject(Project selectedProject)
         {

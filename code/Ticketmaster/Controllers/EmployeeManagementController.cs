@@ -122,6 +122,19 @@ public class EmployeeManagementController : Controller
         var stagedChanges = HttpContext.Session.GetObjectFromJson<List<EmployeeChange>>("StagedChanges") ??
                             new List<EmployeeChange>();
 
+        // Check for email duplication in the database
+        bool emailExistsInDb = await _context.Employee.AnyAsync(e => e.Email.ToLower() == email.ToLower());
+
+        // Check for email duplication in staged additions
+        bool emailExistsInStaging = stagedChanges.Any(c =>
+            c.Action == "Add" && c.Employee.Email.ToLower() == email.ToLower());
+
+        if (emailExistsInDb || emailExistsInStaging)
+        {
+            TempData["Error"] = "An employee with this email already exists.";
+            return RedirectToAction(nameof(Index));
+        }
+
         var newEmployee = new Employee
         {
             Id = id,
@@ -133,22 +146,18 @@ public class EmployeeManagementController : Controller
             ERole = eRole
         };
 
-        // newEmployee.Pword = this._passwordHasher.HashPassword(newEmployee, newEmployee.Pword);
-        if (!stagedChanges.Any(employeeChange => employeeChange.Employee.Id == id))
+        var change = new EmployeeChange
         {
-            var change = new EmployeeChange
-            {
-                Action = "Add",
-                Employee = newEmployee
-            };
-            stagedChanges.Add(change);
-            HttpContext.Session.SetObjectAsJson("StagedChanges", stagedChanges);
-        }
+            Action = "Add",
+            Employee = newEmployee
+        };
+
+        stagedChanges.Add(change);
+        HttpContext.Session.SetObjectAsJson("StagedChanges", stagedChanges);
 
         TempData["Success"] = "Employee staged successfully!";
-        return RedirectToAction("Index");
+        return RedirectToAction(nameof(Index));
     }
-
 
 
     /// <summary>
