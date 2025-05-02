@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Ticketmaster.Data;
 using Ticketmaster.Models;
 
 namespace TicketmasterDesktop
@@ -31,16 +32,22 @@ namespace TicketmasterDesktop
             // Clear existing content
             StagesPanel.Children.Clear();
 
+            using var context = new TicketmasterContext(App.DbOptions);
+
             foreach (var stage in _board.Stages.OrderBy(s => s.Position))
             {
+                var tasks = context.TaskItem
+                    .Where(t => t.StageId == stage.StageId)
+                    .ToList();
+
                 var stageGroup = new GroupBox
                 {
                     Header = stage.StageTitle,
                     Margin = new Thickness(10),
                     Content = new ListBox
                     {
-                        ItemsSource = stage.Tasks,
-                        DisplayMemberPath = "TaskTitle",
+                        ItemsSource = tasks,
+                        DisplayMemberPath = "Title",
                         Tag = stage // Store stage for reference
                     }
                 };
@@ -63,5 +70,7 @@ namespace TicketmasterDesktop
             login.Show();
             this.Close();
         }
+
+
     }
 }
