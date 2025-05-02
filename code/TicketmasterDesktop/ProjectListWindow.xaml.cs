@@ -29,6 +29,8 @@ namespace TicketmasterDesktop
             InitializeComponent();
             _userId = id;
 
+            WelcomeTextBlock.Text = $"Welcome, {Session.CurrentUser.FirstName} {Session.CurrentUser.LastName}!";
+
             LoadProjectsForEmployee();
         }
 
@@ -41,7 +43,7 @@ namespace TicketmasterDesktop
             this.Close();
         }
 
-        private void LoadProjectsForEmployee()
+        private async void LoadProjectsForEmployee()
         {
             var employee = Session.CurrentUser;
             if (employee == null)
@@ -53,9 +55,9 @@ namespace TicketmasterDesktop
             int employeeId = employee.Id;
 
             // Step 1: Get group IDs this employee belongs to
-            var allGroups = App.DbContext.Groups
+            var allGroups = await App.DbContext.Groups
                 .Where(g => !string.IsNullOrWhiteSpace(g.EmployeeIds))
-                .ToList(); // ✅ force DB fetch, now we can use C# code
+                .ToListAsync(); // ✅ force DB fetch, now we can use C# code
 
             var matchingGroupIds = allGroups
                 .Where(g => g.EmployeeIds
@@ -65,9 +67,9 @@ namespace TicketmasterDesktop
                 .Select(g => g.GroupId)
                 .ToList();
 
-            var allProjects = App.DbContext.Project
+            var allProjects = await App.DbContext.Project
                 .Where(p => !string.IsNullOrWhiteSpace(p.InvolvedGroups))
-                .ToList();
+                .ToListAsync();
 
             var matchingProjects = App.DbContext.Project
                 .Where(p => !string.IsNullOrWhiteSpace(p.InvolvedGroups))
@@ -81,6 +83,43 @@ namespace TicketmasterDesktop
             ProjectsListView.ItemsSource = matchingProjects;
         }
 
+        private void OpenProject(Project selectedProject)
+        {
+            if (selectedProject == null)
+            {
+                MessageBox.Show("Please select a project.");
+                return;
+            }
+
+            // Load board for the project
+            using var context = new TicketmasterContext(App.DbOptions);
+            var board = context.Board
+                .Include(b => b.Stages)
+                .ThenInclude(s => s.Tasks)
+                .FirstOrDefault(b => b.ParentProjectId == selectedProject.ProjectId);
+
+            if (board == null)
+            {
+                MessageBox.Show("No board found for this project.");
+                return;
+            }
+
+            var taskWindow = new TaskWindow(board); // hypothetical window
+            taskWindow.Show();
+            this.Close();
+        }
+
+        private void OpenProject_Click(object sender, RoutedEventArgs e)
+        {
+            var selectedProject = ProjectsListView.SelectedItem as Project;
+            OpenProject(selectedProject);
+        }
+
+        private void ProjectsListView_DoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            var selectedProject = ProjectsListView.SelectedItem as Project;
+            OpenProject(selectedProject);
+        }
 
     }
 }

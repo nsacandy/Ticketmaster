@@ -12,6 +12,7 @@ namespace TicketmasterDesktop
     public partial class App : Application
     {
         public static TicketmasterContext DbContext { get; private set; }
+        public static DbContextOptions<TicketmasterContext> DbOptions { get; private set; }
 
         protected override void OnStartup(StartupEventArgs e)
         {

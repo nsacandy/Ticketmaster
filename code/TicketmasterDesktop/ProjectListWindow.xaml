@@ -1,12 +1,17 @@
 ﻿<Window x:Class="TicketmasterDesktop.ProjectListWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Your Projects" Height="350" Width="600">
+        Title="Your Projects" Height="500" Width="600">
 
     <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
+            <!-- Header -->
             <RowDefinition Height="*"/>
+            <!-- Project List -->
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <!-- Footer -->
         </Grid.RowDefinitions>
 
         <!-- Header row with title and logout -->
@@ -33,9 +38,23 @@
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Project Name" Width="200" DisplayMemberBinding="{Binding ProjectName}" />
-                    <GridViewColumn Header="Description" Width="350" DisplayMemberBinding="{Binding Description}" />
+                    <GridViewColumn Header="Description" Width="350" DisplayMemberBinding="{Binding ProjectDescription}" />
                 </GridView>
             </ListView.View>
         </ListView>
+
+        
+
+        <!-- Welcome Footer -->
+        <TextBlock x:Name="WelcomeTextBlock"
+                   Grid.Column="1"
+                   Grid.Row="2"
+                   HorizontalAlignment="Left"
+                   Margin="0,10,0,0"
+                   FontSize="14"
+                   FontStyle="Italic"
+                   Foreground="SlateGray"/>
+
+        <Button Grid.Row="3" Grid.Column="0" Click="OpenProject_Click" Content="Open Project" Margin="0,10,0,0" />
     </Grid>
 </Window>
