@@ -56,12 +56,16 @@ namespace TicketmasterDesktop
                     }
 
                     var taskRow = new StackPanel { Orientation = Orientation.Horizontal, Margin = new Thickness(5) };
-                    taskRow.Children.Add(new TextBlock
+                    var taskTextBlock = new TextBlock
                     {
                         Text = $"{task.Title}: {task.Description} (Assigned to: {assignedName})",
-                        Width = 300,
-                        VerticalAlignment = VerticalAlignment.Center
-                    });
+                        TextWrapping = TextWrapping.Wrap,
+                        VerticalAlignment = VerticalAlignment.Center,
+                        Width = 450,
+                        MaxWidth = 450
+                    };
+                    taskRow.Children.Add(taskTextBlock);
+
 
                     var assignButton = new Button
                     {
