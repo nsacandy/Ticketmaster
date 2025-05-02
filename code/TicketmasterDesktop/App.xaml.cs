@@ -18,12 +18,12 @@ namespace TicketmasterDesktop
         {
             base.OnStartup(e);
 
-            var options = new DbContextOptionsBuilder<TicketmasterContext>()
+            DbOptions = new DbContextOptionsBuilder<TicketmasterContext>()
                 .UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=TicketmasterContext-d12841e7-3bb4-494b-afde-d73f97b2c023;Trusted_Connection=True;TrustServerCertificate=True;")
 
                 .Options;
 
-            DbContext = new TicketmasterContext(options);
+            DbContext = new TicketmasterContext(DbOptions);
 
         }
     }
