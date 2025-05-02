@@ -37,7 +37,8 @@ namespace TicketmasterDesktop
             foreach (var stage in _board.Stages.OrderBy(s => s.Position))
             {
                 var tasks = context.TaskItem
-                    .Where(t => t.StageId == stage.StageId)
+                    .Where(t => t.StageId == stage.StageId &&
+                                (!t.AssignedTo.HasValue || t.AssignedTo == Session.CurrentUser.Id))
                     .ToList();
 
                 var taskPanel = new StackPanel();
@@ -74,14 +75,17 @@ namespace TicketmasterDesktop
                     taskPanel.Children.Add(taskRow);
                 }
 
-                var stageGroup = new GroupBox
+                if (taskPanel.Children.Count > 0)
                 {
-                    Header = stage.StageTitle,
-                    Margin = new Thickness(10),
-                    Content = taskPanel
-                };
+                    var stageGroup = new GroupBox
+                    {
+                        Header = stage.StageTitle,
+                        Margin = new Thickness(10),
+                        Content = taskPanel
+                    };
 
-                StagesPanel.Children.Add(stageGroup);
+                    StagesPanel.Children.Add(stageGroup);
+                }
             }
         }
 
@@ -123,6 +127,8 @@ namespace TicketmasterDesktop
         }
     }
 }
+
+
 
 
 
