@@ -62,12 +62,12 @@ namespace TicketmasterDesktop
                 }
                 else
                 {
-                    MessageBox.Show("❌ Incorrect password.", "Login Failed");
+                    MessageBox.Show("❌ Username/password incorrect.", "Login Failed");
                 }
             }
             else
             {
-                MessageBox.Show("❌ No user found with that email.", "Login Failed");
+                MessageBox.Show("❌ Username/password incorrect.", "Login Failed");
             }
         }
 
