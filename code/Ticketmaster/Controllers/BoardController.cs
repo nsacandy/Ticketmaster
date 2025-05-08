@@ -125,21 +125,30 @@ namespace Ticketmaster.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(Stage stage)
         {
-            foreach (var error in ModelState)
+            if (!ModelState.IsValid)
             {
-                Console.WriteLine($"Key: {error.Key}");
-                foreach (var subError in error.Value.Errors)
+                return View(stage);
+            }
+
+            // Retrieve all stages for the same board, ordered by Position descending
+            var existingStages = await _context.Stage
+                .Where(s => s.ParentBoardId == stage.ParentBoardId)
+                .OrderByDescending(s => s.Position)
+                .ToListAsync();
+
+            // Perform cascading position shift to prevent conflicts
+            foreach (var existingStage in existingStages)
+            {
+                if (existingStage.Position >= stage.Position)
                 {
-                    Console.WriteLine($"  Error: {subError.ErrorMessage}");
+                    existingStage.Position += 1;
+                    _context.Stage.Update(existingStage);
                 }
             }
-            if (ModelState.IsValid)
-            {
-                _context.Stage.Add(stage);
-                await _context.SaveChangesAsync();
-                return RedirectToAction("ProjectBoard", "Board", new { projectId = stage.ParentBoardId });
-            }
-            return View(stage);
+
+            _context.Stage.Add(stage);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("ProjectBoard", "Board", new { projectId = stage.ParentBoardId });
         }
 
         /// <summary>
