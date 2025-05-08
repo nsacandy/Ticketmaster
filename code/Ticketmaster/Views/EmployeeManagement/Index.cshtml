@@ -49,13 +49,13 @@
                     <input type="text" name="LastName" value="@item.LastName" class="form-control" required />
 			    </td>
 			    <td>
-                    <input type="text" name="Email" value="@item.Email" class="form-control" required />
+                    <input type="email" name="Email" value="@item.Email" class="form-control" required />
 			    </td>
 			    <td>
-                    <input type="text" name="Pword" value="" class="form-control" required />
+                    <input type="text" name="Pword" value="" class="form-control" />
 			    </td>
 			    <td>
-                    <input type="text" name="PhoneNum" value="@item.PhoneNum" class="form-control" required />
+                    <input type="tel" name="PhoneNum" value="@item.PhoneNum" class="form-control" required pattern="\d{10}" title="Enter a 10-digit phone number with no spaces or symbols" required />
 			    </td>
 			    <td>
 				    <select name="ERole" class="form-control">
