@@ -1,19 +1,30 @@
 ﻿@model Stage
 
+@{
+    ViewData["Title"] = "Edit Stage";
+}
+
 <h2>Edit Stage</h2>
-<form asp-action="Edit">
-	<input type="hidden" asp-for="StageId" />
-	<input type="hidden" asp-for="ParentBoardId" />
 
-	<div class="form-group">
-		<label asp-for="StageTitle"></label>
-		<input asp-for="StageTitle" class="form-control" />
-	</div>
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="StageId" />
+    <input type="hidden" asp-for="ParentBoardId" />
 
-	<div class="form-group">
-		<label asp-for="Position"></label>
-		<input asp-for="Position" class="form-control" type="number" />
-	</div>
+    <div class="form-group mb-3">
+        <label asp-for="StageTitle" class="form-label"></label>
+        <input asp-for="StageTitle" class="form-control" />
+        <span asp-validation-for="StageTitle" class="text-danger"></span>
+    </div>
 
-	<button type="submit" class="btn btn-success">Save Changes</button>
+    <div class="form-group mb-3">
+        <label asp-for="Position" class="form-label"></label>
+        <input asp-for="Position" class="form-control" type="number" />
+        <span asp-validation-for="Position" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-success">Save Changes</button>
 </form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
