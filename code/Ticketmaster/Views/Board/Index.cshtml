@@ -88,6 +88,22 @@ else
         {
             <div class="stage-column">
                 <div class="d-flex justify-content-between align-items-center mb-2">
+                    @if (isAdmin || isProjectLead)
+                    {
+                        <div class="mb-2 text-center">
+                            <form method="post" asp-action="SwapStagePosition" class="d-inline">
+                                <input type="hidden" name="stageId" value="@stage.StageId" />
+                                <input type="hidden" name="direction" value="left" />
+                                <button type="submit" class="btn btn-sm btn-outline-dark me-1">←</button>
+                            </form>
+                            <form method="post" asp-action="SwapStagePosition" class="d-inline">
+                                <input type="hidden" name="stageId" value="@stage.StageId" />
+                                <input type="hidden" name="direction" value="right" />
+                                <button type="submit" class="btn btn-sm btn-outline-dark">→</button>
+                            </form>
+                        </div>
+                    }
+
                     <h5>@stage.StageTitle</h5>
                     <div>
                         @if (isAdmin || isProjectLead)
