@@ -119,6 +119,12 @@ public class EmployeeManagementController : Controller
             return RedirectToAction(nameof(Index));
         }
 
+        if (_context.Employee.Any(e => e.Email == email))
+        {
+            TempData["Error"] = "That email address already belongs to an existing employee.";
+            return RedirectToAction(nameof(Index));
+        }
+
         var stagedChanges = HttpContext.Session.GetObjectFromJson<List<EmployeeChange>>("StagedChanges") ??
                             new List<EmployeeChange>();
 
