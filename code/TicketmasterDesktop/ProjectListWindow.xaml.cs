@@ -104,7 +104,7 @@ namespace TicketmasterDesktop
                 return;
             }
 
-            var taskWindow = new TaskWindow(board); // hypothetical window
+            var taskWindow = new TaskWindow(); // hypothetical window
             taskWindow.Show();
             this.Close();
         }

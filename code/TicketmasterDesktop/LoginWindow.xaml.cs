@@ -56,18 +56,18 @@ namespace TicketmasterDesktop
                 {
                     Session.CurrentUser = employee; // Store the logged-in user in session
                     MessageBox.Show($"✅ Welcome, {employee.FirstName}!", "Login Successful");
-                    var projectList = new ProjectListWindow(employee.Id);
+                    var projectList = new TaskWindow();
                     projectList.Show();
                     this.Close();
                 }
                 else
                 {
-                    MessageBox.Show("❌ Incorrect password.", "Login Failed");
+                    MessageBox.Show("❌ Username/password incorrect.", "Login Failed");
                 }
             }
             else
             {
-                MessageBox.Show("❌ No user found with that email.", "Login Failed");
+                MessageBox.Show("❌ Username/password incorrect.", "Login Failed");
             }
         }
 
