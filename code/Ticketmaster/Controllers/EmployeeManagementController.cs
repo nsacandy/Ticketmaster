@@ -205,6 +205,14 @@ public class EmployeeManagementController : Controller
                 employee.Pword = EmployeePasswordHasher.HashPassword(employee.Pword);
             }
 
+            var emailPattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
+            if (!Regex.IsMatch(employee.Email, emailPattern))
+            {
+                TempData["Error"] = "Please enter a valid email address (e.g. name@example.com).";
+                return RedirectToAction(nameof(Index));
+            }
+
+
             var change = new EmployeeChange
             {
                 Action = "Edit",
