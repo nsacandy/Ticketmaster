@@ -109,20 +109,31 @@ namespace Ticketmaster.Controllers
                 return NotFound();
             }
 
-            if (!string.IsNullOrEmpty(request.GroupName) && request.GroupName != group.GroupName)
-            {
-                group.GroupName = request.GroupName;
-            }
-
             if (request.ManagerId != 0 && request.ManagerId != group.ManagerId)
             {
-                var managerExists = await _context.Manager.AnyAsync(m => m.ManagerId == request.ManagerId);
-                if (!managerExists)
+                // Check if the current manager is a lead on any project
+                bool isCurrentManagerProjectLead = await _context.Project
+                    .AnyAsync(p => p.ProjectLeadId == group.ManagerId);
+
+                if (isCurrentManagerProjectLead)
+                {
+                    return BadRequest(new { message = "Cannot reassign this manager. They are currently the lead of a project." });
+                }
+
+                // Ensure the new manager exists in Manager table
+                bool newManagerExists = await _context.Manager.AnyAsync(m => m.ManagerId == request.ManagerId);
+                if (!newManagerExists)
                 {
                     _context.Manager.Add(new Manager { ManagerId = request.ManagerId });
                     await _context.SaveChangesAsync();
                 }
+
                 group.ManagerId = request.ManagerId;
+            }
+
+            if (!string.IsNullOrEmpty(request.GroupName) && request.GroupName != group.GroupName)
+            {
+                group.GroupName = request.GroupName;
             }
 
             if (request.EmployeeIds != null)
@@ -132,7 +143,6 @@ namespace Ticketmaster.Controllers
             }
 
             await _context.SaveChangesAsync();
-
             return Ok(new { message = "Group updated successfully!" });
         }
 

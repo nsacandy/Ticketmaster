@@ -456,8 +456,23 @@
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({ groupId: selectedGroupId, groupName, managerId, employeeIds })
 		})
-			.then(res => res.ok ? location.reload() : alert("Error updating group."))
-			.catch(error => console.error("Error:", error));
+		.then(res => res.json().then(data => ({ status: res.status, body: data })))
+		.then(result => {
+			if (result.status === 200) {
+				location.reload();
+			} else {
+				const errorDiv = document.getElementById("deleteGroupError");
+				errorDiv.textContent = result.body.message || "Error updating group.";
+				errorDiv.classList.remove("d-none");
+				setTimeout(() => errorDiv.classList.add("d-none"), 3000);
+			}
+		})
+		.catch(error => {
+			const errorDiv = document.getElementById("deleteGroupError");
+			errorDiv.textContent = "Unexpected error: " + error.message;
+			errorDiv.classList.remove("d-none");
+			setTimeout(() => errorDiv.classList.add("d-none"), 3000);
+		});
 	}
 
 	function handleGroupDelete() {
