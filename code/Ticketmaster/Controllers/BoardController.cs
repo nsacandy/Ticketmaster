@@ -171,13 +171,30 @@ namespace Ticketmaster.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(Stage stage)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
+                return View(stage);
+
+            var original = await _context.Stage.AsNoTracking().FirstOrDefaultAsync(s => s.StageId == stage.StageId);
+            if (original == null) return NotFound();
+
+            if (stage.Position != original.Position)
             {
-                _context.Stage.Update(stage);
-                await _context.SaveChangesAsync();
-                return RedirectToAction("ProjectBoard", "Board", new { projectId = stage.ParentBoardId });
+                var conflict = await _context.Stage.FirstOrDefaultAsync(s =>
+                    s.ParentBoardId == stage.ParentBoardId &&
+                    s.Position == stage.Position &&
+                    s.StageId != stage.StageId);
+
+                if (conflict != null)
+                {
+                    conflict.Position = original.Position;
+                    _context.Stage.Update(conflict);
+                }
             }
-            return View(stage);
+
+            _context.Stage.Update(stage);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("ProjectBoard", new { projectId = stage.ParentBoardId });
         }
 
         /// <summary>
@@ -311,6 +328,31 @@ namespace Ticketmaster.Controllers
             await _context.SaveChangesAsync();
 
             return Ok(new { message = "Task assigned successfully!" });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SwapStagePosition(int stageId, string direction)
+        {
+            var stage = await _context.Stage.FindAsync(stageId);
+            if (stage == null || string.IsNullOrWhiteSpace(direction)) return BadRequest();
+
+            int newPos = direction == "left" ? stage.Position - 1 : stage.Position + 1;
+
+            var adjacentStage = await _context.Stage
+                .FirstOrDefaultAsync(s => s.ParentBoardId == stage.ParentBoardId && s.Position == newPos);
+
+            if (adjacentStage != null)
+            {
+                int temp = stage.Position;
+                stage.Position = adjacentStage.Position;
+                adjacentStage.Position = temp;
+
+                _context.Stage.Update(stage);
+                _context.Stage.Update(adjacentStage);
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToAction("ProjectBoard", new { projectId = stage.ParentBoardId });
         }
 
     }
