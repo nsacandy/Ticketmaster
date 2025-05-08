@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using Ticketmaster.Data;
@@ -52,8 +53,12 @@ namespace TicketmasterDesktop
                 query = query.Where(t => !t.AssignedTo.HasValue || t.AssignedTo == Session.CurrentUser.Id);
 
             var allTasks = query.ToList();
-            var stages = context.Stage.ToDictionary(s => s.StageId, s => s.ParentBoardId);
+            var stages = context.Stage.Include(s => s.ParentBoard).ToList();
             var projects = context.Project.ToDictionary(p => p.ProjectId, p => p.ProjectName);
+
+            var stagesByBoard = stages.GroupBy(s => s.ParentBoardId)
+                .ToDictionary(g => g.Key, g => g.ToList());
+
 
             foreach (var task in allTasks)
             {
@@ -68,15 +73,22 @@ namespace TicketmasterDesktop
                 }
 
                 string projectTitle = "Unknown Project";
-                if (stages.TryGetValue(task.StageId, out int projectId) && projects.TryGetValue(projectId, out string title))
+                var stage = stages.FirstOrDefault(s => s.StageId == task.StageId);
+                if (stage != null && projects.TryGetValue(stage.ParentBoardId, out string title))
                 {
                     projectTitle = title;
                 }
 
-                var taskRow = new StackPanel { Orientation = Orientation.Vertical, Margin = new Thickness(10), Background = System.Windows.Media.Brushes.LightGray };
+                var taskRow = new StackPanel
+                {
+                    Orientation = Orientation.Vertical,
+                    Margin = new Thickness(10),
+                    Background = System.Windows.Media.Brushes.LightGray
+                };
                 taskRow.Children.Add(new TextBlock
                 {
-                    Text = task.Title + "\nProject: " + projectTitle + "\nDescription: " + task.Description + "\nAssigned to: " + assignedName,
+                    Text = task.Title + "\nProject: " + projectTitle + "\nDescription: " + task.Description +
+                           "\nAssigned to: " + assignedName + "\nStage: " + task.Stage.StageTitle,
                     TextWrapping = TextWrapping.Wrap,
                     Margin = new Thickness(5)
                 });
@@ -90,9 +102,61 @@ namespace TicketmasterDesktop
                 assignButton.Click += AssignOrUnassign_Click;
                 taskRow.Children.Add(assignButton);
 
+                if (stages.FirstOrDefault(s => s.StageId == task.StageId) is Stage currentStage &&
+                    stagesByBoard.TryGetValue(currentStage.ParentBoardId, out var stageList))
+                {
+                    var stageDropdown = new ComboBox
+                    {
+                        Width = 200,
+                        Margin = new Thickness(5),
+                        DisplayMemberPath = "StageTitle",
+                        SelectedValuePath = "StageId",
+                        ItemsSource = stageList,
+                        SelectedValue = task.StageId,
+                        Tag = task
+                    };
+
+                    var moveButton = new Button
+                    {
+                        Content = "Move",
+                        Margin = new Thickness(5, 0, 5, 10),
+                        Tag = stageDropdown
+                    };
+                    moveButton.Click += MoveTask_Click;
+                    taskRow.Children.Add(moveButton);
+                    taskRow.Children.Add(stageDropdown);
+                }
+
                 StagesPanel.Children.Add(taskRow);
+                
             }
         }
+
+        private void MoveTask_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button moveButton &&
+                moveButton.Tag is ComboBox dropdown &&
+                dropdown.Tag is TaskItem task &&
+                dropdown.SelectedValue is int newStageId)
+            {
+                using var context = new TicketmasterContext(App.DbOptions);
+                var dbTask = context.TaskItem.FirstOrDefault(t => t.TaskItemId == task.TaskItemId);
+                if (dbTask != null)
+                {
+                    if (dbTask.StageId == newStageId)
+                    {
+                        MessageBox.Show("Task is already in the selected stage.", "No Change", MessageBoxButton.OK, MessageBoxImage.Information);
+                        return;
+                    }
+
+                    dbTask.StageId = newStageId;
+                    context.SaveChanges();
+                    MessageBox.Show("Task moved to new stage!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                    LoadBoardData();
+                }
+            }
+        }
+
 
         private void AssignOrUnassign_Click(object sender, RoutedEventArgs e)
         {
