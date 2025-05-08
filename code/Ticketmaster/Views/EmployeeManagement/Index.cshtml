@@ -77,19 +77,21 @@
     <form asp-action="StageEmployeeAdd" method="post">
 	    <tr>
 		    <td>
-			    <input type="text" name="FirstName" value="" class="form-control" placeholder="First Name *" />
+                <input type="text" name="FirstName" value="" class="form-control" placeholder="First Name *" required />
 		    </td>
 		    <td>
-			    <input type="text" name="LastName" value="" class="form-control" placeholder="Last Name *" />
+                <input type="text" name="LastName" value="" class="form-control" placeholder="Last Name *" required />
 		    </td>
 		    <td>
-			    <input type="text" name="Email" value="" class="form-control" placeholder="Email *" />
+                <input type="email" name="Email" value="" class="form-control" placeholder="Email *" required />
 		    </td>
 		    <td>
-			    <input type="text" name="Pword" value="" class="form-control" placeholder="Password *" />
+                <input type="text" name="Pword" value="" class="form-control" placeholder="Password *" required />
 		    </td>
 		    <td>
-			    <input type="text" name="PhoneNum" value="" class="form-control" placeholder="Phone Number *" />
+			    <input type="tel" name="PhoneNum" value="" class="form-control" placeholder="Phone Number *" 
+			           required pattern="\d{10}" title="Enter a 10-digit phone number with no spaces or symbols" />
+
 		    </td>
 		    <td>
 			    <select name="ERole" class="form-control">
