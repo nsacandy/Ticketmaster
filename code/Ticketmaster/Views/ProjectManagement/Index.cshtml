@@ -46,14 +46,11 @@
 				</span>
 
 				<span>
-					@if (User.IsInRole("admin"))
-					{
 						<button class="btn btn-outline-primary btn-sm me-2"
 						        onclick="openEditProjectModal('@project.ProjectId', '@project.ProjectName', '@project.ProjectDescription')"
 						        title="Edit Project">
 							✏️
 						</button>
-					}
 					<a class="btn btn-outline-secondary btn-sm"
 					   href="@kanbanUrl"
 					   title="View Board">
