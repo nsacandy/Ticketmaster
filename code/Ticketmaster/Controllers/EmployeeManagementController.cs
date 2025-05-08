@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
+using System.Text.RegularExpressions;
 using Ticketmaster.Data;
 using Ticketmaster.Models;
 using Ticketmaster.Utilities;
@@ -109,7 +111,7 @@ public class EmployeeManagementController : Controller
     /// <param name="eRole">Employee's role (e.g., "admin", "standard").</param>
     /// <returns>A redirection to the index view with session-staged data.</returns>
     public async Task<IActionResult> StageEmployeeAdd(int id, string firstName, string lastName, string email,
-        string pword, string phoneNum, string eRole)
+        string pword, string ConfirmPword, string phoneNum, string eRole)
     {
         if (string.IsNullOrEmpty(firstName) || string.IsNullOrEmpty(lastName) ||
             string.IsNullOrEmpty(email) || string.IsNullOrEmpty(pword) || string.IsNullOrEmpty(phoneNum) ||
@@ -122,6 +124,19 @@ public class EmployeeManagementController : Controller
         if (_context.Employee.Any(e => e.Email == email))
         {
             TempData["Error"] = "That email address already belongs to an existing employee.";
+            return RedirectToAction(nameof(Index));
+        }
+
+        if (pword != ConfirmPword)
+        {
+            TempData["Error"] = "Passwords do not match.";
+            return RedirectToAction(nameof(Index));
+        }
+
+        var emailPattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
+        if (!Regex.IsMatch(email, emailPattern))
+        {
+            TempData["Error"] = "Please enter a valid email address (e.g. name@example.com).";
             return RedirectToAction(nameof(Index));
         }
 

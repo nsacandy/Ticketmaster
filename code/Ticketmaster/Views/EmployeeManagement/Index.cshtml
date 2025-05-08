@@ -49,10 +49,15 @@
                     <input type="text" name="LastName" value="@item.LastName" class="form-control" required />
 			    </td>
 			    <td>
-                    <input type="email" name="Email" value="@item.Email" class="form-control" required />
+				    <input type="email" name="Email" value="@item.Email" class="form-control" 			
+				           required pattern="^[a-zA-Z0-9._%+-]@@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+                           title="Enter a valid email address, e.g. user@example.com" /> 
 			    </td>
 			    <td>
-                    <input type="text" name="Pword" value="" class="form-control" />
+				    <input type="password" name="Pword" value="" class="form-control" placeholder="Password *" required />
+			    </td>
+			    <td>
+				    <input type="password" name="ConfirmPword" value="" class="form-control" placeholder="Confirm Password *" required />
 			    </td>
 			    <td>
                     <input type="tel" name="PhoneNum" value="@item.PhoneNum" class="form-control" required pattern="\d{10}" title="Enter a 10-digit phone number with no spaces or symbols" required />
@@ -83,10 +88,15 @@
                 <input type="text" name="LastName" value="" class="form-control" placeholder="Last Name *" required />
 		    </td>
 		    <td>
-                <input type="email" name="Email" value="" class="form-control" placeholder="Email *" required />
+			    <input type="email" name="Email" class="form-control" placeholder="Email *"
+			           required pattern="^[a-zA-Z0-9._%+-]@@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+			           title="Enter a valid email address, e.g. user@example.com" />
 		    </td>
 		    <td>
-                <input type="text" name="Pword" value="" class="form-control" placeholder="Password *" required />
+			    <input type="password" name="Pword" value="" class="form-control" placeholder="Password *" required />
+		    </td>
+		    <td>
+			    <input type="password" name="ConfirmPword" value="" class="form-control" placeholder="Confirm Password *" required />
 		    </td>
 		    <td>
 			    <input type="tel" name="PhoneNum" value="" class="form-control" placeholder="Phone Number *" 
@@ -152,6 +162,21 @@
 <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#discardChangesModal">
     Discard Changes
 </button>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const form = document.querySelector('form[asp-action="StageEmployeeAdd"]');
+        form.addEventListener('submit', function (e) {
+            const password = form.querySelector('input[name="Pword"]').value;
+            const confirm = form.querySelector('input[name="ConfirmPword"]').value;
+
+            if (password !== confirm) {
+                e.preventDefault();
+                alert("Passwords do not match!");
+            }
+        });
+    });
+</script>
 
 <!-- Modal -->
 <div class="modal fade" id="discardChangesModal" tabindex="-1" aria-labelledby="discardChangesModalLabel" aria-hidden="true">
