@@ -1,112 +1,96 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using Ticketmaster.Data;
-using Ticketmaster.Models;
+using Ticketmaster.Models; // Assuming Board, Stage, Task models are here
 
 namespace TicketmasterDesktop
 {
     public partial class TaskWindow : Window
     {
-        private readonly Board _board;
-
-        public TaskWindow(Board board)
+        public TaskWindow()
         {
             InitializeComponent();
-            _board = board;
+            this.Width = 400;
+            SetupFilterComboBox();
             LoadBoardData();
+        }
+
+        private void SetupFilterComboBox()
+        {
+            var filterBox = new ComboBox
+            {
+                Name = "FilterComboBox",
+                Margin = new Thickness(10),
+                Width = 200
+            };
+
+            filterBox.Items.Add("All");
+            filterBox.Items.Add("Assigned");
+            filterBox.Items.Add("Unassigned");
+            filterBox.SelectedIndex = 0;
+            filterBox.SelectionChanged += (s, e) => LoadBoardData();
+
+            HeaderPanel.Children.Add(filterBox);
         }
 
         private void LoadBoardData()
         {
-            // Clear existing content
             StagesPanel.Children.Clear();
 
             using var context = new TicketmasterContext(App.DbOptions);
 
-            foreach (var stage in _board.Stages.OrderBy(s => s.Position))
+            var filter = (HeaderPanel.Children.OfType<ComboBox>().FirstOrDefault(cb => cb.Name == "FilterComboBox")?.SelectedItem as string) ?? "All";
+
+            var query = context.TaskItem.AsQueryable();
+
+            if (filter == "Assigned")
+                query = query.Where(t => t.AssignedTo == Session.CurrentUser.Id);
+            else if (filter == "Unassigned")
+                query = query.Where(t => !t.AssignedTo.HasValue);
+            else
+                query = query.Where(t => !t.AssignedTo.HasValue || t.AssignedTo == Session.CurrentUser.Id);
+
+            var allTasks = query.ToList();
+            var stages = context.Stage.ToDictionary(s => s.StageId, s => s.ParentBoardId);
+            var projects = context.Project.ToDictionary(p => p.ProjectId, p => p.ProjectName);
+
+            foreach (var task in allTasks)
             {
-                var tasks = context.TaskItem
-                    .Where(t => t.StageId == stage.StageId &&
-                                (!t.AssignedTo.HasValue || t.AssignedTo == Session.CurrentUser.Id))
-                    .ToList();
-
-                var taskPanel = new StackPanel();
-
-                foreach (var task in tasks)
+                string assignedName = "Unassigned";
+                if (task.AssignedTo.HasValue)
                 {
-                    string assignedName = "Unassigned";
-                    if (task.AssignedTo.HasValue)
+                    var employee = context.Employee.FirstOrDefault(e => e.Id == task.AssignedTo.Value);
+                    if (employee != null)
                     {
-                        var employee = context.Employee.FirstOrDefault(e => e.Id == task.AssignedTo.Value);
-                        if (employee != null)
-                        {
-                            assignedName = employee.FirstName + " " + employee.LastName;
-                        }
+                        assignedName = employee.FirstName + " " + employee.LastName;
                     }
-
-                    var taskRow = new StackPanel { Orientation = Orientation.Horizontal, Margin = new Thickness(5) };
-                    var taskTextBlock = new TextBlock
-                    {
-                        Text = $"{task.Title}: {task.Description} (Assigned to: {assignedName})",
-                        TextWrapping = TextWrapping.Wrap,
-                        VerticalAlignment = VerticalAlignment.Center,
-                        Width = 450,
-                        MaxWidth = 450
-                    };
-                    taskRow.Children.Add(taskTextBlock);
-
-
-                    var assignButton = new Button
-                    {
-                        Content = task.AssignedTo == Session.CurrentUser?.Id ? "Unassign" : "Assign",
-                        Tag = task,
-                        Margin = new Thickness(10, 0, 0, 0)
-                    };
-                    assignButton.Click += AssignOrUnassign_Click;
-                    taskRow.Children.Add(assignButton);
-
-                    if (task.AssignedTo == Session.CurrentUser?.Id)
-                    {
-                        var moveComboBox = new ComboBox
-                        {
-                            Width = 150,
-                            Margin = new Thickness(10, 0, 0, 0),
-                            Tag = task,
-                            ItemsSource = _board.Stages,
-                            DisplayMemberPath = "StageTitle",
-                            SelectedValuePath = "StageId",
-                            SelectedValue = stage.StageId
-                        };
-
-                        moveComboBox.SelectionChanged += MoveTask_SelectionChanged;
-                        taskRow.Children.Add(moveComboBox);
-                    }
-
-                    taskPanel.Children.Add(taskRow);
                 }
 
-                if (taskPanel.Children.Count > 0)
+                string projectTitle = "Unknown Project";
+                if (stages.TryGetValue(task.StageId, out int projectId) && projects.TryGetValue(projectId, out string title))
                 {
-                    var stageGroup = new GroupBox
-                    {
-                        Header = stage.StageTitle,
-                        Margin = new Thickness(10),
-                        Content = taskPanel
-                    };
-
-                    StagesPanel.Children.Add(stageGroup);
+                    projectTitle = title;
                 }
+
+                var taskRow = new StackPanel { Orientation = Orientation.Vertical, Margin = new Thickness(10), Background = System.Windows.Media.Brushes.LightGray };
+                taskRow.Children.Add(new TextBlock
+                {
+                    Text = task.Title + "\nProject: " + projectTitle + "\nDescription: " + task.Description + "\nAssigned to: " + assignedName,
+                    TextWrapping = TextWrapping.Wrap,
+                    Margin = new Thickness(5)
+                });
+
+                var assignButton = new Button
+                {
+                    Content = task.AssignedTo == Session.CurrentUser?.Id ? "Unassign" : "Assign",
+                    Tag = task,
+                    Margin = new Thickness(5, 0, 5, 10)
+                };
+                assignButton.Click += AssignOrUnassign_Click;
+                taskRow.Children.Add(assignButton);
+
+                StagesPanel.Children.Add(taskRow);
             }
         }
 
@@ -127,21 +111,6 @@ namespace TicketmasterDesktop
                         dbTask.AssignedTo = Session.CurrentUser?.Id;
                     }
                     context.SaveChanges();
-                    LoadBoardData(); // Refresh UI
-                }
-            }
-        }
-
-        private void MoveTask_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (sender is ComboBox comboBox && comboBox.Tag is TaskItem task && comboBox.SelectedValue is int newStageId)
-            {
-                using var context = new TicketmasterContext(App.DbOptions);
-                var dbTask = context.TaskItem.FirstOrDefault(t => t.TaskItemId == task.TaskItemId);
-                if (dbTask != null && dbTask.AssignedTo == Session.CurrentUser?.Id && dbTask.StageId != newStageId)
-                {
-                    dbTask.StageId = newStageId;
-                    context.SaveChanges();
                     LoadBoardData();
                 }
             }
@@ -154,19 +123,5 @@ namespace TicketmasterDesktop
             login.Show();
             this.Close();
         }
-
-        private void BackToProjectsButton_Click(object sender, RoutedEventArgs e)
-        {
-            var projectList = new ProjectListWindow(Session.CurrentUser.Id);
-            projectList.Show();
-            this.Close();
-        }
     }
-
 }
-
-
-
-
-
-

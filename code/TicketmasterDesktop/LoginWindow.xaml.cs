@@ -56,7 +56,7 @@ namespace TicketmasterDesktop
                 {
                     Session.CurrentUser = employee; // Store the logged-in user in session
                     MessageBox.Show($"✅ Welcome, {employee.FirstName}!", "Login Successful");
-                    var projectList = new ProjectListWindow(employee.Id);
+                    var projectList = new TaskWindow();
                     projectList.Show();
                     this.Close();
                 }
