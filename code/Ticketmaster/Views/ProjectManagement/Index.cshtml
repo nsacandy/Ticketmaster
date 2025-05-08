@@ -46,14 +46,26 @@
 				</span>
 
 				<span>
-					@if (User.IsInRole("admin"))
+
+					@if ((bool)ViewBag.IsAdmin || project.ProjectLeadId.ToString() == (string)ViewBag.LoggedInUserId)
 					{
 						<button class="btn btn-outline-primary btn-sm me-2"
-						        onclick="openEditProjectModal('@project.ProjectId', '@project.ProjectName', '@project.ProjectDescription')"
-						        title="Edit Project">
+								onclick="openEditProjectModal('@project.ProjectId', '@project.ProjectName', '@project.ProjectDescription')"
+								title="Edit Project">
 							✏️
 						</button>
 					}
+
+					<button class="btn btn-outline-info btn-sm"
+							onclick="openViewProjectModal(
+								'@project.ProjectName',
+								`@project.ProjectDescription`,
+								'@leadFullName',
+								'@project.InvolvedGroups')"
+							title="View Project">
+						ℹ️
+					</button>
+
 					<a class="btn btn-outline-secondary btn-sm"
 					   href="@kanbanUrl"
 					   title="View Board">
@@ -197,6 +209,36 @@
 	</div>
 </div>
 
+<!-- View Project Modal -->
+<div class="modal fade" id="viewProjectModal" tabindex="-1" aria-labelledby="viewProjectModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content bg-dark text-white">
+			<div class="modal-header">
+				<h5 class="modal-title" id="viewProjectModalLabel">Project Details</h5>
+				<button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<div class="mb-3">
+					<label class="form-label">Project Name</label>
+					<input type="text" id="viewProjectName" class="form-control" readonly />
+				</div>
+				<div class="mb-3">
+					<label class="form-label">Description</label>
+					<textarea id="viewProjectDescription" class="form-control" readonly></textarea>
+				</div>
+				<div class="mb-3">
+					<label class="form-label">Project Lead</label>
+					<input type="text" id="viewProjectLead" class="form-control" readonly />
+				</div>
+				<div class="mb-3">
+					<label class="form-label">Involved Groups</label>
+					<ul class="list-group" id="viewProjectGroupsList"></ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
 <script>
 	// ========= GLOBAL VARIABLES =========
 	let availableGroupsList, projectGroupsList, groupManagersList, projectLeadBox;
@@ -313,6 +355,32 @@
 
 		// Show Modal
 		new bootstrap.Modal(document.getElementById("editProjectModal")).show();
+	}
+
+	function openViewProjectModal(name, description, leadName, groupIdsCsv) {
+		document.getElementById("viewProjectName").value = name;
+		document.getElementById("viewProjectDescription").value = description;
+		document.getElementById("viewProjectLead").value = leadName;
+
+		const groupList = document.getElementById("viewProjectGroupsList");
+		groupList.innerHTML = "";
+
+		if (groupIdsCsv && groupIdsCsv.trim() !== "") {
+			const ids = groupIdsCsv.split(',').map(id => id.trim());
+
+			ids.forEach(groupId => {
+				const groupItem = document.querySelector(`.group-item[data-groupid='${groupId}']`);
+				if (groupItem) {
+					const groupName = groupItem.getAttribute("data-groupname");
+					const li = document.createElement("li");
+					li.className = "list-group-item bg-transparent text-white border-white";
+					li.textContent = groupName;
+					groupList.appendChild(li);
+				}
+			});
+		}
+
+		new bootstrap.Modal(document.getElementById("viewProjectModal")).show();
 	}
 
 	function handleCreateModalOpen() {

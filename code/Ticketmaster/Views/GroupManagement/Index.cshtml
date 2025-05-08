@@ -52,14 +52,16 @@
                 </span>
 
                 <span>
-	                @if (User.IsInRole("admin"))
-	                {
-		                <button class="btn btn-outline-primary btn-sm me-2"
-		                        data-action="edit"
-		                        title="Edit Group">
-			                ✏️
-		                </button>
-	                }
+
+					@if ((bool)ViewBag.IsAdmin || group.ManagerId.ToString() == (string)ViewBag.LoggedInUserId)
+					{
+						<button class="btn btn-outline-primary btn-sm me-2"
+								data-action="edit"
+								title="Edit Group">
+							✏️
+						</button>
+					}
+
 	                <button class="btn btn-outline-info btn-sm"
 	                        data-action="view"
 	                        title="View Group">
