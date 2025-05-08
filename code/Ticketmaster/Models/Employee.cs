@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Ticketmaster.Models
 {
@@ -15,64 +16,57 @@ namespace Ticketmaster.Models
         /// <summary>
         /// Gets or sets the identifier.
         /// </summary>
-        /// <value>
-        /// The identifier.
-        /// </value>
+        /// <value>The identifier.</value>
         [Column("Id")]
         public int Id { get; set; }
 
         /// <summary>
         /// Gets or sets the first name.
         /// </summary>
-        /// <value>
-        /// The first name.
-        /// </value>
+        /// <value>The first name.</value>
+        [Required]
         [Column("FirstName")]
-        public String  FirstName   { get; set; }
+        public string FirstName { get; set; }
 
         /// <summary>
         /// Gets or sets the last name.
         /// </summary>
-        /// <value>
-        /// The last name.
-        /// </value>
+        /// <value>The last name.</value>
+        [Required]
         [Column("LastName")]
-        public String  LastName    { get; set; }
+        public string LastName { get; set; }
 
         /// <summary>
         /// Gets or sets the email.
         /// </summary>
-        /// <value>
-        /// The email.
-        /// </value>
+        /// <value>The email.</value>
+        [Required]
+        [EmailAddress]
         [Column("Email")]
-        public String  Email       { get; set; }
-        
+        public string Email { get; set; }
+
         /// <summary>
-        /// Gets or sets the pword.
+        /// Gets or sets the password.
         /// </summary>
-        /// <value>
-        /// The pword.
-        /// </value>
+        /// <value>The password.</value>
+        [Required]
         [Column("Pword")]
-        public String Pword { get; set; }
+        public string Pword { get; set; }
 
         /// <summary>
         /// Gets or sets the phone number.
         /// </summary>
-        /// <value>
-        /// The phone number.
-        /// </value>
+        /// <value>The phone number.</value>
+        [Required]
         [Column("PhoneNum")]
-        public String PhoneNum { get; set; }
+        public string PhoneNum { get; set; }
 
         /// <summary>
-        /// Gets or sets the e role.
+        /// Gets or sets the employee role.
         /// </summary>
-        /// <value>
-        /// The e role.
-        /// </value>
+        /// <value>The employee role.</value>
+        [Required]
         [Column("ERole")]
-        public String ERole { get; set; }
+        public string ERole { get; set; }
     }
 }

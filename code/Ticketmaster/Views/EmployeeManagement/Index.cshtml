@@ -29,79 +29,81 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model.Employees)
-        {
-            <tr>
-                <td>@Html.DisplayFor(modelItem => item.FirstName)</td>
-                <td>@Html.DisplayFor(modelItem => item.LastName)</td>
-                <td>@Html.DisplayFor(modelItem => item.Email)</td>
-                <td>*****</td>
-                <td>@Html.DisplayFor(modelItem => item.PhoneNum)</td>
-                <td>@Html.DisplayFor(modelItem => item.ERole)</td>
-                <td>
-                <form asp-action="StageEmployeeEdit" method="post">
-                    <tr>
-                    <td>
-                        <input type="hidden" name="id" value="@item.Id" />
-                        <input type="text" name="FirstName" value="@item.FirstName" class="form-control" />
-                    </td>
-                    <td>
-                        <input type="text" name="LastName" value="@item.LastName" class="form-control" />
-                    </td>
-                    <td>
-                        <input type="text" name="Email" value="@item.Email" class="form-control" />
-                    </td>
-                    <td>
-                        <input type="text" name="Pword" value="" class="form-control" />
-                    </td>
-                    <td>
-                        <input type="text" name="PhoneNum" value="@item.PhoneNum" class="form-control" />
-                    </td>
-                    <td>
-	                    <select name="ERole" class="form-control">
-		                    <option value="admin" selected="@(item.ERole == "admin")">admin</option>
-		                    <option value="standard" selected="@(item.ERole == "standard")">standard</option>
-	                    </select>                    </td>
-                    <td>
-                        <button type="submit" name="action" value="Edit" class="btn btn-warning">Stage Edit</button>
-                    </td>
-                    </form>
-                <td><form asp-action="StageEmployeeDelete" method="post">
-                        <input type="hidden" name="id" value="@item.Id" />
-                        <button type="submit" name="action" value="Delete" class="btn btn-danger">Stage Delete</button>
-                    </form>
-                </td>
-            </tr>
-        }
+    @foreach (var item in Model.Employees)
+    {
+	    <tr>
+		    <td>@Html.DisplayFor(modelItem => item.FirstName)</td>
+		    <td>@Html.DisplayFor(modelItem => item.LastName)</td>
+		    <td>@Html.DisplayFor(modelItem => item.Email)</td>
+		    <td>*****</td>
+		    <td>@Html.DisplayFor(modelItem => item.PhoneNum)</td>
+		    <td>@Html.DisplayFor(modelItem => item.ERole)</td>
+		    <td>
+		    <form asp-action="StageEmployeeEdit" method="post">
+			    <tr>
+			    <td>
+				    <input type="hidden" name="id" value="@item.Id" required />
+                    <input type="text" name="FirstName" value="@item.FirstName" class="form-control" required />
+			    </td>
+			    <td>
+                    <input type="text" name="LastName" value="@item.LastName" class="form-control" required />
+			    </td>
+			    <td>
+                    <input type="text" name="Email" value="@item.Email" class="form-control" required />
+			    </td>
+			    <td>
+                    <input type="text" name="Pword" value="" class="form-control" required />
+			    </td>
+			    <td>
+                    <input type="text" name="PhoneNum" value="@item.PhoneNum" class="form-control" required />
+			    </td>
+			    <td>
+				    <select name="ERole" class="form-control">
+					    <option value="admin" selected="@(item.ERole == "admin")">admin</option>
+					    <option value="standard" selected="@(item.ERole == "standard")">standard</option>
+				    </select>                    </td>
+			    <td>
+				    <button type="submit" name="action" value="Edit" class="btn btn-warning">Stage Edit</button>
+			    </td>
+		    </form>
+		    <td><form asp-action="StageEmployeeDelete" method="post">
+				    <input type="hidden" name="id" value="@item.Id" />
+				    <button type="submit" name="action" value="Delete" class="btn btn-danger">Stage Delete</button>
+			    </form>
+		    </td>
+	    </tr>
+    }
         
-        <form asp-action="StageEmployeeAdd" method="post">
-            <tr>
-            <td>
-                <input type="text" name="FirstName" value="" class="form-control" />
-            </td>
-            <td>
-                <input type="text" name="LastName" value="" class="form-control" />
-            </td>
-            <td>
-                <input type="text" name="Email" value="" class="form-control" />
-            </td>
-            <td>
-                <input type="text" name="Pword" value="" class="form-control" />
-            </td>
-            <td>
-                <input type="text" name="PhoneNum" value="" class="form-control" />
-            </td>
-            <td>
-	            <select name="ERole" class="form-control">
-		            <option value="standard" selected>standard</option>
-		            <option value="admin">admin</option>
-	            </select>            </td>
-            <td>
-                <button type="submit" name="action" value="Edit" class="btn btn-warning">Add New Employee</button>
-            </td>
-        </form>
-        </tbody>
-</table>
+    <form asp-action="StageEmployeeAdd" method="post">
+	    <tr>
+		    <td>
+			    <input type="text" name="FirstName" value="" class="form-control" placeholder="First Name *" />
+		    </td>
+		    <td>
+			    <input type="text" name="LastName" value="" class="form-control" placeholder="Last Name *" />
+		    </td>
+		    <td>
+			    <input type="text" name="Email" value="" class="form-control" placeholder="Email *" />
+		    </td>
+		    <td>
+			    <input type="text" name="Pword" value="" class="form-control" placeholder="Password *" />
+		    </td>
+		    <td>
+			    <input type="text" name="PhoneNum" value="" class="form-control" placeholder="Phone Number *" />
+		    </td>
+		    <td>
+			    <select name="ERole" class="form-control">
+				    <option value="standard" selected>standard</option>
+				    <option value="admin">admin</option>
+			    </select>
+		    </td>
+		    <td>
+			    <button type="submit" name="action" value="Edit" class="btn btn-warning">Add New Employee</button>
+		    </td>
+	    </tr>
+    </form>
+    </tbody>
+    <p style="text-align: center; font-size: 0.9em; color: #FFF; margin-top: -10px;">* = Required field</p></table>
 
 <h2>Staged Changes</h2>
 <table class="table">
