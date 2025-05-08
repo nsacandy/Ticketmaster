@@ -51,13 +51,18 @@
                     @group.GroupName @(group.Manager != null ? $"({group.Manager.Employee.FirstName} {group.Manager.Employee.LastName})" : "")
                 </span>
 
-                <span>
+				<span>
 					<button class="btn btn-outline-primary btn-sm me-2"
 							data-action="edit"
 							title="Edit Group">
 						✏️
 					</button>
-                </span>
+					<button class="btn btn-outline-info btn-sm"
+							data-action="view"
+							title="View Group">
+						ℹ️
+					</button>
+				</span>
             </li>
         }
     </ul>
@@ -175,6 +180,32 @@
     </div>
 </div>
 
+<!-- View Group Modal -->
+<div class="modal fade" id="viewGroupModal" tabindex="-1" aria-labelledby="viewGroupModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content bg-dark text-white">
+			<div class="modal-header">
+				<h5 class="modal-title" id="viewGroupModalLabel">Group Details</h5>
+				<button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<div class="mb-3">
+					<label class="form-label">Group Name</label>
+					<input type="text" id="viewGroupName" class="form-control" readonly />
+				</div>
+				<div class="mb-3">
+					<label class="form-label">Manager</label>
+					<input type="text" id="viewManagerBox" class="form-control" readonly />
+				</div>
+				<div class="mb-3">
+					<label class="form-label">Group Members</label>
+					<ul class="list-group" id="viewGroupMembersList"></ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
 <script>
 	// ========= GLOBAL VARIABLES =========
 	let availableEmployeesList, groupMembersList, managerBox;
@@ -213,6 +244,14 @@
 			btn.addEventListener("click", function () {
 				const groupItem = this.closest(".group-item");
 				openEditGroupModal(groupItem);
+			});
+		});
+
+		// Bind view group buttons
+		document.querySelectorAll(".group-item button[data-action='view']").forEach(btn => {
+			btn.addEventListener("click", function () {
+				const groupItem = this.closest(".group-item");
+				openViewGroupModal(groupItem);
 			});
 		});
 
@@ -282,6 +321,26 @@
 
 		attachEventListenersToEditModal();
 		new bootstrap.Modal(document.getElementById("editGroupModal")).show();
+	}
+
+	function openViewGroupModal(groupItem) {
+		const name = groupItem.getAttribute("data-groupname");
+		const manager = groupItem.getAttribute("data-managername");
+		const memberNames = groupItem.getAttribute("data-employeenames").split(",").map(n => n.trim());
+
+		document.getElementById("viewGroupName").value = name;
+		document.getElementById("viewManagerBox").value = manager;
+
+		const list = document.getElementById("viewGroupMembersList");
+		list.innerHTML = "";
+		memberNames.forEach(name => {
+			const li = document.createElement("li");
+			li.className = "list-group-item bg-transparent text-white border-white";
+			li.textContent = name;
+			list.appendChild(li);
+		});
+
+		new bootstrap.Modal(document.getElementById("viewGroupModal")).show();
 	}
 
 	// ========= CREATE GROUP LOGIC =========
