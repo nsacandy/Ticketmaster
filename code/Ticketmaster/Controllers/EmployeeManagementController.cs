@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
+using System.Text.RegularExpressions;
 using Ticketmaster.Data;
 using Ticketmaster.Models;
 using Ticketmaster.Utilities;
@@ -109,7 +111,7 @@ public class EmployeeManagementController : Controller
     /// <param name="eRole">Employee's role (e.g., "admin", "standard").</param>
     /// <returns>A redirection to the index view with session-staged data.</returns>
     public async Task<IActionResult> StageEmployeeAdd(int id, string firstName, string lastName, string email,
-        string pword, string phoneNum, string eRole)
+        string pword, string ConfirmPword, string phoneNum, string eRole)
     {
         if (string.IsNullOrEmpty(firstName) || string.IsNullOrEmpty(lastName) ||
             string.IsNullOrEmpty(email) || string.IsNullOrEmpty(pword) || string.IsNullOrEmpty(phoneNum) ||
@@ -122,6 +124,19 @@ public class EmployeeManagementController : Controller
         if (_context.Employee.Any(e => e.Email == email))
         {
             TempData["Error"] = "That email address already belongs to an existing employee.";
+            return RedirectToAction(nameof(Index));
+        }
+
+        if (pword != ConfirmPword)
+        {
+            TempData["Error"] = "Passwords do not match.";
+            return RedirectToAction(nameof(Index));
+        }
+
+        var emailPattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
+        if (!Regex.IsMatch(email, emailPattern))
+        {
+            TempData["Error"] = "Please enter a valid email address (e.g. name@example.com).";
             return RedirectToAction(nameof(Index));
         }
 
@@ -173,21 +188,37 @@ public class EmployeeManagementController : Controller
     /// <param name="employee">The employee to stage for editing.</param>
     /// <returns>Redirection to the index view after staging the change.</returns>
     [HttpPost]
-    public async Task<IActionResult> StageEmployeeEdit(Employee employee)
+    public async Task<IActionResult> StageEmployeeEdit(Employee employee, string ConfirmPword)
     {
-
         var stagedChanges = HttpContext.Session.GetObjectFromJson<List<EmployeeChange>>("StagedChanges") ??
                             new List<EmployeeChange>();
 
+        // ✅ Check for password mismatch early
+        if (!string.IsNullOrWhiteSpace(employee.Pword) && employee.Pword != ConfirmPword)
+        {
+            TempData["Error"] = "Passwords do not match.";
+            return RedirectToAction(nameof(Index));
+        }
+
+        // ✅ If no existing staged change, create and add one
         if (!stagedChanges.Any(employeeChange => employeeChange.Employee.Id == employee.Id))
         {
-            if (employee.Pword.IsNullOrEmpty())
+            // Keep existing password if no new one was entered
+            if (string.IsNullOrWhiteSpace(employee.Pword))
             {
-                employee.Pword = (await _context.Employee.FindAsync(employee.Id)).Pword;
+                employee.Pword = (await _context.Employee.FindAsync(employee.Id))?.Pword;
             }
             else
             {
                 employee.Pword = EmployeePasswordHasher.HashPassword(employee.Pword);
+            }
+
+            // ✅ Validate email format
+            var emailPattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
+            if (!Regex.IsMatch(employee.Email, emailPattern))
+            {
+                TempData["Error"] = "Please enter a valid email address (e.g. name@example.com).";
+                return RedirectToAction(nameof(Index));
             }
 
             var change = new EmployeeChange
@@ -195,13 +226,12 @@ public class EmployeeManagementController : Controller
                 Action = "Edit",
                 Employee = employee
             };
+
             stagedChanges.Add(change);
             HttpContext.Session.SetObjectAsJson("StagedChanges", stagedChanges);
         }
 
-        HttpContext.Session.SetObjectAsJson("StagedChanges", stagedChanges);
         return RedirectToAction(nameof(Index));
-
     }
 
 

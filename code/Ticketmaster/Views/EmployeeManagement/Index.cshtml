@@ -23,6 +23,7 @@
             <th>@Html.DisplayNameFor(model => model.Employees.First().LastName)</th>
             <th>@Html.DisplayNameFor(model => model.Employees.First().Email)</th>
             <th>@Html.DisplayNameFor(model => model.Employees.First().Pword)</th>
+            <th>Confirm Password</th>
             <th>@Html.DisplayNameFor(model => model.Employees.First().PhoneNum)</th>
             <th>@Html.DisplayNameFor(model => model.Employees.First().ERole)</th>
             <th>Actions</th>
@@ -36,36 +37,46 @@
 		    <td>@Html.DisplayFor(modelItem => item.LastName)</td>
 		    <td>@Html.DisplayFor(modelItem => item.Email)</td>
 		    <td>*****</td>
+		    <td>*****</td>
 		    <td>@Html.DisplayFor(modelItem => item.PhoneNum)</td>
 		    <td>@Html.DisplayFor(modelItem => item.ERole)</td>
 		    <td>
 		    <form asp-action="StageEmployeeEdit" method="post">
 			    <tr>
-			    <td>
-				    <input type="hidden" name="id" value="@item.Id" required />
-                    <input type="text" name="FirstName" value="@item.FirstName" class="form-control" required />
-			    </td>
-			    <td>
-                    <input type="text" name="LastName" value="@item.LastName" class="form-control" required />
-			    </td>
-			    <td>
-                    <input type="text" name="Email" value="@item.Email" class="form-control" required />
-			    </td>
-			    <td>
-                    <input type="text" name="Pword" value="" class="form-control" required />
-			    </td>
-			    <td>
-                    <input type="text" name="PhoneNum" value="@item.PhoneNum" class="form-control" required />
-			    </td>
-			    <td>
-				    <select name="ERole" class="form-control">
-					    <option value="admin" selected="@(item.ERole == "admin")">admin</option>
-					    <option value="standard" selected="@(item.ERole == "standard")">standard</option>
-				    </select>                    </td>
-			    <td>
-				    <button type="submit" name="action" value="Edit" class="btn btn-warning">Stage Edit</button>
-			    </td>
+				    <td>
+					    <input type="hidden" name="id" value="@item.Id" required />
+					    <input type="text" name="FirstName" value="@item.FirstName" class="form-control" required />
+				    </td>
+				    <td>
+					    <input type="text" name="LastName" value="@item.LastName" class="form-control" required />
+				    </td>
+				    <td>
+					    <input type="email" name="Email" value="@item.Email" class="form-control" 
+					           required pattern="^[a-zA-Z0-9._%+-]+@@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+					           title="Enter a valid email address, e.g. user@example.com" />
+				    </td>
+				    <td>
+					    <input type="password" name="Pword" value="" class="form-control" />
+				    </td>
+				    <td>
+					    <input type="password" name="ConfirmPword" value="" class="form-control" />
+				    </td>
+				    <td>
+					    <input type="tel" name="PhoneNum" value="@item.PhoneNum" class="form-control"
+					           pattern="\d{10}" title="Enter a 10-digit phone number" required />
+				    </td>
+				    <td>
+					    <select name="ERole" class="form-control">
+						    <option value="admin" selected="@(item.ERole == "admin")">admin</option>
+						    <option value="standard" selected="@(item.ERole == "standard")">standard</option>
+					    </select>
+				    </td>
+				    <td>
+					    <button type="submit" class="btn btn-warning">Stage Edit</button>
+				    </td>
+			    </tr>
 		    </form>
+
 		    <td><form asp-action="StageEmployeeDelete" method="post">
 				    <input type="hidden" name="id" value="@item.Id" />
 				    <button type="submit" name="action" value="Delete" class="btn btn-danger">Stage Delete</button>
@@ -83,10 +94,15 @@
                 <input type="text" name="LastName" value="" class="form-control" placeholder="Last Name *" required />
 		    </td>
 		    <td>
-                <input type="email" name="Email" value="" class="form-control" placeholder="Email *" required />
+			    <input type="email" name="Email" class="form-control" placeholder="Email *"
+			           required pattern="^[a-zA-Z0-9._%+-]@@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+			           title="Enter a valid email address, e.g. user@example.com" />
 		    </td>
 		    <td>
-                <input type="text" name="Pword" value="" class="form-control" placeholder="Password *" required />
+			    <input type="password" name="Pword" value="" class="form-control" placeholder="Password *" required />
+		    </td>
+		    <td>
+			    <input type="password" name="ConfirmPword" value="" class="form-control" placeholder="Confirm Password *" required />
 		    </td>
 		    <td>
 			    <input type="tel" name="PhoneNum" value="" class="form-control" placeholder="Phone Number *" 
@@ -116,7 +132,6 @@
             <th>Password</th>
             <th>Phone Number</th>
             <th>Role</th>
-
             <th>Action</th>
             <th></th>
         </tr>
@@ -152,6 +167,24 @@
 <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#discardChangesModal">
     Discard Changes
 </button>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const forms = document.querySelectorAll('form[asp-action="StageEmployeeAdd"], form[asp-action="StageEmployeeEdit"]');
+
+        forms.forEach(function (form) {
+            form.addEventListener('submit', function (e) {
+                const password = form.querySelector('input[name="Pword"]')?.value;
+                const confirm = form.querySelector('input[name="ConfirmPword"]')?.value;
+
+                if (password !== undefined && confirm !== undefined && password !== confirm) {
+                    e.preventDefault();
+                    alert("Passwords do not match!");
+                }
+            });
+        });
+    });
+</script>
 
 <!-- Modal -->
 <div class="modal fade" id="discardChangesModal" tabindex="-1" aria-labelledby="discardChangesModalLabel" aria-hidden="true">
