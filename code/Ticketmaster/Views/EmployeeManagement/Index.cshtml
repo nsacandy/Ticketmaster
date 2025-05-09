@@ -43,36 +43,40 @@
 		    <td>
 		    <form asp-action="StageEmployeeEdit" method="post">
 			    <tr>
-			    <td>
-				    <input type="hidden" name="id" value="@item.Id" required />
-                    <input type="text" name="FirstName" value="@item.FirstName" class="form-control" required />
-			    </td>
-			    <td>
-                    <input type="text" name="LastName" value="@item.LastName" class="form-control" required />
-			    </td>
-			    <td>
-				    <input type="email" name="Email" value="@item.Email" class="form-control" 			
-				           required pattern="^[a-zA-Z0-9._%+-]@@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
-                           title="Enter a valid email address, e.g. user@example.com" /> 
-			    </td>
-			    <td>
-				    <input type="password" name="Pword" value="" class="form-control" />
-			    </td>
-			    <td>
-				    <input type="password" name="ConfirmPword" value="" class="form-control" />
-			    </td>
-			    <td>
-                    <input type="tel" name="PhoneNum" value="@item.PhoneNum" class="form-control" required pattern="\d{10}" title="Enter a 10-digit phone number with no spaces or symbols" required />
-			    </td>
-			    <td>
-				    <select name="ERole" class="form-control">
-					    <option value="admin" selected="@(item.ERole == "admin")">admin</option>
-					    <option value="standard" selected="@(item.ERole == "standard")">standard</option>
-				    </select>                    </td>
-			    <td>
-				    <button type="submit" name="action" value="Edit" class="btn btn-warning">Stage Edit</button>
-			    </td>
+				    <td>
+					    <input type="hidden" name="id" value="@item.Id" required />
+					    <input type="text" name="FirstName" value="@item.FirstName" class="form-control" required />
+				    </td>
+				    <td>
+					    <input type="text" name="LastName" value="@item.LastName" class="form-control" required />
+				    </td>
+				    <td>
+					    <input type="email" name="Email" value="@item.Email" class="form-control" 
+					           required pattern="^[a-zA-Z0-9._%+-]+@@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+					           title="Enter a valid email address, e.g. user@example.com" />
+				    </td>
+				    <td>
+					    <input type="password" name="Pword" value="" class="form-control" />
+				    </td>
+				    <td>
+					    <input type="password" name="ConfirmPword" value="" class="form-control" />
+				    </td>
+				    <td>
+					    <input type="tel" name="PhoneNum" value="@item.PhoneNum" class="form-control"
+					           pattern="\d{10}" title="Enter a 10-digit phone number" required />
+				    </td>
+				    <td>
+					    <select name="ERole" class="form-control">
+						    <option value="admin" selected="@(item.ERole == "admin")">admin</option>
+						    <option value="standard" selected="@(item.ERole == "standard")">standard</option>
+					    </select>
+				    </td>
+				    <td>
+					    <button type="submit" class="btn btn-warning">Stage Edit</button>
+				    </td>
+			    </tr>
 		    </form>
+
 		    <td><form asp-action="StageEmployeeDelete" method="post">
 				    <input type="hidden" name="id" value="@item.Id" />
 				    <button type="submit" name="action" value="Delete" class="btn btn-danger">Stage Delete</button>
@@ -128,7 +132,6 @@
             <th>Password</th>
             <th>Phone Number</th>
             <th>Role</th>
-
             <th>Action</th>
             <th></th>
         </tr>
@@ -167,15 +170,18 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const form = document.querySelector('form[asp-action="StageEmployeeAdd"]');
-        form.addEventListener('submit', function (e) {
-            const password = form.querySelector('input[name="Pword"]').value;
-            const confirm = form.querySelector('input[name="ConfirmPword"]').value;
+        const forms = document.querySelectorAll('form[asp-action="StageEmployeeAdd"], form[asp-action="StageEmployeeEdit"]');
 
-            if (password !== confirm) {
-                e.preventDefault();
-                alert("Passwords do not match!");
-            }
+        forms.forEach(function (form) {
+            form.addEventListener('submit', function (e) {
+                const password = form.querySelector('input[name="Pword"]')?.value;
+                const confirm = form.querySelector('input[name="ConfirmPword"]')?.value;
+
+                if (password !== undefined && confirm !== undefined && password !== confirm) {
+                    e.preventDefault();
+                    alert("Passwords do not match!");
+                }
+            });
         });
     });
 </script>
